@@ -1,0 +1,19 @@
+{
+  "name": "go-outside",
+  "version": "0.0.1",
+  "description": "A small app to preserve your sanity during the workday.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgodow/go-outside.git"
+  },
+  "author": "Brian Nichols, Milo Kang, Colin Jaffe, and David Godow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dgodow/go-outside/issues"
+  },
+  "homepage": "https://github.com/dgodow/go-outside#readme"
+}
