@@ -1,0 +1,34 @@
+{
+  "name": "GoOutSide",
+  "description": "Demonstrates usage and features of the event page",
+  "version": "1.0",
+  "manifest_version": 2,
+  "permissions": [
+    "alarms", 
+    "tabs",
+    "bookmarks",
+    "declarativeWebRequest",
+    "*://*/*"
+  ],
+  "background": {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "Start Event Page"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "commands": {
+    "open-google": {
+      "description": "Open a tab to google.com",
+      "suggested_key": {
+        "default": "Ctrl+Shift+L"
+      }
+    },
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K"
+      }
+    }
+  }
+}
