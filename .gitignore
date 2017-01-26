@@ -15,6 +15,9 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
+# Bundle/Webpack files
+*.bundle.js
+
 # nyc test coverage
 .nyc_output
 
