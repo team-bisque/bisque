@@ -6,7 +6,7 @@ const chromep = new ChromePromise();
 let app = {
   toggle: false,
   working: true,
-  workDuration: 3000,
+  workDuration: 10000,
   breakDuration: 10000
 };
 
@@ -16,11 +16,11 @@ function breakStarts() {
       chromep.tabs.query({active: true})
         .then(tabs => {
           breakTab = tabs[0]
-          return chromep.tabs.remove(tabs[0].id)
+          removeTabActivatedListener(breakTab.id) // <== remove event listener for tab onActived
+          return chromep.tabs.remove(breakTab.id)
         })
         .then(workStarts)                   // <== break timer starts
         .then(removeCancelRequestListener)  // <== remove event listener for all requesst
-        .then((tabs)=>removeTabActivatedListener(breakTab.id))  // <== remove event listener for tab onActived
         .catch(console.error);
   }, app.breakDuration);
     
@@ -42,16 +42,17 @@ function workStarts() {
 }
 
 // on tab actived events and callback
-  function tabActivateCallback(activeInfo) {
-    if(activeInfo.tabId !== tabId)
-      return chromep.tabs.update(activeInfo.tabId, {active:false})
+  function tabActivateCallback(activeInfo, tabId) {
+    console.log('tabActivateCallback', activeInfo.tabId, tabId)
+    if(activeInfo.tabId === tabId) return;
+    chrome.tabs.update(tabId, {active:true})
   };
 
   function setTabActivatedListener(tabId){
-    chrome.tabs.onActivated.addListener(tabActivateCallback)
+    chrome.tabs.onActivated.addListener((activeInfo)=>tabActivateCallback(activeInfo, tabId))
   }
   function removeTabActivatedListener(tabId){
-    chrome.tabs.onActivated.removeListener(tabActivateCallback)
+    chrome.tabs.onActivated.removeListener((activeInfo)=>tabActivateCallback(activeInfo, tabId))
   }
 
 // Redirect events and callback
@@ -70,18 +71,19 @@ function workStarts() {
     chrome.webRequest.onBeforeRequest.removeListener(cancelRequestCallback);
   }
 
+workStarts();
 
-chrome.browserAction.onClicked.addListener(function(tab) {
+// chrome.browserAction.onClicked.addListener(function(tab) {
 
-  if (app.toggle) {
-    console.log('Toggle off');
-    chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
-  } else {
-    console.log('Toggle on');
-    chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
-    workStarts();
-  }
-  app.toggle = !app.toggle;
+//   if (app.toggle) {
+//     console.log('Toggle off');
+//     chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
+//   } else {
+//     console.log('Toggle on');
+//     chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
+//     workStarts();
+//   }
+//   app.toggle = !app.toggle;
 
-});
+// });
 

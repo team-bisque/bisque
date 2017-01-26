@@ -3,7 +3,9 @@
 import {
   TOGGLE_WORK,
   RECEIVE_LUNCH_TIME,
-  RECEIVE_CURRENT_TIME
+  RECEIVE_CURRENT_TIME,
+  ADD_FIVE_MINUTES,
+  HALT_BACKGROUND
 } from '../constants';
 
 export const toggleWork = () =>
@@ -14,3 +16,9 @@ export const receiveLunchTime = (lunchTime) =>
 
 export const receiveCurrentTime = (currentTime) =>
   ({currentTime, type: RECEIVE_CURRENT_TIME});
+
+export const addFiveMinutes = () =>
+  ({type: ADD_FIVE_MINUTES});
+
+export const haltBackground = () =>
+  ({type: HALT_BACKGROUND});

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {connect} from 'redux';
+import {connect} from 'react-redux';
 
-import {addTime, stopTime} from '../reducers/status';
+import {addFiveMinutes, haltBackground} from '../action-creators/status';
 
 class Commands extends Component {
   constructor(props) {
@@ -13,9 +13,9 @@ class Commands extends Component {
     const button = evt.target.name;
 
     if (button === 'time') {
-      this.props.addTime(5);
+      this.props.addFiveMinutes();
     } else if (button === 'stop') {
-      this.props.stopTime();
+      this.props.haltBackground();
     }
   }
 
@@ -41,11 +41,11 @@ class Commands extends Component {
   }
 }
 
-const mapState = ({working}) => ({working});
+const mapState = null;
 
 const mapDispatch = dispatch => ({
-  addTime: dispatch(addTime),
-  stopTime: dispatch(stopTime)
+  addFiveMinutes: dispatch(addFiveMinutes),
+  haltBackground: dispatch(haltBackground)
 });
 
 export default connect(mapState, mapDispatch)(Commands);
