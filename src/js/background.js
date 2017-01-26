@@ -11,17 +11,21 @@ let app = {
 };
 
 function breakStarts() {
-  console.log('breakStarts');
+  let breakTab;
   setTimeout(() => {
-    chromep.tabs.query({active: true})
-      .then(tab => {
-        console.log('breakStarts', tab);
-        return chromep.tabs.remove(tab[0].id);
-      })
-      .then(workStarts)
-      .then(removeCancelRequestListener)
-      .catch(console.error);
+      chromep.tabs.query({active: true})
+        .then(tabs => {
+          breakTab = tabs[0]
+          return chromep.tabs.remove(tabs[0].id)
+        })
+        .then(workStarts)                   // <== break timer starts
+        .then(removeCancelRequestListener)  // <== remove event listener for all requesst
+        .then((tabs)=>removeTabActivatedListener(breakTab.id))  // <== remove event listener for tab onActived
+        .catch(console.error);
   }, app.breakDuration);
+    
+  console.log('breakStarts');
+
 }
 
 function workStarts() {
@@ -29,24 +33,43 @@ function workStarts() {
 
   setTimeout(() => {
     return chromep.tabs.create({})
-      .then(breakStarts)
-      .then(setCancelRequestListener)
+      .then(breakStarts)                                  // <== break timer starts
+      .then(setCancelRequestListener)                     // <== set event listener for all request
+      .then(()=>chromep.tabs.query({active: true}))       // <== get active tab
+      .then((tabs)=>setTabActivatedListener(tabs[0].id))  // <== set event listener for tab onActived
       .catch(console.error);
   }, app.workDuration);
 }
 
-function cancelAllRequests(detail) {
-  console.log(detail)
-  return {redirectUrl: 'javascript:'}
-}
+// on tab actived events and callback
+  function tabActivateCallback(activeInfo) {
+    if(activeInfo.tabId !== tabId)
+      return chromep.tabs.update(activeInfo.tabId, {active:false})
+  };
 
-function setCancelRequestListener() {
-  chrome.webRequest.onBeforeRequest.addListener(cancelAllRequests, {urls: ['https://*/*', 'http://*/*']}, ['blocking']);
-}
+  function setTabActivatedListener(tabId){
+    chrome.tabs.onActivated.addListener(tabActivateCallback)
+  }
+  function removeTabActivatedListener(tabId){
+    chrome.tabs.onActivated.removeListener(tabActivateCallback)
+  }
 
-function removeCancelRequestListener() {
-  chrome.webRequest.onBeforeRequest.removeListener(cancelAllRequests);
-}
+// Redirect events and callback
+  function cancelRequestCallback(detail) {return {redirectUrl: 'javascript:'}} 
+    
+  function setCancelRequestListener() {
+    chrome.webRequest.onBeforeRequest.addListener(
+      cancelRequestCallback, 
+      {
+        urls: ['https://*/*', 'http://*/*']
+      }, 
+      ['blocking']);
+  }
+
+  function removeCancelRequestListener() {
+    chrome.webRequest.onBeforeRequest.removeListener(cancelRequestCallback);
+  }
+
 
 chrome.browserAction.onClicked.addListener(function(tab) {
 
@@ -61,3 +84,4 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   app.toggle = !app.toggle;
 
 });
+
