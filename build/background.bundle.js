@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2a294efc60e9b39d4ff3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "89b9c58ff01d6931cfcb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8006,67 +8006,29 @@
 
 /***/ },
 /* 76 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	'user strict';
+
+	var ChromePromise = __webpack_require__(77);
+	var chromep = new ChromePromise();
 
 	var toggle = false;
 	var breakURL = 'http://youtube.com';
 	var app = {
+	  toggle: false,
 	  working: true,
-	  workDuration: 5000,
-	  breakDuration: 2000
+	  workDuration: 10000,
+	  breakDuration: 5000
 	};
-
-	// Promisify 
-
-	var prom = {
-	  tabs: {
-	    create: function create(createProperties) {
-	      return new Promise(function (resolve) {
-	        return chrome.tabs.create(createProperties, function (tab) {
-	          resolve(tab);
-	        });
-	      });
-	    },
-	    discard: function discard(id) {
-	      return new Promise(function (resolve) {
-	        chrome.tabs.discard(id, function (tab) {
-	          resolve(tab);
-	        });
-	      });
-	    },
-	    getCurrent: function getCurrent() {
-	      return new Promise(function (resolve) {
-	        return chrome.tabs.getCurrent(function (tab) {
-	          console.log('getCurrent', tab);
-	          resolve(tab);
-	        });
-	      });
-	    }
-	  }
-	};
-
-	// function redirect(createProperties){
-	// 	return prom.tabs.create(createProperties)
-	// }
-
 
 	function breakStarts() {
 	  console.log('breakStarts');
-
-	  // break start
-	  // redirect you somewhere
-
-	  // disable other tabs
 	  setTimeout(function () {
-	    prom.tabs.getCurrent().then(function (tab) {
+	    chromep.tabs.query({ active: true }).then(function (tab) {
 	      console.log('breakStarts', tab);
-	      prom.tabs.discard(tab.id);
-	    }).then(function () {
-	      workStarts();
-	    });
+	      return chromep.tabs.remove(tab[0].id);
+	    }).then(workStarts).catch(console.error);
 	  }, app.breakDuration);
 	}
 
@@ -8074,24 +8036,123 @@
 	  console.log('workStarts');
 
 	  setTimeout(function () {
-	    prom.tabs.create({ url: breakURL, active: true }).then(function () {
-	      breakStarts();
-	    });
+	    return chromep.tabs.create({ url: breakURL }).then(breakStarts);
 	  }, app.workDuration);
 	}
 
 	chrome.browserAction.onClicked.addListener(function (tab) {
 
 	  console.log('browserAction.onClicked', tab);
-	  if (toggle) {
-
+	  if (app.toggle) {
+	    console.log('Toggle off');
 	    chrome.browserAction.setIcon({ path: 'icon.png', tabId: tab.id });
 	  } else {
 	    console.log('Toggle on');
 	    chrome.browserAction.setIcon({ path: 'icon.png', tabId: tab.id });
 	    workStarts();
 	  }
-	  toggle = !toggle;
+	  app.toggle = !app.toggle;
+	});
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	/*!
+	 * chrome-promise 2.0.2
+	 * https://github.com/tfoxy/chrome-promise
+	 *
+	 * Copyright 2015 Tomás Fox
+	 * Released under the MIT license
+	 */
+
+	(function (root, factory) {
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory.bind(null, ( false ? 'undefined' : _typeof(exports)) === 'object' ? this : root)), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+	    // Node. Does not work with strict CommonJS, but
+	    // only CommonJS-like environments that support module.exports,
+	    // like Node.
+	    module.exports = factory(this);
+	  } else {
+	    // Browser globals (root is window)
+	    root.ChromePromise = factory(root);
+	  }
+	})(undefined, function (root) {
+	  'use strict';
+
+	  var slice = Array.prototype.slice,
+	      hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	  return ChromePromise;
+
+	  ////////////////
+
+	  function ChromePromise(options) {
+	    options = options || {};
+	    var chrome = options.chrome || root.chrome;
+	    var Promise = options.Promise || root.Promise;
+	    var runtime = chrome.runtime;
+
+	    fillProperties(chrome, this);
+
+	    ////////////////
+
+	    function setPromiseFunction(fn, thisArg) {
+
+	      return function () {
+	        var args = slice.call(arguments);
+
+	        return new Promise(function (resolve, reject) {
+	          args.push(callback);
+
+	          fn.apply(thisArg, args);
+
+	          function callback() {
+	            var err = runtime.lastError;
+	            var results = slice.call(arguments);
+	            if (err) {
+	              reject(err);
+	            } else {
+	              switch (results.length) {
+	                case 0:
+	                  resolve();
+	                  break;
+	                case 1:
+	                  resolve(results[0]);
+	                  break;
+	                default:
+	                  resolve(results);
+	              }
+	            }
+	          }
+	        });
+	      };
+	    }
+
+	    function fillProperties(source, target) {
+	      for (var key in source) {
+	        if (hasOwnProperty.call(source, key)) {
+	          var val = source[key];
+	          var type = typeof val === 'undefined' ? 'undefined' : _typeof(val);
+
+	          if (type === 'object' && !(val instanceof ChromePromise)) {
+	            target[key] = {};
+	            fillProperties(val, target[key]);
+	          } else if (type === 'function') {
+	            target[key] = setPromiseFunction(val, source);
+	          } else {
+	            target[key] = val;
+	          }
+	        }
+	      }
+	    }
+	  }
 	});
 
 /***/ }

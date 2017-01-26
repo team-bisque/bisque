@@ -1,63 +1,27 @@
-'user strict';
+'use strict';
+
+const ChromePromise = require('chrome-promise');
+const chromep = new ChromePromise();
+
 var toggle = false;
 const breakURL = 'http://youtube.com';
-const app = {
+let app = {
+  toggle: false,
   working: true,
-  workDuration: 5000,
-  breakDuration: 2000
+  workDuration: 10000,
+  breakDuration: 5000
 }
-
-// Promisify 
-
-const prom = {
-  tabs: {
-    create: (createProperties) => {
-      return new Promise(resolve => (
-        chrome.tabs.create(createProperties, (tab) => {
-          resolve(tab)
-        })
-      ))
-    },
-    discard: (id) => {
-      return new Promise(resolve => {
-        chrome.tabs.discard(id, (tab) => {
-          resolve(tab)
-        })
-      })
-    },
-    getCurrent: () => {
-      return new Promise((resolve, reject)) => (
-        chrome.tabs.getCurrent(tab => {
-        	console.log('getCurrent' , tab)
-          resolve(tab)
-        })
-      ))
-    }
-  }
-}
-
-// function redirect(createProperties){
-// 	return prom.tabs.create(createProperties)
-// }
-
-
 
 function breakStarts() {
-  console.log('breakStarts')
-
-  // break start
-  // redirect you somewhere
-
-  // disable other tabs
+  console.log('breakStarts')  
   setTimeout(() => {
-    prom.tabs.getCurrent()
+    chromep.tabs.query({active:true})
       .then(tab => {
       	console.log('breakStarts' , tab)
-      	prom.tabs.discard(tab.id)
+      	return chromep.tabs.remove(tab[0].id)
       })
-      .then(() => {
-        workStarts()
-      })
+      .then(workStarts)
+      .catch(console.error)
   }, app.breakDuration);
 }
 
@@ -65,23 +29,22 @@ function workStarts() {
   console.log('workStarts')
 
   setTimeout(() => {
-    prom.tabs.create({url: breakURL, active: true})
-      .then(() => {
-        breakStarts()
-      })
+    return chromep.tabs.create({url: breakURL})
+      .then(breakStarts)
   }, app.workDuration)
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) {
 
   console.log('browserAction.onClicked', tab)
-  if (toggle) {
-
-    chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
+  if (app.toggle) {
+    console.log('Toggle off')
+    chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });    
   } else {
     console.log('Toggle on')
     chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
     workStarts()
   }
-  toggle = !toggle;
+  app.toggle = !app.toggle;
+  
 });
