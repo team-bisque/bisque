@@ -4,19 +4,36 @@ import { render } from 'react-dom';
 import store from './store';
 
 import '../css/popup.css';
-// import Greeting from "./popup/greeting_component";
 // import Alarm from "./component/alarm"
 import Header from './component/Header';
 import Status from './component/Status';
 import Commands from './component/Commands';
+import Weather from './component/Weather';
+import Steps from './component/Steps';
 
-const {working, time} = store.getState();
+import {receiveCurrentTime} from './action-creators/status';
+import {fetchWeather} from './action-creators/weather';
+import {fetchSteps} from './action-creators/steps';
+
+const {status, steps, weather} = store.getState();
+
+store.dispatch(fetchSteps(500));
+store.dispatch(fetchWeather('10004'));
+
+chrome.runtime.onMessage.addListener(
+  (req, sender, res) => {
+      store.dispatch(receiveCurrentTime(req.timeRmaining));
+      res('ok');
+    }
+);
 
 render(
   <div>
-    <Header working={working} />
-    <Status working={working} time={time}/>
+    <Header status={status} />
+    <Status status={status} />
     <Commands />
+    <Weather weather={weather}/>
+    <Steps steps={steps}/>
   </div>,
   window.document.getElementById('app-container')
 );

@@ -1,9 +1,7 @@
 import React from 'react';
 
-import moment from 'moment';
-
 export default function Status (props) {
-  const {work, timeNow} = props;
+  const {work, timeRemaining} = props.status;
 
   return (
     <div>
@@ -12,7 +10,7 @@ export default function Status (props) {
       {work
         ? <h2>Your next break in</h2>
         : <h2>Get back to work in</h2>}
-      <h3>{moment(timeNow).format('h:mm:ss a')}</h3>
+      <h3>{timeRemaining + ''} minutes</h3>
     </div>
   );
 }

@@ -17,9 +17,14 @@ coverage
 
 # Bundle/Webpack files
 *.bundle.js
+*.hot-update.js
+*.hot-update.json
 
 # nyc test coverage
 .nyc_output
+
+# api keys
+apiKeys.js
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt

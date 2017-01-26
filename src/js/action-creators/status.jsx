@@ -1,7 +1,10 @@
 'use strict';
 
-import {TOGGLE_WORK, RECEIVE_LUNCH_TIME, RECEIVE_CURRENT_TIME,
-UPDATE_WORK_START, UPDATE_BREAK_START} from '../constants';
+import {
+  TOGGLE_WORK,
+  RECEIVE_LUNCH_TIME,
+  RECEIVE_CURRENT_TIME
+} from '../constants';
 
 export const toggleWork = () =>
   ({type: TOGGLE_WORK});
