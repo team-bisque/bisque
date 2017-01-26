@@ -6,18 +6,28 @@ const chromep = new ChromePromise();
 let app = {
   toggle: false,
   working: true,
+  breakTab: {},
   workDuration: 10000,
   breakDuration: 10000
 };
 
 function breakStarts() {
   let breakTab;
+
+  app.working = false;
+  console.log('Working', app.working);
+
   setTimeout(() => {
-      chromep.tabs.query({active: true})
-        .then(tabs => {
-          breakTab = tabs[0]
-          removeTabActivatedListener(breakTab.id) // <== remove event listener for tab onActived
-          return chromep.tabs.remove(breakTab.id)
+      // chromep.tabs.query({ active: true })
+      //   .then(tabs => {
+      //     app.breakTab = tabs[0]; // not needed... let's remove later
+      //     return removeTabActivatedListener() // <== remove event listener for tab onActived
+      //   })
+      //   .then(()=>
+      chromep.tabs.remove(app.breakTab.id)
+        .then(()=>{
+          app.breakTab = {}
+          return removeTabActivatedListener()
         })
         .then(workStarts)                   // <== break timer starts
         .then(removeCancelRequestListener)  // <== remove event listener for all requesst
@@ -29,31 +39,38 @@ function breakStarts() {
 }
 
 function workStarts() {
-  console.log('workStarts');
+  
+  app.working = true;
+
+  console.log('Working', app.working);
 
   setTimeout(() => {
     return chromep.tabs.create({})
-      .then(breakStarts)                                  // <== break timer starts
-      .then(setCancelRequestListener)                     // <== set event listener for all request
-      .then(()=>chromep.tabs.query({active: true}))       // <== get active tab
-      .then((tabs)=>setTabActivatedListener(tabs[0].id))  // <== set event listener for tab onActived
+      .then(() => chromep.tabs.query({ active: true }))    // <== get active tab
+      .then(tabs => {
+        app.breakTab = tabs[0];
+        return setTabActivatedListener();               // <== set event listener for tab onActived
+      })  
+      .then(setCancelRequestListener)                      // <== set event listener for all request      
+      .then(breakStarts)                                   // <== break timer starts      
       .catch(console.error);
   }, app.workDuration);
 }
 
 // on tab actived events and callback
-  function tabActivateCallback(activeInfo, tabId) {
-    console.log('tabActivateCallback', activeInfo.tabId, tabId)
-    if(activeInfo.tabId === tabId) return;
-    chrome.tabs.update(tabId, {active:true})
+  function tabActivateCallback(activeInfo) {
+    console.log('tabActivateCallback', activeInfo.tabId, app.breakTab.id)
+    if(!app.breakTab.id && activeInfo.tabId === app.breakTab.id) return;
+    chromep.tabs.update(app.breakTab.id, { active:true })
   };
 
-  function setTabActivatedListener(tabId){
-    chrome.tabs.onActivated.addListener((activeInfo)=>tabActivateCallback(activeInfo, tabId))
-  }
-  function removeTabActivatedListener(tabId){
-    chrome.tabs.onActivated.removeListener((activeInfo)=>tabActivateCallback(activeInfo, tabId))
-  }
+  function setTabActivatedListener(){
+    chrome.tabs.onActivated.addListener(tabActivateCallback)
+  };
+
+  function removeTabActivatedListener(){
+    chrome.tabs.onActivated.removeListener(tabActivateCallback)
+  };
 
 // Redirect events and callback
   function cancelRequestCallback(detail) {return {redirectUrl: 'javascript:'}} 
