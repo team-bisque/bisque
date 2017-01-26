@@ -11,6 +11,7 @@ class Commands extends Component {
 
   clickHandler (evt) {
     const button = evt.target.name;
+
     if (button === 'time') {
       this.props.addTime(5);
     } else if (button === 'stop') {
@@ -24,15 +25,15 @@ class Commands extends Component {
         <button
           name="time"
           onClick={this.clickHandler}
-          className="btn btn-default btn-xs">
-          <span className="glyphicon glyphicon-wrench" />
+          className="btn btn-warning btn-xs">
+          <span className="glyphicon glyphicon-hourglass" />
           Gimme 5 more minutes!
         </button>
         <button
           name="stop"
           onClick={this.clickHandler}
-          className="btn btn-default btn-xs">
-          <span className="glyphicon glyphicon-wrench" />
+          className="btn btn-danger btn-xs">
+          <span className="glyphicon glyphicon-alert" />
           $@*% hit the fan, sorry!
         </button>
       </div>
@@ -40,7 +41,7 @@ class Commands extends Component {
   }
 }
 
-const mapState = null;
+const mapState = ({working}) => ({working});
 
 const mapDispatch = dispatch => ({
   addTime: dispatch(addTime),
