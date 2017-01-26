@@ -15,7 +15,7 @@ export const receiveWeather = (weather) =>
 
 export const fetchWeather = (zip) =>
   dispatch => {
-    axios.get(`${openweather}/&zip=${zip},us`)
+    axios.get(`${openweather}&zip=${zip},us`)
       .then(res => {
         dispatch(receiveWeather(res));
       })
