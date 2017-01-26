@@ -1,8 +1,14 @@
 {
-  "name": "GoOutSide",
-  "description": "Demonstrates usage and features of the event page",
-  "version": "1.0",
   "manifest_version": 2,
+
+  "name": "Go Outside",
+  "description": "No, really. Go outside.",
+  "version": "0.0.1",
+
+  "browser_action": {
+    "default_icon": "off.png",
+    "default_title": "test"
+  },
   "permissions": [
     "alarms", 
     "tabs",
