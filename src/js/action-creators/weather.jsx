@@ -10,12 +10,14 @@ import {
   RECEIVE_WEATHER
 } from '../constants';
 
-export const receiveWeather = (steps) =>
-  ({steps, type: RECEIVE_WEATHER});
+export const receiveWeather = (weather) =>
+  ({weather, type: RECEIVE_WEATHER});
 
 export const fetchWeather = (lat, lon) =>
   dispatch => {
     axios.get(`${openweather}/&lat=${lat}&lon=${lon}`)
-      .then(res => console.log(res))
+      .then(res => {
+        dispatch(receiveWeather(res));
+      })
       .catch(err => console.error('Problem fetching weather', err));
   };
