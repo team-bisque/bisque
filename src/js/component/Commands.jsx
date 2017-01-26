@@ -44,8 +44,8 @@ class Commands extends Component {
 const mapState = null;
 
 const mapDispatch = dispatch => ({
-  addFiveMinutes: dispatch(addFiveMinutes),
-  haltBackground: dispatch(haltBackground)
+  addFiveMinutes: dispatch(addFiveMinutes()),
+  haltBackground: dispatch(haltBackground())
 });
 
 export default connect(mapState, mapDispatch)(Commands);
