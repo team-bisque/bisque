@@ -1,10 +1,15 @@
 'use strict';
 
-import moment from 'moment';
+import {
+  TOGGLE_WORK,
+  TOGGLE_LUNCH,
+  RECEIVE_LUNCH_TIME,
+  RECEIVE_TIME_REMAINING
+} from '../constants';
 
 const initialState = {
-  timeNow: new Date,
-  timeOfLunch: 13,
+  timeRemaining: 5,
+  timeOfLunch: 13, // Need to decide about this later
   lunch: false,
   work: true
 };
@@ -17,12 +22,16 @@ export default (state = initialState, action) => {
       newState.work = !newState.work;
       break;
 
+    case TOGGLE_LUNCH:
+      newState.lunch = !newState.lunch;
+      break;
+
     case RECEIVE_LUNCH_TIME:
       newState.timeOfLunch = action.timeOfLunch;
       break;
 
-    case RECEIVE_CURRENT_TIME:
-      newState.timeNow = action.timeNow;
+    case RECEIVE_TIME_REMAINING:
+      newState.timeRemaining = action.timeRemaining;
       break;
 
     default:
