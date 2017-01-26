@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import store from 'store';
+import store from './store';
 
 import '../css/popup.css';
 // import Greeting from "./popup/greeting_component";

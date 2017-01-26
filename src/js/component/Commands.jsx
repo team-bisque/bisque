@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'redux';
 
-import {addTime, stopTime} from './reducers/status';
+import {addTime, stopTime} from '../reducers/status';
 
 class Commands extends Component {
   constructor(props) {
