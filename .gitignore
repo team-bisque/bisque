@@ -17,6 +17,8 @@ coverage
 
 # Bundle/Webpack files
 *.bundle.js
+*.hot-update.js
+*.hot-update.json
 
 # nyc test coverage
 .nyc_output

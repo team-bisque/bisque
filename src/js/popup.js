@@ -9,14 +9,27 @@ import '../css/popup.css';
 import Header from './component/Header';
 import Status from './component/Status';
 import Commands from './component/Commands';
+import Weather from './component/Weather';
+import Steps from './component/Steps';
 
-const {working, time} = store.getState();
+import {receiveCurrentTime} from './action-creators/status'
+
+const {status, steps, weather} = store.getState();
+
+chrome.runtime.onMessage.addListener(
+  (req, sender, res) => {
+      store.dispatch(receiveCurrentTime(req.timeRmaining));
+      res('ok');
+    }
+);
 
 render(
   <div>
-    <Header working={working} />
-    <Status working={working} time={time}/>
+    <Header working={status.work} />
+    <Status working={status.work} time={status.timeRemaining}/>
     <Commands />
+    <Weather weather={weather}/>
+    <Steps steps={steps}/>
   </div>,
   window.document.getElementById('app-container')
 );
