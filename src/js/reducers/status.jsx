@@ -4,7 +4,9 @@ import {
   TOGGLE_WORK,
   TOGGLE_LUNCH,
   RECEIVE_LUNCH_TIME,
-  RECEIVE_TIME_REMAINING
+  RECEIVE_TIME_REMAINING,
+  ADD_FIVE_MINUTES,
+  HALT_BACKGROUND
 } from '../constants';
 
 const initialState = {
@@ -15,7 +17,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  const newState = Object.assign(state, {});
+  const newState = Object.assign({}, state);
 
   switch (action.type) {
     case TOGGLE_WORK:
@@ -32,6 +34,14 @@ export default (state = initialState, action) => {
 
     case RECEIVE_TIME_REMAINING:
       newState.timeRemaining = action.timeRemaining;
+      break;
+
+    case ADD_FIVE_MINUTES:
+      console.log('OK, you get Five More Minutes');
+      break;
+
+    case HALT_BACKGROUND:
+      console.log('OK, freezing background');
       break;
 
     default:

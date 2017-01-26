@@ -1,23 +1,25 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 
-import store from './store';
-
 import '../css/popup.css';
-// import Alarm from "./component/alarm"
+
+//Components
 import Header from './component/Header';
 import Status from './component/Status';
 import Commands from './component/Commands';
 import Weather from './component/Weather';
 import Steps from './component/Steps';
 
+import store from './store';
+
 import {receiveCurrentTime} from './action-creators/status';
 import {fetchWeather} from './action-creators/weather';
-import {fetchSteps} from './action-creators/steps';
+import {receiveSteps} from './action-creators/steps';
 
 const {status, steps, weather} = store.getState();
 
-store.dispatch(fetchSteps(500));
+store.dispatch(receiveSteps(500));
 store.dispatch(fetchWeather('10004'));
 
 chrome.runtime.onMessage.addListener(
@@ -28,12 +30,13 @@ chrome.runtime.onMessage.addListener(
 );
 
 render(
-  <div>
-    <Header status={status} />
-    <Status status={status} />
-    <Commands />
-    <Weather weather={weather}/>
-    <Steps steps={steps}/>
-  </div>,
+  <Provider store={store}>
+    <div>
+      <Header status={status} />
+      <Status status={status} />
+      <Commands />
+      <Weather weather={weather}/>
+    </div>
+  </Provider>,
   window.document.getElementById('app-container')
 );
