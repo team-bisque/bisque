@@ -17,13 +17,7 @@ function breakStarts() {
   app.working = false;
   console.log('Working', app.working);
 
-  setTimeout(() => {
-      // chromep.tabs.query({ active: true })
-      //   .then(tabs => {
-      //     app.breakTab = tabs[0]; // not needed... let's remove later
-      //     return removeTabActivatedListener() // <== remove event listener for tab onActived
-      //   })
-      //   .then(()=>
+  setTimeout(() => {  
       chromep.tabs.remove(app.breakTab.id)
         .then(()=>{
           app.breakTab = {}
