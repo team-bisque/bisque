@@ -1,6 +1,9 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+
+import {Store} from 'react-chrome-redux';
+const proxy = new Store({portName: '1337'});
 
 import '../css/popup.css';
 
@@ -10,32 +13,19 @@ import Status from './component/Status';
 import Commands from './component/Commands';
 import Weather from './component/Weather';
 
-import store from './store';
+const unsubscribe = proxy.subscribe(() => {
+   unsubscribe(); // make sure to only fire once
 
-import {receiveCurrentTime} from './action-creators/status';
-import {fetchWeather} from './action-creators/weather';
-import {receiveSteps} from './action-creators/steps';
+   const {status, weather} = proxy;
 
-const {status, steps, weather} = store.getState();
-
-store.dispatch(receiveSteps(500));
-store.dispatch(fetchWeather('10004'));
-
-chrome.runtime.onMessage.addListener(
-  (req, sender, res) => {
-      store.dispatch(receiveCurrentTime(req.timeRmaining));
-      res('ok');
-    }
-);
-
-render(
-  <Provider store={store}>
+   render(
+  <Provider store={proxy}>
     <div>
       <Header status={status} />
       <Status status={status} />
       <Commands />
-      <Weather weather={weather}/>
+      <Weather weather={weather} />
     </div>
   </Provider>,
-  window.document.getElementById('app-container')
-);
+  window.document.getElementById('app-container'));
+});
