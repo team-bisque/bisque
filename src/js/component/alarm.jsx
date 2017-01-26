@@ -9,7 +9,7 @@ class Alarm extends React.Component {
 	componentWillMount() {
     // let self = this;
     // callBackground('sync').then(data => {
-    //   console.log(data);      
+    //   console.log(data);
     // });
   }
 
