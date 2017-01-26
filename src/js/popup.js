@@ -9,7 +9,6 @@ import Header from './component/Header';
 import Status from './component/Status';
 import Commands from './component/Commands';
 import Weather from './component/Weather';
-import Steps from './component/Steps';
 
 import store from './store';
 
