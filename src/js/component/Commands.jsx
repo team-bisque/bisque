@@ -13,6 +13,7 @@ class Commands extends Component {
     const button = evt.target.name;
 
     if (button === 'time') {
+      console.log(this.props);
       this.props.addFiveMinutes();
     } else if (button === 'stop') {
       this.props.haltBackground();
@@ -44,8 +45,8 @@ class Commands extends Component {
 const mapState = null;
 
 const mapDispatch = dispatch => ({
-  addFiveMinutes: dispatch(addFiveMinutes()),
-  haltBackground: dispatch(haltBackground())
+  addFiveMinutes: () => dispatch(addFiveMinutes()),
+  haltBackground: () => dispatch(haltBackground())
 });
 
 export default connect(mapState, mapDispatch)(Commands);
