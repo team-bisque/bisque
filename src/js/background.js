@@ -1,5 +1,14 @@
 'use strict';
 
+import React from 'react';
+import { Provider } from 'react-redux';
+import { render } from 'react-dom';
+import {wrapStore} from 'react-chrome-redux';
+
+import store from './store';
+
+wrapStore(store, {portName: '1337'});
+
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
@@ -61,3 +70,13 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   app.toggle = !app.toggle;
 
 });
+
+import {fetchWeather} from './action-creators/weather';
+store.dispatch(fetchWeather('10004'));
+
+render(
+  <Provider store={store}>
+    <div/>
+  </Provider>,
+  window.document.getElementById('app-container')
+);
