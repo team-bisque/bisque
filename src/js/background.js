@@ -1,13 +1,22 @@
 'use strict';
 
-import React from 'react';
-import { Provider } from 'react-redux';
-import { render } from 'react-dom';
-import {wrapStore} from 'react-chrome-redux';
-
-import store from './store';
+import React          from 'react';
+import { Provider }   from 'react-redux';
+import { render }     from 'react-dom';
+import { wrapStore }  from 'react-chrome-redux';
+import store          from './store';
+import ChromeApp from './component/ChromeApp'
 
 wrapStore(store, {portName: '1337'});
+
+render(
+  <Provider store={store}>
+    <ChromeApp />
+  </Provider>,
+  window.document.getElementById('app-container')
+);
+
+/*
 
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -15,47 +24,84 @@ const chromep = new ChromePromise();
 let app = {
   toggle: false,
   working: true,
-  workDuration: 3000,
+  breakTab: {},
+  workDuration: 10000,
   breakDuration: 10000
 };
 
 function breakStarts() {
-  console.log('breakStarts');
-  setTimeout(() => {
-    chromep.tabs.query({active: true})
-      .then(tab => {
-        console.log('breakStarts', tab);
-        return chromep.tabs.remove(tab[0].id);
-      })
-      .then(workStarts)
-      .then(removeCancelRequestListener)
-      .catch(console.error);
+  let breakTab;
+
+  app.working = false;
+  console.log('Working', app.working);
+
+  setTimeout(() => {  
+      chromep.tabs.remove(app.breakTab.id)
+        .then(()=>{
+          app.breakTab = {}
+          return removeTabActivatedListener()
+        })
+        .then(workStarts)                   // <== break timer starts
+        .then(removeCancelRequestListener)  // <== remove event listener for all requesst
+        .catch(console.error);
   }, app.breakDuration);
+    
+  console.log('breakStarts');
+
 }
 
 function workStarts() {
-  console.log('workStarts');
+  
+  app.working = true;
+
+  console.log('Working', app.working);
 
   setTimeout(() => {
     return chromep.tabs.create({})
-      .then(breakStarts)
-      .then(setCancelRequestListener)
+      .then(() => chromep.tabs.query({ active: true }))    // <== get active tab
+      .then(tabs => {
+        app.breakTab = tabs[0];
+        return setTabActivatedListener();               // <== set event listener for tab onActived
+      })  
+      .then(setCancelRequestListener)                      // <== set event listener for all request      
+      .then(breakStarts)                                   // <== break timer starts      
       .catch(console.error);
   }, app.workDuration);
 }
 
-function cancelAllRequests(detail) {
-  console.log(detail)
-  return {redirectUrl: 'javascript:'}
-}
+// on tab actived events and callback
+  function tabActivateCallback(activeInfo) {
+    console.log('tabActivateCallback', activeInfo.tabId, app.breakTab.id)
+    if(!app.breakTab.id && activeInfo.tabId === app.breakTab.id) return;
+    chromep.tabs.update(app.breakTab.id, { active:true })
+  };
 
-function setCancelRequestListener() {
-  chrome.webRequest.onBeforeRequest.addListener(cancelAllRequests, {urls: ['https://*/*', 'http://*/*']}, ['blocking']);
-}
+  function setTabActivatedListener(){
+    chrome.tabs.onActivated.addListener(tabActivateCallback)
+  };
 
-function removeCancelRequestListener() {
-  chrome.webRequest.onBeforeRequest.removeListener(cancelAllRequests);
-}
+  function removeTabActivatedListener(){
+    chrome.tabs.onActivated.removeListener(tabActivateCallback)
+  };
+
+// Redirect events and callback
+  function cancelRequestCallback(detail) {return {redirectUrl: 'javascript:'}} 
+    
+  function setCancelRequestListener() {
+    chrome.webRequest.onBeforeRequest.addListener(
+      cancelRequestCallback, 
+      {
+        urls: ['https://*']
+      }, 
+      ['blocking']);
+  }
+
+  function removeCancelRequestListener() {
+    chrome.webRequest.onBeforeRequest.removeListener(cancelRequestCallback);
+  }
+
+
+workStarts();
 
 chrome.browserAction.onClicked.addListener(function(tab) {
 
@@ -69,14 +115,4 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   }
   app.toggle = !app.toggle;
 
-});
-
-import {fetchWeather} from './action-creators/weather';
-store.dispatch(fetchWeather('10004'));
-
-render(
-  <Provider store={store}>
-    <div/>
-  </Provider>,
-  window.document.getElementById('app-container')
-);
+}); */
