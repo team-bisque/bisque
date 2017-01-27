@@ -4,7 +4,12 @@ import { connect }  from 'react-redux';
 import { setWorking } from '../reducers/chromeApp';
 import { lockTab } from '../reducers/browser';
 
+import Background from './Background';
+
 import ChromePromise from 'chrome-promise';
+
+require('../stylesheets/backgroud.css');
+
 const chromep = new ChromePromise();
 
 class ChromeApp extends React.Component {
@@ -98,11 +103,12 @@ class ChromeApp extends React.Component {
   }
 
 	render(){
+		console.log(...this.props)
 		return (
 	    <div>
-	    	DO YOUR HTML & CSS MAGIC BRIAN :)
+	    	<Background { ...this.props } />
 	    </div>
-	  );	
+	  )
 	}
 };
 
