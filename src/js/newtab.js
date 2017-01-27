@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import {Store} from 'react-chrome-redux';
 const proxy = new Store({portName: '1337'});
 
-import '../css/popup.css';
+import '../css/newtab.css';
 
 //Components
 import Header from './component/Header';
@@ -14,7 +14,7 @@ import Commands from './component/Commands';
 import Weather from './component/Weather';
 
 const unsubscribe = proxy.subscribe(() => {
-   unsubscribe(); // make sure to only fire once
+   unsubscribe(); // initial connection
 
    const {status, weather} = proxy;
 
