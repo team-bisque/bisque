@@ -16,10 +16,3 @@ export const receiveLunchTime = (lunchTime) =>
 
 export const receiveCurrentTime = (currentTime) =>
   ({type: RECEIVE_CURRENT_TIME, currentTime});
-
-export const addFiveMinutes = () =>
-  ({type: ADD_FIVE_MINUTES});
-
-export const haltBackground = () =>
-  ({type: HALT_BACKGROUND});
-
