@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
-import { render } from 'react-dom'
+import React, { Component, PropTypes } from 'react';
+import { render } from 'react-dom';
 
-let offset = null, interval = null
+let offset = null, interval = null;
 
 
 let SecondsTohhmmss = function(totalSeconds) {

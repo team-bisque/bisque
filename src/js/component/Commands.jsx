@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {addFiveMinutes, haltBackground} from '../action-creators/status';
+import {addFiveMinutes, haltBackground} from '../action-creators/time';
 
 class Commands extends Component {
   constructor(props) {

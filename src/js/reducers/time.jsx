@@ -1,21 +1,11 @@
-// constance
-const WORK_DURATION = 'WORK_DURATION';
-const BREAK_DURATION = 'BREAK_DURATION';
-const EAT_DURATION = 'EAT_DURATION';
-const START_TIME = 'START_TIME';
+'use strict';
 
-// action creators
-const set_work_duration = workDuration => ({
-	type:WORK_DURATION, workDuration
-});
-
-const set_break_duration = breakDuration => ({
-	type:BREAK_DURATION, breakDuration
-});
-
-const set_eat_duration = eatDuration => ({
-	type:EAT_DURATION, eatDuration
-});
+import {
+	WORK_DURATION,
+	BREAK_DURATION,
+	EAT_DURATION,
+	START_TIME
+} from '../constants';
 
 const initialState = {
   workDuration: (1000 * 10),
@@ -24,34 +14,28 @@ const initialState = {
   startTime: 0
 };
 
-// reducer
-export default (app=initialState, action) => {
-	let newState = Object.assign({}, app)
+export default (state = initialState, action) => {
+	let newState = Object.assign({}, state);
 
-	switch(action.type){
+	switch (action.type){
 		case WORK_DURATION:
-			newState.workDuration = action.workDuration;			
+			newState.workDuration = action.workDuration;
 			break;
+
 		case BREAK_DURATION:
-			newState.breakDuration = action.breakDuration;			
+			newState.breakDuration = action.breakDuration;
 			break;
+
 		case EAT_DURATION:
-			newState.eatDuration = action.eatDuration;			
+			newState.eatDuration = action.eatDuration;
 			break;
+
 		case START_TIME:
-			newState.startTime = action.startTime;			
-			break;		
+			newState.startTime = action.startTime;
+			break;
+
+		default:
+			break;
 	}
 	return newState;
-}
-
-// dispatchs
-export const setWorkDuration = workDuration => dispatch => {
-	dispatch(set_work_duration(workDuration))
-};
-export const setBreakDuration = breakDuration => dispatch => {
-	dispatch(set_break_duration(breakDuration))
-};
-export const setEatDuration = eatDuration => dispatch => {
-	dispatch(set_eat_duration(eatDuration))
 };

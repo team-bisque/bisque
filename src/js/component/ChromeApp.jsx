@@ -13,7 +13,7 @@ const chromep = new ChromePromise();
 
 class ChromeApp extends React.Component {
 	constructor(props) {
-		super(props);		
+		super(props);
 		this.setTabActivatedListener = this.setTabActivatedListener.bind(this);
 		this.removeTabActivatedListener = this.removeTabActivatedListener.bind(this);
 		this.tabActivateCallback = this.tabActivateCallback.bind(this);
@@ -29,7 +29,7 @@ class ChromeApp extends React.Component {
 
 	componentDidMount() {
 		console.log('ChromeApp componentDidMount')
-		this.startWork()		
+		this.startWork()
 	}
 
 	// this function starts work
@@ -39,7 +39,7 @@ class ChromeApp extends React.Component {
 
 		toggleWork(true);
 		setTimeout(() => {
-	    chromep.tabs.create({})	    	
+	    chromep.tabs.create({})
 	      .then(() => chromep.tabs.query({ active: true }))
 	      .then(tabs =>(this.setState({ lockedTab: tabs[0] })))
 	      .then(this.setTabActivatedListener)
@@ -55,20 +55,20 @@ class ChromeApp extends React.Component {
 					{ lockedTab } = this.state;
 
 
-	  toggleWork(false);	  
-	  setTimeout(() => {  
-      chromep.tabs.remove(lockedTab.id)            		
-        .then(this.removeTabActivatedListener)        
+	  toggleWork(false);
+	  setTimeout(() => {
+      chromep.tabs.remove(lockedTab.id)
+        .then(this.removeTabActivatedListener)
         .then(this.removeCancelRequestListener)
         .then(() =>(this.setState({ lockedTab: {} })))
-        .then(this.startWork)        
+        .then(this.startWork)
         .catch(console.error);
 	  }, time.breakDuration);
-	    
+
 	  console.log('breakStarts');
 	}
 
-	tabActivateCallback(activeInfo) {    
+	tabActivateCallback(activeInfo) {
     // const { browser } = this.props;
     const { lockedTab } = this.state;
     // console.log('tabActivateCallback', activeInfo, lockedTab)
@@ -92,12 +92,12 @@ class ChromeApp extends React.Component {
 
 	cancelRequestCallback(detail) {
 		return { redirectUrl: 'javascript:' }
-	} 
-    
+	}
+
   setCancelRequestListener() {
     chrome.webRequest.onBeforeRequest.addListener(
-      this.cancelRequestCallback, 
-      { urls: ['https://*/*', 'http://*/*'] }, 
+      this.cancelRequestCallback,
+      { urls: ['https://*/*', 'http://*/*'] },
       ['blocking']
     );
   }
@@ -110,7 +110,7 @@ class ChromeApp extends React.Component {
 		console.log(...this.props)
 		return (
 	    <div>
-	    	<Background { ...this.props } />
+				<Background { ...this.props } />
 	    </div>
 	  )
 	}
@@ -137,14 +137,14 @@ export default connect(mapState, mapDispatch)(ChromeApp);
 //   };
 
 // // Redirect events and callback
-//   function cancelRequestCallback(detail) {return {redirectUrl: 'javascript:'}} 
-    
+//   function cancelRequestCallback(detail) {return {redirectUrl: 'javascript:'}}
+
 //   function setCancelRequestListener() {
 //     chrome.webRequest.onBeforeRequest.addListener(
-//       cancelRequestCallback, 
+//       cancelRequestCallback,
 //       {
 //         urls: ['https://*/*', 'http://*/*']
-//       }, 
+//       },
 //       ['blocking']);
 //   }
 
