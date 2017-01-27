@@ -1,15 +1,10 @@
 // constance
-const TOGGLE = 'TOGGLE';
-const WORKING = 'WORKING';
 const WORK_DURATION = 'WORK_DURATION';
 const BREAK_DURATION = 'BREAK_DURATION';
 const EAT_DURATION = 'EAT_DURATION';
+const START_TIME = 'START_TIME';
 
 // action creators
-const set_toggle = toggle => ({ type:TOGGLE, toggle });
-
-const set_working = isWorking => ({ type:WORKING, isWorking });
-
 const set_work_duration = workDuration => ({
 	type:WORK_DURATION, workDuration
 });
@@ -23,35 +18,34 @@ const set_eat_duration = eatDuration => ({
 });
 
 const initialState = {
-  toggle: false,
-  isWorking: false,
   workDuration: (1000 * 10),
   breakDuration: (1000 * 10),
-  eatDuration: (1000 * 10)
+  eatDuration: (1000 * 10),
+  startTime: 0
 };
 
 // reducer
 export default (app=initialState, action) => {
 	let newState = Object.assign({}, app)
 
-	console.log(newState)
 	switch(action.type){
-		case TOGGLE:
-			newState.toggle = action.toggle;			
+		case WORK_DURATION:
+			newState.workDuration = action.workDuration;			
 			break;
-
-		
+		case BREAK_DURATION:
+			newState.breakDuration = action.breakDuration;			
+			break;
+		case EAT_DURATION:
+			newState.eatDuration = action.eatDuration;			
+			break;
+		case START_TIME:
+			newState.startTime = action.startTime;			
+			break;		
 	}
 	return newState;
 }
 
 // dispatchs
-export const setToggle = toggle => dispatch => {
-	dispatch(set_toggle(toggle))
-};
-export const setWorking = isWorking => dispatch => {
-	dispatch(set_working(isWorking))
-};
 export const setWorkDuration = workDuration => dispatch => {
 	dispatch(set_work_duration(workDuration))
 };

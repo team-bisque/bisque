@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Timer from './Timer';
 export default function Background (props) {
   console.log('Background rendering with props', props);
 
@@ -10,16 +10,19 @@ export default function Background (props) {
   		backgroundColor: 'black',
   		display: 'flex',
   		flexDirection: 'column',
-			justifyContent: 'space-between'
+			justifyContent: 'space-between',
+			color: 'white'
   	}
   };
+
+  let OPTIONS = { prefix: 'seconds elapsed!', delay: props.workDuration}
   return (
     <div style={style.background}>    	
     	<div>
     	row
     	</div>
     	<div>
-    	throws
+    	<Timer options={OPTIONS}/>
     	</div>
     	<div>
     	what

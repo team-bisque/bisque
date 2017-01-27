@@ -10,3 +10,5 @@ export const HALT_BACKGROUND = 'HALT_BACKGROUND';
 
 // Weather
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';
+
+
