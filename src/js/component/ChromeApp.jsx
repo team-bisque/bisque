@@ -23,6 +23,9 @@ class ChromeApp extends React.Component {
 		this.cancelRequestCallback = this.cancelRequestCallback.bind(this);
 		this.startBreak = this.startBreak.bind(this);
 		this.startWork = this.startWork.bind(this);
+		this.state = {
+			lockedTab: {}
+		}
 	}
 
 	componentDidMount() {
@@ -39,7 +42,7 @@ class ChromeApp extends React.Component {
 		setTimeout(() => {
 	    chromep.tabs.create({})	    	
 	      .then(() => chromep.tabs.query({ active: true }))
-	      .then(tabs =>(lockTab(tabs[0])))
+	      .then(tabs =>(this.setState({ lockedTab: tabs[0] })))
 	      .then(this.setTabActivatedListener)
 	      .then(this.setCancelRequestListener)
 	      .then(this.startBreak)
@@ -49,15 +52,16 @@ class ChromeApp extends React.Component {
 
 	startBreak(){
 		console.log('Start Break')
-		const { app, browser, setWorking, lockTab } = this.props;
+		const { app, browser, setWorking, lockTab } = this.props,
+					{ lockedTab } = this.state;
+
 
 	  setWorking(false);	  
 	  setTimeout(() => {  
-      chromep.tabs.remove(browser.lockedTab.id)        
-    		
+      chromep.tabs.remove(lockedTab.id)            		
         .then(this.removeTabActivatedListener)        
         .then(this.removeCancelRequestListener)
-        .then(() =>(lockTab({})))
+        .then(() =>(this.setState({ lockedTab: {} })))
         .then(this.startWork)        
         .catch(console.error);
 	  }, app.breakDuration);
@@ -67,13 +71,14 @@ class ChromeApp extends React.Component {
 
 	tabActivateCallback(activeInfo) {    
     const { browser } = this.props;
+    const { lockedTab } = this.state;
     console.log('tabActivateCallback', activeInfo, browser)
-    if(!browser.lockedTab.id && activeInfo.tabId === browser.lockedTab.id) {
+    if(!lockedTab.id && activeInfo.tabId === lockedTab.id) {
     	console.log('do not update')
     	return;
     }
-    console.log('update', browser.lockedTab)
-    chrome.tabs.update(browser.lockedTab.id, { active:true });
+    console.log('update', lockedTab)
+    return chromep.tabs.update(lockedTab.id, { active:true });
   }
 
   setTabActivatedListener(){

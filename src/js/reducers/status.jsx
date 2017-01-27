@@ -13,7 +13,10 @@ const initialState = {
   timeRemaining: 5,
   timeOfLunch: 13, // Need to decide about this later
   lunch: false,
-  work: true
+  work: true,
+  workDuration: (1000 * 10),
+  breakDuration: (1000 * 10),
+  eatDuration: (1000 * 10)
 };
 
 export default (state = initialState, action) => {
