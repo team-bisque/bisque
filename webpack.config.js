@@ -16,7 +16,7 @@ if (fileSystem.existsSync(secretsPath)) {
 
 module.exports = {
   entry: {
-    popup: path.join(__dirname, "src", "js", "popup.js"),
+    newtab: path.join(__dirname, "src", "js", "newtab.js"),
     options: path.join(__dirname, "src", "js", "options.js"),
     background: path.join(__dirname, "src", "js", "background.js")
   },
@@ -38,9 +38,9 @@ module.exports = {
     // expose and write the allowed env vars on the compiled bundle
     new webpack.DefinePlugin({ "process.env": JSON.stringify(env) }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "popup.html"),
-      filename: "popup.html",
-      chunks: ["popup"]
+      template: path.join(__dirname, "src", "newtab.html"),
+      filename: "newtab.html",
+      chunks: ["newtab"]
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "options.html"),

@@ -6,14 +6,14 @@ import {
   RECEIVE_LUNCH_TIME,
   RECEIVE_TIME_REMAINING,
   ADD_FIVE_MINUTES,
-  HALT_BACKGROUND
+  // HALT_BACKGROUND
 } from '../constants';
 
 const initialState = {
   timeRemaining: 5,
   timeOfLunch: 13, // Need to decide about this later
   lunch: false,
-  work: true
+  isWorking: true
 };
 
 export default (state = initialState, action) => {
@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
 
   switch (action.type) {
     case TOGGLE_WORK:
-      newState.work = !newState.work;
+      newState.isWorking = !newState.isWorking;
       break;
 
     case TOGGLE_LUNCH:
@@ -40,9 +40,9 @@ export default (state = initialState, action) => {
       console.log('OK, you get Five More Minutes');
       break;
 
-    case HALT_BACKGROUND:
-      console.log('OK, freezing background');
-      break;
+    // case HALT_BACKGROUND:
+    //   console.log('OK, freezing background');
+    //   break;
 
     default:
       break;
