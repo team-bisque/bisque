@@ -1,13 +1,22 @@
 'use strict';
 
-import React from 'react';
-import { Provider } from 'react-redux';
-import { render } from 'react-dom';
-import {wrapStore} from 'react-chrome-redux';
-
-import store from './store';
+import React          from 'react';
+import { Provider }   from 'react-redux';
+import { render }     from 'react-dom';
+import { wrapStore }  from 'react-chrome-redux';
+import store          from './store';
+import ChromeApp from './component/ChromeApp'
 
 wrapStore(store, {portName: '1337'});
+
+render(
+  <Provider store={store}>
+    <ChromeApp />
+  </Provider>,
+  window.document.getElementById('app-container')
+);
+
+/*
 
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -82,7 +91,7 @@ function workStarts() {
     chrome.webRequest.onBeforeRequest.addListener(
       cancelRequestCallback, 
       {
-        urls: ['https://*/*', 'http://*/*']
+        urls: ['https://*']
       }, 
       ['blocking']);
   }
@@ -94,26 +103,16 @@ function workStarts() {
 
 workStarts();
 
-// chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener(function(tab) {
 
-//   if (app.toggle) {
-//     console.log('Toggle off');
-//     chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
-//   } else {
-//     console.log('Toggle on');
-//     chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
-//     workStarts();
-//   }
-//   app.toggle = !app.toggle;
+  if (app.toggle) {
+    console.log('Toggle off');
+    chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
+  } else {
+    console.log('Toggle on');
+    chrome.browserAction.setIcon({ path: `icon.png`, tabId: tab.id });
+    workStarts();
+  }
+  app.toggle = !app.toggle;
 
-// });
-
-import {fetchWeather} from './action-creators/weather';
-store.dispatch(fetchWeather('10004'));
-
-render(
-  <Provider store={store}>
-    <div/>
-  </Provider>,
-  window.document.getElementById('app-container')
-);
+}); */
