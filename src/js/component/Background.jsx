@@ -1,32 +1,74 @@
-import React from 'react';
-import Timer from './Timer';
-export default function Background (props) {
-  console.log('Background rendering with props', props);
+import React 				from 'react';
+import { connect }  from 'react-redux';
 
-  const style = {
-  	background: {
-  		width: 100+'%',
-  		height: 100+'vh',
-  		backgroundColor: 'black',
-  		display: 'flex',
-  		flexDirection: 'column',
-			justifyContent: 'space-between',
-			color: 'white'
-  	}
-  };
+import { toggleWork } from '../action-creators/status';
+import { blockLockedTab, blockLockedTabListener, cancelRequestListener, cancelRequest, removeListeners } from '../tabcontrol.js';
 
-  let OPTIONS = { prefix: 'seconds elapsed!', delay: props.workDuration}
-  return (
-    <div style={style.background}>    	
-    	<div>
-    	row
-    	</div>
-    	<div>
-    	<Timer options={OPTIONS}/>
-    	</div>
-    	<div>
-    	what
-    	</div>
-    </div>
-  );
-};
+import Background from './Background';
+
+import ChromePromise from 'chrome-promise';
+
+require('../../css/background.css');
+
+const chromep = new ChromePromise();
+
+class Background extends React.Component {
+	constructor(props) {
+		super(props);
+		this.startBreak = this.startBreak.bind(this);
+		this.startWork = this.startWork.bind(this);
+		this.state = {
+			newTab: {}
+		}
+	}
+
+	componentDidMount() {
+		this.startWork()
+	}
+
+	// this function starts work
+	startWork(){
+		const { status, time, toggleWork } = this.props;
+
+		toggleWork(true);
+		setTimeout(() => {
+	    chromep.tabs.create({})
+	      .then(() => chromep.tabs.query({ active: true }))
+	      .then(tabs =>(this.setState({ lockedTab: tabs[0] })))
+	      .then(() => {
+					blockLockedTabListener();
+					cancelRequestListener();
+				})
+	      .then(this.startBreak)
+	      .catch(console.error);
+	  }, time.workDuration);
+	}
+
+	startBreak(){
+		const { time, toggleWork } = this.props,
+					{ lockedTab } = this.state;
+
+
+	  toggleWork(false);
+	  setTimeout(() => {
+      chromep.tabs.remove(lockedTab.id)
+        .then(removeListeners())
+        .then(() =>(this.setState({ lockedTab: {} })))
+        .then(this.startWork)
+        .catch(console.error);
+	  }, time.breakDuration);
+	}
+
+	render(){
+		return (
+	    <div>
+	    	<Background { ...this.props } />
+	    </div>
+	  )
+	}
+}
+
+const mapState = ({ status, time }) => ({ status, time });
+const mapDispatch = { toggleWork };
+
+export default connect(mapState, mapDispatch)(Background);
