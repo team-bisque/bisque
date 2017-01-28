@@ -7,7 +7,6 @@ const proxy = new Store({portName: '1337'});
 
 import '../css/newtab.css';
 
-//Components
 import Main from './component/Main';
 
 const unsubscribe = proxy.subscribe(() => {

@@ -23,9 +23,13 @@ const style = {
 
 export function Main (props) {
 
+  const {status, time, weather} = props;
+  let workDuration;
+  if (time) workDuration = time.workDuration;
+
   const options = {
     prefix: 'seconds elapsed!',
-    delay: props.workDuration
+    delay: workDuration
   };
 
   return (
@@ -44,5 +48,6 @@ export function Main (props) {
 }
 
 const mapState = (state) => (state);
+const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(Main);
