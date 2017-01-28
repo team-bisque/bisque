@@ -6,15 +6,15 @@ const START_TIME = 'START_TIME';
 
 // action creators
 const set_work_duration = workDuration => ({
-	type:WORK_DURATION, workDuration
+	type: WORK_DURATION, workDuration
 });
 
 const set_break_duration = breakDuration => ({
-	type:BREAK_DURATION, breakDuration
+	type: BREAK_DURATION, breakDuration
 });
 
 const set_eat_duration = eatDuration => ({
-	type:EAT_DURATION, eatDuration
+	type: EAT_DURATION, eatDuration
 });
 
 const initialState = {
