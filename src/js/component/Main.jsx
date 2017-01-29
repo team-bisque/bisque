@@ -36,11 +36,11 @@ export function Main (props) {
     <div style={style.background} className="row">
       <div>TOP</div>
 
+      <Weather weather={weather} />
       <Header status={status} />
       <Status status={status} />
       <Timer options={options}/>
       <Commands />
-      <Weather weather={weather} />
 
       <div>BOTTOM</div>
     </div>

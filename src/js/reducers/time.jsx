@@ -2,15 +2,15 @@
 
 import {
 	WORK_DURATION,
-	EAT_DURATION,
 	BREAK_DURATION,
+	LUNCH_DURATION,
 	START_TIME
 } from '../constants';
 
 const initialState = {
   workDuration: (1000 * 10),
   breakDuration: (1000 * 30),
-  eatDuration: (1000 * 10),
+  lunchDuration: (1000 * 10),
   startTime: 0
 };
 
@@ -25,8 +25,8 @@ export default (app=initialState, action) => {
 		case BREAK_DURATION:
 			newState.breakDuration = action.breakDuration;
 			break;
-		case EAT_DURATION:
-			newState.eatDuration = action.eatDuration;
+		case LUNCH_DURATION:
+			newState.lunchDuration = action.lunchDuration;
 			break;
 		case START_TIME:
 			newState.startTime = action.startTime;

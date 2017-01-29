@@ -14,6 +14,6 @@ export const receiveBreakDuration = breakDuration => ({
 	type: BREAK_DURATION, breakDuration
 });
 
-export const receiveLunchDuration = eatDuration => ({
-	type: LUNCH_DURATION, eatDuration
+export const receiveLunchDuration = lunchDuration => ({
+	type: LUNCH_DURATION, lunchDuration
 });

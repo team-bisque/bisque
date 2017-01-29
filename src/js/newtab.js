@@ -6,6 +6,7 @@ import {Store} from 'react-chrome-redux';
 const proxy = new Store({portName: '1337'});
 
 import '../css/newtab.css';
+import '../css/weather-icons.min.css';
 
 import Main from './component/Main';
 
