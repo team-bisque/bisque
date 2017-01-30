@@ -15,7 +15,7 @@ const style = {
   background: {
     width: 100 + '%',
     height: 100 + 'vh',
-    background: `url("wallpapers/${bg}.jpg") no-repeat center center fixed`,
+    background: `url("images/wallpapers/${bg}.jpg") no-repeat center center fixed`,
     backgroundSize: 'cover',
     display: 'flex',
     flexDirection: 'column',

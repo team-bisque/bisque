@@ -16,7 +16,7 @@ export default function Steps (props) {
     <div id="weather">
       <div id="icon">
         <i className={`wi wi-owm-${weather.weather[0].id}`}></i>
-        <span>{weather && ` ${Math.round(weather.main.temp - 273.15)}° c`}</span>
+        <span>{(weather && ` ${Math.round(weather.main.temp - 273.15)}° c`)}</span>
       </div>
       <span id="city">{weather && weather.name}</span>
     </div>
