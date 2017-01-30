@@ -4,8 +4,7 @@ export default function Status (props) {
   const status = props.status;
 
   return (
-    <div>
-      <h1>Status</h1>
+    <div id="status">
       {/* Bar graphic here */}
       {status && status.isWorking
         ? <h2>Your next break in</h2>
