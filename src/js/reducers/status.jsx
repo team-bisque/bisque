@@ -4,13 +4,11 @@ import {
   TOGGLE_WORK,
   TOGGLE_LUNCH,
   RECEIVE_LUNCH_TIME,
-  RECEIVE_TIME_REMAINING,
   ADD_FIVE_MINUTES,
   // HALT_BACKGROUND
 } from '../constants';
 
 const initialState = {
-  timeRemaining: 5,
   timeOfLunch: 13, // Need to decide about this later
   lunch: false,
   isWorking: true
@@ -30,10 +28,6 @@ export default (state = initialState, action) => {
 
     case RECEIVE_LUNCH_TIME:
       newState.timeOfLunch = action.timeOfLunch;
-      break;
-
-    case RECEIVE_TIME_REMAINING:
-      newState.timeRemaining = action.timeRemaining;
       break;
 
     case ADD_FIVE_MINUTES:
