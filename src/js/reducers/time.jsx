@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   workDuration: (1000 * 10),
-  breakDuration: (1000 * 30),
+  breakDuration: (3000 * 30),
   lunchDuration: (1000 * 10),
   startTime: 0
 };

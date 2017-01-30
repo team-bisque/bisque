@@ -8,6 +8,9 @@ import Header from './Header';
 import Status from './Status';
 import Timer from './Timer';
 import Weather from './Weather';
+import { Modal, Button } from 'react-bootstrap';
+
+require('../../css/main.css');
 
 const style = {
   background: {
@@ -21,30 +24,59 @@ const style = {
   }
 };
 
-export function Main (props) {
+export class Main extends React.Component {
 
-  const {status, time, weather} = props;
-  let workDuration;
-  if (time) workDuration = time.workDuration;
+  constructor (props) {
+    super(props)
+  }
+  
+  render () {
+    const {status, time, weather} = this.props;
 
-  const options = {
-    prefix: 'seconds elapsed!',
-    delay: workDuration
-  };
+    let workDuration;
+    if (time) workDuration = time.workDuration;
 
-  return (
-    <div style={style.background} className="row">
-      <div>TOP</div>
+    const options = {
+      prefix: 'seconds elapsed!',
+      delay: workDuration
+    };
 
-      <Weather weather={weather} />
-      <Header status={status} />
-      <Status status={status} />
-      <Timer options={options}/>
-      <Commands />
-
-      <div>BOTTOM</div>
-    </div>
-  );
+    return (
+      <div className="row">
+        <div style={style.background}>TOP
+          <Weather weather={weather} />
+          <Header status={status} />
+          <Status status={status} />
+          <Timer options={options}/>
+          <Commands />
+        </div>
+        <div>
+          <Button
+            bsStyle="primary"
+            bsSize="large"
+            onClick={this.openModal}
+          >
+            Launch demo modal
+          </Button>
+          <Modal
+            show={status.isWorking}
+            onHide={this.closeModal}
+            container={this}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Productivity Check-in</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Kapowza!</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={this.close}>Close</Button>
+            </Modal.Footer>
+          </Modal>
+        ,.</div>
+      </div>
+    )
+  }
 }
 
 const mapState = (state) => (state);
