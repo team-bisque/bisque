@@ -8,6 +8,7 @@ import Header from './Header';
 import Status from './Status';
 import Timer from './Timer';
 import Weather from './Weather';
+import Settings from './Settings';
 
 const style = {
   background: {
@@ -41,7 +42,7 @@ export function Main (props) {
       <Status status={status} />
       <Timer options={options}/>
       <Commands />
-
+      <Settings />
       <div>BOTTOM</div>
     </div>
   );

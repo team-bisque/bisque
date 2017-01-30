@@ -17,7 +17,7 @@ if (fileSystem.existsSync(secretsPath)) {
 module.exports = {
   entry: {
     newtab: path.join(__dirname, "src", "js", "newtab.js"),
-    options: path.join(__dirname, "src", "js", "options.js"),
+    settings: path.join(__dirname, "src", "js", "settings.js"),
     background: path.join(__dirname, "src", "js", "background.js")
   },
   output: {
@@ -44,9 +44,9 @@ module.exports = {
       chunks: ["newtab"]
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "options.html"),
-      filename: "options.html",
-      chunks: ["options"]
+      template: path.join(__dirname, "src", "settings.html"),
+      filename: "settings.html",
+      chunks: ["settings"]
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "background.html"),

@@ -14,5 +14,5 @@ render(
   <Provider store={store}>
     <Background />
   </Provider>,
-  window.document.getElementById('app-container')
+  window.document.getElementById('options-container')
 );
