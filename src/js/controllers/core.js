@@ -1,7 +1,7 @@
 'use strict';
 import { setTimeRemaining } from '../action-creators/time';
 import { toggleWork } from '../action-creators/status';
-
+import { fetchWeather} from '../action-creators/weather';
 
 const Tabs = require('./tabs'),
 			WebRequest = require('./webRequest');
@@ -18,8 +18,8 @@ class Core {
 	init(){
 		console.log('background.js core initiated')
 
-
-		let testTimeRemaining = (1000 * 60) * 3; // 3 min
+		this.store.dispatch(fetchWeather(10004));
+		let testTimeRemaining = this.store.getState().time.workDuration; // 3 min
 		this.store.dispatch(setTimeRemaining(testTimeRemaining));
 		// invoke listeners
 		this.watchMinute();
@@ -35,7 +35,7 @@ class Core {
 
 			console.log('watchMinute', remaining, this.store.getState().time.timeRemaining)
 			if (remaining === 0) this.setStatus();
-			
+
 		}, minute);
 	}
 
@@ -71,7 +71,7 @@ class Core {
 		let tabs 				= this.tabs,
 				webRequest 	= this.webRequest;
 
-		tabs.remove(tabs.lockedTab.id)				
+		tabs.remove(tabs.lockedTab.id)
 				.then(() => webRequest.removeOnBeforeRequestEvent())
 				.catch(console.error);
 	}

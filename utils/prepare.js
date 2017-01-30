@@ -4,6 +4,6 @@ var fileSystem = require("fs-extra"),
 // clean de dist folder
 fileSystem.emptyDirSync(path.join(__dirname, "../build"));
 
-fileSystem.copySync(path.join(__dirname, "../src/images/logo.png"), path.join(__dirname, "../build/logo.png"))
+fileSystem.copySync(path.join(__dirname, "../src/images"), path.join(__dirname, "../build/images"))
 
 require("./generate_manifest");
