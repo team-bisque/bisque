@@ -1,9 +1,11 @@
-var webpack = require("webpack"),
-    path = require("path"),
-    fileSystem = require("fs"),
-    env = require("./utils/env"),
+var webpack     = require("webpack"),
+    path        = require("path"),
+    fileSystem  = require("fs"),
+    env         = require("./utils/env"),
+    pkg         = require("./package.json"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
-    WriteFilePlugin = require("write-file-webpack-plugin");
+    WriteFilePlugin   = require("write-file-webpack-plugin");
+    // ZipPlugin         = require('zip-webpack-plugin');
 
 // load the secrets
 var alias = {};
@@ -11,8 +13,11 @@ var alias = {};
 var secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
 
 if (fileSystem.existsSync(secretsPath)) {
-  alias["secrets"] = secretsPath;
+  alias["secrets"] = secretsPath;  
 }
+
+alias["manifest"] = path.join(__dirname, ("manifest.json"));
+alias["logo"] = path.join(__dirname, ("logo.png"));
 
 module.exports = {
   entry: {
@@ -52,6 +57,17 @@ module.exports = {
       filename: "background.html",
       chunks: ["background"]
     }),
-    new WriteFilePlugin()
+    new WriteFilePlugin(),
+    // new ZipPlugin({
+    //   filename: `${pkg.name}.zip`,
+    //   // OPTIONAL: defaults an empty string 
+    //   // the prefix for the files included in the zip file
+    //   // pathPrefix: 'relative/path',  
+
+    //   // OPTIONAL: defaults to including everything
+    //   // can be a string, a RegExp, or an array of strings and RegExps
+    //   // include: [/\.js$/, "./manifest.json", "./logo.png"],
+
+    // })
   ]
 };

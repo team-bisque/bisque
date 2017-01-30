@@ -14,3 +14,4 @@ export const callBackground = (method, ...args) => {
     })
   });
 }
+
