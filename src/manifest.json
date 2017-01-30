@@ -25,6 +25,7 @@
     "page": "background.html",
     "persistent": true
   },
+  "options_page": "background.html",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "commands": {
     "open-google": {

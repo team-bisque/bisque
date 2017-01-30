@@ -1,5 +1,6 @@
 import React from 'react';
 import Timer from './Timer';
+import Settings from './Settings';
 export default function Background (props) {
   console.log('Background rendering with props', props);
 
@@ -17,7 +18,7 @@ export default function Background (props) {
 
   let OPTIONS = { prefix: 'seconds elapsed!', delay: props.workDuration}
   return (
-    <div style={style.background}>    	
+    <div style={style.background}>
     	<div>
     	row
     	</div>
@@ -30,3 +31,10 @@ export default function Background (props) {
     </div>
   );
 };
+
+/*
+
+
+<Settings />
+
+*/

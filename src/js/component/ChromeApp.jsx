@@ -1,12 +1,11 @@
 import React 				from 'react';
 import { connect }  from 'react-redux';
+import ChromePromise from 'chrome-promise';
 
 import { toggleWork } from '../action-creators/status';
-import { blockLockedTab, blockLockedTabListener, cancelRequestListener, cancelRequest, removeListeners } from '../tabcontrol.js';
+import {blockLockedTab, blockLockedTabListener, cancelRequestListener, cancelRequest, removeListeners } from '../tabcontrol.js';
 
 import Background from './Background';
-
-import ChromePromise from 'chrome-promise';
 
 require('../../css/background.css');
 
@@ -14,7 +13,7 @@ const chromep = new ChromePromise();
 
 class ChromeApp extends React.Component {
 	constructor(props) {
-		super(props);		
+		super(props);
 		this.startBreak = this.startBreak.bind(this);
 		this.startWork = this.startWork.bind(this);
 		this.state = {
@@ -23,7 +22,7 @@ class ChromeApp extends React.Component {
 	}
 
 	componentDidMount() {
-		this.startWork()		
+		this.startWork()
 	}
 
 	// this function starts work
@@ -32,7 +31,7 @@ class ChromeApp extends React.Component {
 
 		toggleWork(true);
 		setTimeout(() => {
-	    chromep.tabs.create({})	    	
+	    chromep.tabs.create({})
 	      .then(() => chromep.tabs.query({ active: true }))
 	      .then(tabs =>(this.setState({ lockedTab: tabs[0] })))
 	      .then(() => {
@@ -49,12 +48,12 @@ class ChromeApp extends React.Component {
 					{ lockedTab } = this.state;
 
 
-	  toggleWork(false);	  
-	  setTimeout(() => {  
-      chromep.tabs.remove(lockedTab.id)            		
-        .then(removeListeners())        
+	  toggleWork(false);
+	  setTimeout(() => {
+      chromep.tabs.remove(lockedTab.id)
+        .then(removeListeners())
         .then(() =>(this.setState({ lockedTab: {} })))
-        .then(this.startWork)        
+        .then(this.startWork)
         .catch(console.error);
 	  }, time.breakDuration);
 	}
