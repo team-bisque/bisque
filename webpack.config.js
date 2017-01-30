@@ -27,7 +27,8 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.(js|jsx)$/, loader: "babel" },
-      { test: /\.css$/, loaders: ["style", "css"] }
+      { test: /\.css$/, loaders: ["style", "css"] },
+      { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file?name=[name].[ext]' }
     ]
   },
   resolve: {

@@ -16,8 +16,9 @@ export const receiveWeather = (weather) =>
 export const fetchWeather = (zip) =>
   dispatch => {
     axios.get(`${openweather}&zip=${zip},us`)
-      .then(res => {
-        dispatch(receiveWeather(res));
+      .then(res => res.data)
+      .then(data => {
+        dispatch(receiveWeather(data));
       })
       .catch(err => console.error('Problem fetching weather', err));
   };
