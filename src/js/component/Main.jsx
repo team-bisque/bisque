@@ -9,11 +9,14 @@ import Status from './Status';
 import Timer from './Timer';
 import Weather from './Weather';
 
+const bg = Math.floor(Math.random() * (8 - 1)) + 1;
+
 const style = {
   background: {
     width: 100 + '%',
     height: 100 + 'vh',
-    backgroundColor: 'black',
+    background: `url("wallpapers/${bg}.jpg") no-repeat center center fixed`,
+    backgroundSize: 'cover',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -34,15 +37,11 @@ export function Main (props) {
 
   return (
     <div style={style.background} className="row">
-      <div>TOP</div>
-
       <Weather weather={weather} />
       <Header status={status} />
       <Status status={status} />
       <Timer options={options}/>
       <Commands />
-
-      <div>BOTTOM</div>
     </div>
   );
 }
