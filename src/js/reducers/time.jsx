@@ -4,14 +4,16 @@ import {
 	WORK_DURATION,
 	BREAK_DURATION,
 	LUNCH_DURATION,
-	START_TIME
+	START_TIME,
+	SET_TIME_REMAINING
 } from '../constants';
 
 const initialState = {
-  workDuration: (1000 * 10),
-  breakDuration: (1000 * 30),
-  lunchDuration: (1000 * 10),
-  startTime: 0
+  workDuration: (1000 * 60) * 3,
+  breakDuration: (1000 * 60) * 2,
+  lunchDuration: (1000 * 60) * 5,
+  startTime: 0,
+  timeRemaining: 0
 };
 
 // reducer
@@ -30,6 +32,9 @@ export default (app=initialState, action) => {
 			break;
 		case START_TIME:
 			newState.startTime = action.startTime;
+			break;
+		case SET_TIME_REMAINING:
+			newState.timeRemaining = action.timeRemaining;
 			break;
 	}
 	return newState;
