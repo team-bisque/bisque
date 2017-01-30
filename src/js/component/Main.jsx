@@ -12,11 +12,14 @@ import { Modal, Button } from 'react-bootstrap';
 
 require('../../css/main.css');
 
+const bg = Math.floor(Math.random() * (8 - 1)) + 1;
+
 const style = {
   background: {
     width: 100 + '%',
     height: 100 + 'vh',
-    backgroundColor: 'black',
+    background: `url("wallpapers/${bg}.jpg") no-repeat center center fixed`,
+    backgroundSize: 'cover',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',

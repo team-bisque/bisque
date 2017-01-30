@@ -4,3 +4,27 @@
   padding: 14px 20px 0 0;
   position: relative;
 }
+
+#icon {
+  font-size: 2em;
+}
+
+#city {
+  font-size: 1.2em;
+}
+
+#status {
+  vertical-align: center;
+  text-align: center;
+  position: relative;
+  font-size: 3em;
+}
+
+body {
+	margin: 0;
+}
+
+h2, h3 {
+  margin: 12px;
+  font-family: arial black;
+}

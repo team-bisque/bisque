@@ -8,8 +8,8 @@ import {
   HALT_BACKGROUND,
 } from '../constants';
 
-export const toggleWork = isWorking =>
-  ({type: TOGGLE_WORK, isWorking});
+export const toggleWork = () =>
+  ({type: TOGGLE_WORK});
 
 export const receiveLunchTime = (lunchTime) =>
   ({type: RECEIVE_LUNCH_TIME, lunchTime});
