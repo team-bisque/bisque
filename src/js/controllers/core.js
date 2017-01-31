@@ -28,14 +28,14 @@ class Core {
 	watchMinute(){
 		let minute = 5000; //<=== 5 seconds for testing,  (1000 * 60);
 		setInterval(()=>{
+			// When paused, interval keeps running -- but does nothing
+			if (!this.store.getState().status.pause) {
+				const remaining = this.store.getState().time.timeRemaining - 60000;
+				this.store.dispatch(setTimeRemaining(remaining));
 
-			const remaining = this.store.getState().time.timeRemaining - 60000;
-			this.store.dispatch(setTimeRemaining(remaining));
-
-
-			console.log('watchMinute', remaining, this.store.getState().time.timeRemaining)
-			if (remaining === 0) this.setStatus();
-
+				console.log('watchMinute', remaining, this.store.getState().time.timeRemaining)
+				if (remaining === 0) this.setStatus();
+			}
 		}, minute);
 	}
 
