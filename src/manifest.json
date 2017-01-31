@@ -19,6 +19,7 @@
     "bookmarks",
     "*://*/*",
     "webRequest",
+    "notifications",
     "webRequestBlocking"
   ],
   "background": {

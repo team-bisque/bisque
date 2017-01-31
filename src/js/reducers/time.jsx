@@ -10,8 +10,8 @@ import {
 } from '../constants';
 
 const initialState = {
-  workDuration: (1000 * 60) * 3,
-  breakDuration: (1000 * 60) * 2,
+  workDuration: (1000 * 60) * 8,
+  breakDuration: (1000 * 60) * 6,
   lunchDuration: (1000 * 60) * 5,
   startTime: 0,
   timeRemaining: 0
