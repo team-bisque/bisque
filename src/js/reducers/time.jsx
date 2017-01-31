@@ -1,16 +1,16 @@
 'use strict';
 
 import {
-	WORK_DURATION,
-	BREAK_DURATION,
-	LUNCH_DURATION,
-	START_TIME
+	SET_WORK_DURATION,
+	SET_BREAK_DURATION,
+	SET_LUNCH_DURATION,
+	SET_START_TIME
 } from '../constants';
 
 const initialState = {
-  workDuration: (1000 * 10),
-  breakDuration: (1000 * 30),
-  lunchDuration: (1000 * 10),
+  workDuration: (1000 * 5),
+  breakDuration: (1000 * 15),
+  lunchDuration: (1000 * 60),
   startTime: 0
 };
 
@@ -19,16 +19,16 @@ export default (app=initialState, action) => {
 	let newState = Object.assign({}, app)
 
 	switch(action.type){
-		case WORK_DURATION:
+		case SET_WORK_DURATION:
 			newState.workDuration = action.workDuration;
 			break;
-		case BREAK_DURATION:
+		case SET_BREAK_DURATION:
 			newState.breakDuration = action.breakDuration;
 			break;
-		case LUNCH_DURATION:
+		case SET_LUNCH_DURATION:
 			newState.lunchDuration = action.lunchDuration;
 			break;
-		case START_TIME:
+		case SET_START_TIME:
 			newState.startTime = action.startTime;
 			break;
 	}
