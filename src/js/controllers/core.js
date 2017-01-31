@@ -10,7 +10,7 @@ const Tabs = require('./tabs'),
 
 class Core {
 	constructor(store) {
-		this.tabs = new Tabs();
+		this.tabs = new Tabs(store);
 		this.webRequest = new WebRequest();
 		this.store = store
 	}
@@ -33,7 +33,7 @@ class Core {
 			this.store.dispatch(setTimeRemaining(remaining));
 
 
-			console.log('watchMinute', remaining, this.store.getState().time.timeRemaining)
+			// console.log('watchMinute', remaining, this.store.getState().time.timeRemaining)
 			if (remaining === 0) this.setStatus();
 
 		}, minute);
