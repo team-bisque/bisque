@@ -20,7 +20,8 @@ const initialState = {
 // reducer
 export default (state = initialState, action) => {
 	let newState = Object.assign({}, state);
-	switch(action.type){
+
+	switch (action.type){
 		case SET_WORK_DURATION:
 			newState.workDuration = action.workDuration;
 			break;

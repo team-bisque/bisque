@@ -4,7 +4,7 @@ export const TOGGLE_WORK = 'TOGGLE_WORK';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const TOGGLE_LUNCH = 'TOGGLE_LUNCH';
 
-// Set Time
+// Time
 export const SET_WORK_DURATION = 'SET_WORK_DURATION';
 export const SET_BREAK_DURATION = 'SET_BREAK_DURATION';
 export const SET_LUNCH_DURATION = 'SET_LUNCH_DURATION';

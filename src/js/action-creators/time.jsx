@@ -25,5 +25,5 @@ export const setTimeRemaining = timeRemaining => ({
 });
 
 export const addFiveMinutes = () => ({
-  type: ADD_FIVE_MINUTES
+	type: ADD_FIVE_MINUTES
 });

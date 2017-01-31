@@ -5,7 +5,10 @@ import {connect} from 'react-redux';
 // Components
 import Status from './Status';
 import Weather from './Weather';
+<<<<<<< HEAD
 import Settings from './Settings';
+=======
+>>>>>>> master
 import SurveyModal from './SurveyModal';
 
 const bg = Math.floor(Math.random() * (8 - 1)) + 1;
@@ -30,6 +33,7 @@ export function Main (props) {
   return (
     <div style={style.background} className="row">
       <Weather weather={weather} />
+<<<<<<< HEAD
       <Header status={status} />
       <Timer options={options}/>
       <Commands />
@@ -39,6 +43,11 @@ export function Main (props) {
       <div>
         <Settings />
       </div>
+=======
+      <Status status={status} time={time} />
+      <SurveyModal status={status} />
+      <div>{/* This is where the options component will go */}</div>
+>>>>>>> master
     </div>
   );
 }
