@@ -1,21 +1,27 @@
 'use strict';
 import { setTimeRemaining } from '../action-creators/time';
-import { toggleWork } from '../action-creators/status';
-import { fetchWeather } from '../action-creators/weather';
-import { addFiveMinutes } from '../action-creators/time';
+import { toggleWork } 			from '../action-creators/status';
+import { fetchWeather } 		from '../action-creators/weather';
+import { addFiveMinutes } 	from '../action-creators/time';
 
-const Tabs = require('./tabs'),
-			WebRequest = require('./webRequest'),
-			Notifications = require('./notifications');
+const Tabs 					= require('./tabs'),
+			WebRequest 		= require('./webRequest'),
+			Notifications = require('./notifications'),
+			Idle 					= require('./idle'),
+			Greylist 			= require('./greylist'),
+			Storage 			= require('./storage');
 
 
 
 class Core {
 	constructor(store) {
-		this.tabs = new Tabs(store);
-		this.webRequest = new WebRequest();
-		this.notifications = new Notifications(store);
-		this.store = store;
+		this.tabs 					= new Tabs(store);
+		this.webRequest 		= new WebRequest();
+		this.notifications 	= new Notifications(store);
+		this.idle 					= new Idle();
+		this.greylist 			= new Greylist();
+		this.storage 				= new Storage();
+		this.store 					= store;
 	}
 
 	init(){
@@ -23,11 +29,9 @@ class Core {
 		let { dispatch, getState } = this.store;
 
 		this.notifications.welcome();
-
+		this.idle.init();
 		dispatch(fetchWeather(10004));
-		let testTimeRemaining = getState().time.workDuration; // 3 min
-		dispatch(setTimeRemaining(testTimeRemaining));
-		// invoke listeners
+		dispatch(setTimeRemaining(getState().time.workDuration));		
 		this.watchMinute();
 	}
 

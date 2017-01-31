@@ -3,6 +3,7 @@ const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
 class WebRequest {
+    // https://developer.chrome.com/extensions/webRequest
     constructor() {
         this.filter = {
             urls: ['https://*/*', 'http://*/*']
