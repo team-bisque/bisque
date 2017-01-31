@@ -1,3 +1,8 @@
+// auth
+export const AUTHENTICATED = 'AUTHENTICATED';
+
+// firebase
+export const RECEIVE_FIREBASE = 'RECEIVE_FIREBASE';
 
 // Status
 export const TOGGLE_WORK = 'TOGGLE_WORK';
