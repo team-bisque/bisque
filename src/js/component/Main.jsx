@@ -8,9 +8,7 @@ import Header from './Header';
 import Status from './Status';
 import Timer from './Timer';
 import Weather from './Weather';
-import { Modal, Button } from 'react-bootstrap';
-
-require('../../css/main.css');
+import SurveyModal from './SurveyModal';
 
 const bg = Math.floor(Math.random() * (8 - 1)) + 1;
 
@@ -32,7 +30,7 @@ export class Main extends React.Component {
   constructor (props) {
     super(props)
   }
-  
+
   render () {
     const {status, time, weather} = this.props;
 
@@ -50,33 +48,12 @@ export class Main extends React.Component {
           <Weather weather={weather} />
           <Header status={status} />
           <Status status={status} />
-          <Timer options={options}/>
+          <Timer options={options} />
           <Commands />
         </div>
         <div>
-          <Button
-            bsStyle="primary"
-            bsSize="large"
-            onClick={this.openModal}
-          >
-            Launch demo modal
-          </Button>
-          <Modal
-            show={status.isWorking}
-            onHide={this.closeModal}
-            container={this}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Productivity Check-in</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p>Kapowza!</p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={this.close}>Close</Button>
-            </Modal.Footer>
-          </Modal>
-        ,.</div>
+          <SurveyModal status={status} />
+        </div>
       </div>
     )
   }

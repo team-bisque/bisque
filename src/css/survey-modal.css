@@ -1,0 +1,65 @@
+p, h4 {
+    text-align: center;
+}
+
+h4 {
+    margin-bottom: 30px;
+}
+
+
+.quick-survey-question {
+    font-style: italic;
+    padding: 20px;
+}
+
+.survey .btn-group {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    width: inherit;
+}
+
+.survey .quality-indicators {
+    display: flex;
+    justify-content: space-between;    
+}
+.survey .quality-buttons {
+    float: none;
+    margin-left:10px;
+}
+
+.quick-survey-quality-indicator {    
+    display: inline-block;
+}
+
+.time-begun, .time-completed, .words-written, .wpm, .progress-to-goal_title {
+    font-weight: bold;
+}
+
+.survey-wrapper .checkin .btn-group {
+    width: 100%;
+}
+
+.survey-wrapper .checkin .btn-group button {
+    float: none;
+    width: 20%;
+}
+
+.survey-wrapper .label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.survey-wrapper .label-wrapper > div {
+    margin-left: 15px;
+    font-weight: bold;
+}
+.survey-wrapper .label-wrapper > span {
+    margin-right: 15px
+}
+
+.quick-survey-quality-indicator {
+    font-size: .75em;
+    font-style: italic;
+}
