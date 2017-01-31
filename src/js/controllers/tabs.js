@@ -1,6 +1,5 @@
 'use strict';
-const ChromePromise = require('chrome-promise'),
-      webRequest    = require('./webRequest');
+const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
 class Tabs {
@@ -15,18 +14,11 @@ class Tabs {
     }
 
     // Tab functions
-
     setLockedTab (tab) {
         this.lockedTab = tab;
     }
 
     remove(tabId){
-        // if(this.lockedTab && this.lockedTab.id && tabId === this.lockedTab.id) {
-
-        //     this.removeEvent('onActivated', this.forceActivateLockedTab);
-        //     this.removeEvent('onCreated', this.forceRemoveNewTab);
-        //     this.removeEvent('onRemoved', this.forceCreateLockTab);            
-        // }
         return chromep.tabs.remove(tabId);
     }
 
@@ -64,8 +56,9 @@ class Tabs {
         if(this.lockedTab && this.lockedTab.id) return this.remove(tab.id);
     }
     forceCreateLockTab(tabId, removeInfo) {
-        let isWorking = this.store.getState().status.isWorking;
-        console.log('forceCreateLockTab', tabId, removeInfo, this.store.getState().status.isWorking)
+        let { getState } = this.store;
+        let isWorking = getState().status.isWorking;
+        console.log('forceCreateLockTab', tabId, removeInfo, getState().status.isWorking)
         if(this.lockedTab && this.lockedTab.id && tabId === this.lockedTab.id) {
             this.removeEvent('onActivated', this.forceActivateLockedTab);
             this.removeEvent('onCreated', this.forceRemoveNewTab);

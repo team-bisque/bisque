@@ -7,6 +7,7 @@ const proxy = new Store({portName: '1337'});
 
 import '../css/newtab.css';
 import '../css/weather-icons.css';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import Main from './component/Main';
 
