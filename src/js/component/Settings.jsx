@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use strict';
 
 import React, {Component} from 'react';
@@ -40,9 +39,9 @@ class Settings extends Component {
       breakMinutes,
       lunchHours,
       lunchMinutes,
-      invalidTimeDataType: false
+      notNumberWarning: false
     };
-    this.lunchHandleSubmit = this.lunchHandleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.workHoursHandleChange = this.workHoursHandleChange.bind(this);
     this.workMinutesHandleChange = this.workMinutesHandleChange.bind(this);
     this.breakHoursHandleChange = this.breakHoursHandleChange.bind(this);
@@ -61,12 +60,54 @@ class Settings extends Component {
       lunchHours,
       lunchMinutes
     } = this.state;
-    const workMilliseconds = convertHMToMilliseconds(workHours, workMinutes);
-    const breakMilliseconds = convertHMToMilliseconds(breakHours, breakMinutes);
-    const lunchMilliseconds = convertHMToMilliseconds(lunchHours, lunchMinutes);
-    store.dispatch(setWorkDuration(workMilliseconds));
-    store.dispatch(setBreakDuration(breakMilliseconds));
-    store.dispatch(setLunchDuration(lunchMilliseconds));
+    const workDuration = convertHMToMilliseconds(workHours, workMinutes);
+    const breakDuration = convertHMToMilliseconds(breakHours, breakMinutes);
+    const lunchDuration = convertHMToMilliseconds(lunchHours, lunchMinutes);
+    store.dispatch(setWorkDuration(workDuration));
+    store.dispatch(setBreakDuration(breakDuration));
+    store.dispatch(setLunchDuration(lunchDuration));
+    chrome.storage.sync.set({workDuration, breakDuration, lunchDuration}, () => {
+      if (chrome.runtime.error) {
+        console.log("Runtime error.");
+      }
+    });
+  }
+
+  componentDidMount() {
+    const {
+      workHours,
+      workMinutes,
+      breakHours,
+      breakMinutes,
+      lunchHours,
+      lunchMinutes
+    } = this.state;
+    const workDuration = convertHMToMilliseconds(workHours, workMinutes);
+    const breakDuration = convertHMToMilliseconds(breakHours, breakMinutes);
+    const lunchDuration = convertHMToMilliseconds(lunchHours, lunchMinutes);
+    chrome.storage.sync.get({workDuration, breakDuration, lunchDuration}, (storage) => {
+      const {workDuration, breakDuration, lunchDuration} = storage;
+      store.dispatch(setWorkDuration(workDuration));
+      store.dispatch(setBreakDuration(breakDuration));
+      store.dispatch(setLunchDuration(lunchDuration));
+      const workTimeObject = convertMillisecondsToHM(workDuration);
+      const workHours = workTimeObject.hours;
+      const workMinutes = workTimeObject.minutes;
+      const breakTimeObject = convertMillisecondsToHM(breakDuration);
+      const breakHours = breakTimeObject.hours;
+      const breakMinutes = breakTimeObject.minutes;
+      const lunchTimeObject = convertMillisecondsToHM(lunchDuration);
+      const lunchHours = lunchTimeObject.hours;
+      const lunchMinutes = lunchTimeObject.minutes;
+      this.setState({
+        workHours,
+        workMinutes,
+        breakHours,
+        breakMinutes,
+        lunchHours,
+        lunchMinutes,
+      });
+    });
   }
 
   workHoursHandleChange(event) {
@@ -119,118 +160,42 @@ class Settings extends Component {
       breakMinutes,
       lunchHours,
       lunchMinutes,
-      notNumberWarning,
+      notNumberWarning
     } = this.state;
-    const {
-      workHoursHandleChange,
-      workMinutesHandleChange,
-      breakHoursHandleChange,
-      breakMinutesHandleChange,
-      lunchHoursHandleChange,
-      lunchMinutesHandleChange,
-      handleSubmit
-    } = this;
+
     return (
       <div className="row">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <TimeInputForm
             category={'Work'}
             hours={workHours}
             minutes={workMinutes}
-            hoursHandleChange={workHoursHandleChange}
-            minutesHandleChange={workMinutesHandleChange}
+            hoursHandleChange={this.workHoursHandleChange}
+            minutesHandleChange={this.workMinutesHandleChange}
           />
           <TimeInputForm
             category={'Break'}
-            hours={breakHours}
-            minutes={breakMinutes}
-            hoursHandleChange={breakHoursHandleChange}
-            minutesHandleChange={breakMinutesHandleChange}
+            hours={breakHours || 0}
+            minutes={breakMinutes || 0}
+            hoursHandleChange={this.breakHoursHandleChange}
+            minutesHandleChange={this.breakMinutesHandleChange}
           />
           <TimeInputForm
             category={'Lunch'}
-            hours={lunchHours}
-            minutes={lunchMinutes}
-            hoursHandleChange={lunchHoursHandleChange}
-            minutesHandleChange={lunchMinutesHandleChange}
+            hours={lunchHours || 0}
+            minutes={lunchMinutes || 0}
+            hoursHandleChange={this.lunchHoursHandleChange}
+            minutesHandleChange={this.lunchMinutesHandleChange}
           />
           {notNumberWarning ? (<h3>Numbers only, please!</h3>) : <h3 className="col-xs-1"></h3>}
           <button type="submit" className="btn btn-primary">Change Schedule</button>
         </form>
-=======
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
-
-import {setWorkDuration, setBreakDuration} from '../reducers/time';
-
-import store from '../store';
-
-
-
-export default class Settings extends Component {
-  constructor() {
-    console.log(this.props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleHourChange = this.handleHourChange.bind(this);
-    this.handleMinuteChange = this.handleMinuteChange.bind(this);
-  }
-
-  handleSubmit() {
-    event.preventDefault();
-    const state = getState();
-    console.log(`Submitted!`, state);
-  }
-
-  handleHourChange(event) {
-    event.preventDefault();
-  }
-
-  handleMinuteChange(event) {
-    event.preventDefault();
-    console.log(+event.target.value);
-  }
-
-  render() {
-    return (
-      <div className="row">
-        <div className="row">
-          <h3 className="col-xs-6">Work Time Duration</h3>
-        </div>
-        <div className="row">
-          <form onSubmit={this.handleSubmit}>
-            <label className="col-xs-1">Hours</label>
-            <div className="input-group col-xs-5">
-              <input
-                type="text"
-                className="form-control"
-                id="hours"
-                onChange={this.handleHourChange}
-              />
-            </div>
-            <label className="col-xs-1">Minutes</label>
-            <div className="input-group col-xs-5">
-              <input
-                type="text"
-                className="form-control"
-                id="minutes"
-                onChange={this.handleMinuteChange}
-              />
-            </div>
-            <div className="row input-group">
-              <button type="submit" className="btn btn-primary col-xs-12">Submit</button>
-            </div>
-          </form>
-        </div>
->>>>>>> d8f898eebe9088348acc314cb051ad9baabf9344
       </div>
     );
   }
 }
 
-<<<<<<< HEAD
 const mapState = ({time}) => ({time});
 const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(Settings);
-=======
->>>>>>> d8f898eebe9088348acc314cb051ad9baabf9344

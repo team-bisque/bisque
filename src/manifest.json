@@ -19,7 +19,8 @@
     "bookmarks",
     "*://*/*",
     "webRequest",
-    "webRequestBlocking"
+    "webRequestBlocking",
+    "storage"
   ],
   "background": {
     "page": "background.html",
