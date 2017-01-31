@@ -29,6 +29,8 @@
     "chrome-promise": "^2.0.2",
     "css-loader": "^0.25.0",
     "file-loader": "^0.10.0",
+    "firebase": "^3.6.7",
+    "firebaseui": "^1.0.0",
     "fs-extra": "^0.30.0",
     "html-webpack-plugin": "2.24.1",
     "moment": "^2.17.1",
