@@ -4,20 +4,22 @@ import {
 	SET_WORK_DURATION,
 	SET_BREAK_DURATION,
 	SET_LUNCH_DURATION,
-	SET_START_TIME
+	SET_START_TIME,
+	SET_TIME_REMAINING,
+	ADD_FIVE_MINUTES,
 } from '../constants';
 
 const initialState = {
-  workDuration: (1000 * 5),
-  breakDuration: (1000 * 15),
-  lunchDuration: (1000 * 60),
-  startTime: 0
+  workDuration: (1000 * 60) * 8,
+  breakDuration: (1000 * 60) * 6,
+  lunchDuration: (1000 * 60) * 5,
+  startTime: 0,
+  timeRemaining: 0
 };
 
 // reducer
-export default (app=initialState, action) => {
-	let newState = Object.assign({}, app)
-
+export default (state = initialState, action) => {
+	let newState = Object.assign({}, state);
 	switch(action.type){
 		case SET_WORK_DURATION:
 			newState.workDuration = action.workDuration;
@@ -31,6 +33,12 @@ export default (app=initialState, action) => {
 		case SET_START_TIME:
 			newState.startTime = action.startTime;
 			break;
+		case SET_TIME_REMAINING:
+			newState.timeRemaining = action.timeRemaining;
+			break;
+		case ADD_FIVE_MINUTES:
+			newState.timeRemaining += (1000 * 60) * 5;
+			break;
 	}
 	return newState;
-}
+};

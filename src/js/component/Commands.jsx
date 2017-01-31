@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {addFiveMinutes, haltBackground} from '../action-creators/status';
+import {addFiveMinutes} from '../action-creators/time';
+import {togglePause} from '../action-creators/status';
 
 class Commands extends Component {
   constructor(props) {
@@ -13,10 +14,9 @@ class Commands extends Component {
     const button = evt.target.name;
 
     if (button === 'time') {
-      console.log(this.props);
       this.props.addFiveMinutes();
-    } else if (button === 'stop') {
-      this.props.haltBackground();
+    } else if (button === 'pause') {
+      this.props.togglePause();
     }
   }
 
@@ -26,27 +26,37 @@ class Commands extends Component {
         <button
           name="time"
           onClick={this.clickHandler}
-          className="btn btn-warning btn-xs">
+          className="btn btn-warning btn-s">
           <span className="glyphicon glyphicon-hourglass" />
           Gimme 5 more minutes!
         </button>
-        <button
-          name="stop"
-          onClick={this.clickHandler}
-          className="btn btn-danger btn-xs">
-          <span className="glyphicon glyphicon-alert" />
-          $@*% hit the fan, sorry!
-        </button>
+        {
+          this.props.pause
+            ? (<button
+                name="pause"
+                onClick={this.clickHandler}
+                className="btn btn-danger btn-s">
+                <span className="glyphicon glyphicon-alert" />
+                Unpause yourself
+              </button>)
+            : (<button
+                name="pause"
+                onClick={this.clickHandler}
+                className="btn btn-danger btn-s">
+                <span className="glyphicon glyphicon-alert" />
+                $@*% hit the fan, sorry!
+              </button>)
+        }
       </div>
     );
   }
 }
 
-const mapState = null;
+const mapState = (state, {status}) => ({pause: status.pause});
 
 const mapDispatch = dispatch => ({
   addFiveMinutes: () => dispatch(addFiveMinutes()),
-  haltBackground: () => dispatch(haltBackground())
+  togglePause: () => dispatch(togglePause())
 });
 
 export default connect(mapState, mapDispatch)(Commands);

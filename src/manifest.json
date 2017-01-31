@@ -10,24 +10,28 @@
     },
 
   "browser_action": {
-    "default_icon": "logo.png",
+    "default_icon": "images/logo.png",
     "default_title": "Go Outside"
   },
   "permissions": [
     "alarms",
     "tabs",
+    "identity",
+    "identity.email",
     "bookmarks",
     "*://*/*",
     "webRequest",
-    "webRequestBlocking",
-    "storage"
+    "notifications",
+    "storage",
+    "idle",
+    "webRequestBlocking"
   ],
   "background": {
     "page": "background.html",
     "persistent": true
   },
   "options_page": "background.html",
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://www.gstatic.com https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "commands": {
     "open-google": {
       "description": "Open a tab to google.com",

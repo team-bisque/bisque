@@ -12,11 +12,13 @@ export default function Steps (props) {
   // Forecast IDs pair with a corresponding glyphicon
   // See https://erikflowers.github.io/weather-icons/api-list.html
 
+  const daynight = 'night';
+
   return (
     <div id="weather">
       <div id="icon">
-        <i className={`wi wi-owm-${weather.weather[0].id}`}></i>
-        <span>{weather && Math.round(weather.main.temp - 273.15) + '° c'}</span>
+        <i className={`wi wi-owm-${daynight}-${weather.weather[0].id}`}></i>
+        <span>{(weather && ` ${Math.round((weather.main.temp - 273.15) * 1.8 + 32)}°`)}</span>
       </div>
       <span id="city">{weather && weather.name}</span>
     </div>

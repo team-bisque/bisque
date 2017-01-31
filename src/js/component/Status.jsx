@@ -1,16 +1,19 @@
 import React from 'react';
 
-export default function Status (props) {
-  const status = props.status;
+import Commands from './Commands'
 
+export default function Status (props) {
+  const {status, time} = props;
+
+  const min = time.timeRemaining / 60000;
   return (
-    <div>
-      <h1>Status</h1>
+    <div id="status">
       {/* Bar graphic here */}
       {status && status.isWorking
         ? <h2>Your next break in</h2>
         : <h2>Get back to work in</h2>}
-      <h3>{status && status.timeRemaining + ''} minutes</h3>
+      <h3>{(min > 1) ? min + ' minutes' : min + ' minute'}</h3>
+      <Commands status={status}/>
     </div>
   );
 }

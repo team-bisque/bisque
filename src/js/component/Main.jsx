@@ -3,18 +3,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 // Components
-import Commands from './Commands';
-import Header from './Header';
 import Status from './Status';
-import Timer from './Timer';
 import Weather from './Weather';
 import Settings from './Settings';
+import SurveyModal from './SurveyModal';
+
+const bg = Math.floor(Math.random() * (8 - 1)) + 1;
 
 const style = {
   background: {
     width: 100 + '%',
     height: 100 + 'vh',
-    backgroundColor: 'black',
+    background: `url("images/wallpapers/${bg}.jpg") no-repeat center center fixed`,
+    backgroundSize: 'cover',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -25,25 +26,19 @@ const style = {
 export function Main (props) {
 
   const {status, time, weather} = props;
-  let workDuration;
-  if (time) workDuration = time.workDuration;
-
-  const options = {
-    prefix: 'seconds elapsed!',
-    delay: workDuration
-  };
 
   return (
     <div style={style.background} className="row">
-      <div>TOP</div>
-
       <Weather weather={weather} />
       <Header status={status} />
-      <Status status={status} />
       <Timer options={options}/>
       <Commands />
-      <Settings />
       <div>BOTTOM</div>
+      <Status status={status} time={time} />
+      <SurveyModal status={status} />
+      <div>
+        <Settings />
+      </div>
     </div>
   );
 }
