@@ -20,6 +20,8 @@
     "*://*/*",
     "webRequest",
     "notifications",
+    "storage",
+    "idle",
     "webRequestBlocking"
   ],
   "background": {

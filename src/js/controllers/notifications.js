@@ -5,6 +5,7 @@ const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
 class Notifications {
+	// https://developer.chrome.com/extensions/notification
 	constructor(store) {
 		this.store = store;
 		this.notifications = [];
