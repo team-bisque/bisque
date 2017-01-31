@@ -16,6 +16,8 @@
   "permissions": [
     "alarms",
     "tabs",
+    "identity",
+    "identity.email",
     "bookmarks",
     "*://*/*",
     "webRequest",

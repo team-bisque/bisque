@@ -11,8 +11,6 @@ firebase.initializeApp({
   messagingSenderId: '75953039302'
 });
 
-console.log(firebase);
-
 // Provides redux store to newtab.js
 import { wrapStore }  from 'react-chrome-redux';
 import store          from './store';
