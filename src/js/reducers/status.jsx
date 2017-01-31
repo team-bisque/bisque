@@ -3,15 +3,13 @@
 import {
   TOGGLE_WORK,
   TOGGLE_LUNCH,
-  RECEIVE_LUNCH_TIME,
-  ADD_FIVE_MINUTES,
-  // HALT_BACKGROUND
+  TOGGLE_PAUSE
 } from '../constants';
 
 const initialState = {
-  timeOfLunch: 13, // Need to decide about this later
-  lunch: false,
-  isWorking: true
+  isWorking: true,
+  pause: false,
+  lunch: false
 };
 
 export default (state = initialState, action) => {
@@ -26,17 +24,9 @@ export default (state = initialState, action) => {
       newState.lunch = !newState.lunch;
       break;
 
-    case RECEIVE_LUNCH_TIME:
-      newState.timeOfLunch = action.timeOfLunch;
+    case TOGGLE_PAUSE:
+      newState.pause = !newState.pause;
       break;
-
-    case ADD_FIVE_MINUTES:
-      console.log('OK, you get Five More Minutes');
-      break;
-
-    // case HALT_BACKGROUND:
-    //   console.log('OK, freezing background');
-    //   break;
 
     default:
       break;

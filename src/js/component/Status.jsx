@@ -13,7 +13,7 @@ export default function Status (props) {
         ? <h2>Your next break in</h2>
         : <h2>Get back to work in</h2>}
       <h3>{(min > 1) ? min + ' minutes' : min + ' minute'}</h3>
-      <Commands />
+      <Commands status={status}/>
     </div>
   );
 }
