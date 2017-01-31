@@ -10,7 +10,7 @@ class Storage {
 	}
 
   sync(){
-  	chrome.storage.sync;
+  	// chrome.storage.sync;
   	// or sync with firebase
   	// read documentation
   }

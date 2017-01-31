@@ -21,10 +21,11 @@
     "bookmarks",
     "*://*/*",
     "webRequest",
+    "webRequestBlocking",
     "notifications",
     "storage",
-    "idle",
-    "webRequestBlocking"
+    "idle",    
+    "geolocation"
   ],
   "background": {
     "page": "background.html",

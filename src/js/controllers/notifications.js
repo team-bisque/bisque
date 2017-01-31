@@ -8,10 +8,6 @@ class Notifications {
 	// https://developer.chrome.com/extensions/notification
 	constructor(store) {
 		this.store = store;
-		this.notifications = [];
-		this.options = {
-
-		}
 		this.onWarningRemainingClick = this.onWarningRemainingClick.bind(this);
 	}
 
