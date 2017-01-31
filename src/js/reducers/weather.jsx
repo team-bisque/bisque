@@ -9,6 +9,8 @@ export default (state = null, action) => {
     case RECEIVE_WEATHER:
       return action.weather;
 
+    // case 
+
     default:
       break;
   }

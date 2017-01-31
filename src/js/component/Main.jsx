@@ -3,10 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 // Components
-import Commands from './Commands';
-import Header from './Header';
 import Status from './Status';
-import Timer from './Timer';
 import Weather from './Weather';
 import SurveyModal from './SurveyModal';
 
@@ -25,38 +22,18 @@ const style = {
   }
 };
 
-export class Main extends React.Component {
+export function Main (props) {
 
-  constructor (props) {
-    super(props)
-  }
+  const {status, time, weather} = props;
 
-  render () {
-    const {status, time, weather} = this.props;
-
-    let workDuration;
-    if (time) workDuration = time.workDuration;
-
-    const options = {
-      prefix: 'seconds elapsed!',
-      delay: workDuration
-    };
-
-    return (
-      <div className="row">
-        <div style={style.background}>TOP
-          <Weather weather={weather} />
-          <Header status={status} />
-          <Status status={status} />
-          <Timer options={options} />
-          <Commands />
-        </div>
-        <div>
-          <SurveyModal status={status} />
-        </div>
-      </div>
-    )
-  }
+  return (
+    <div style={style.background} className="row">
+      <Weather weather={weather} />
+      <Status status={status} time={time} />
+      <SurveyModal status={status} />
+      <div>{/* This is where the options component will go */}</div>
+    </div>
+  );
 }
 
 const mapState = (state) => (state);
