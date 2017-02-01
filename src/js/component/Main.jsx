@@ -37,7 +37,6 @@ export function Main (props) {
       </div>
       <Status status={status} time={time} />
       <SurveyModal status={status} />
-      <div>{/* This is where the options component will go */}</div>
     </div>
   );
 }
