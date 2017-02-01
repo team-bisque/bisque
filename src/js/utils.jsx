@@ -14,3 +14,16 @@ export const callBackground = (method, ...args) => {
     })
   });
 }
+
+
+export const convertMillisecondsToHM = (milliseconds) => {
+  let totalSeconds = milliseconds / 1000;
+  let hours = Math.floor(totalSeconds / 3600);
+  totalSeconds %= 3600;
+  let minutes = Math.floor(totalSeconds / 60);
+  return {hours, minutes};
+}
+
+export const convertHMToMilliseconds = (hours, minutes) => (minutes * 60000) + (hours * 3600000);
+
+

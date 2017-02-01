@@ -30,9 +30,8 @@
     "page": "background.html",
     "persistent": true
   },
+  "options_page": "background.html",
   "content_security_policy": "script-src 'self' https://www.gstatic.com https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
-
-
   "commands": {
     "open-google": {
       "description": "Open a tab to google.com",
