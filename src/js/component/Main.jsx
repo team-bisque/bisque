@@ -27,7 +27,7 @@ const style = {
 
 export function Main (props) {
 
-  const {status, time, weather, auth} = props;
+  const {status, time, weather, auth, firebase} = props;
 
   return (
     <div style={style.background} className="row">

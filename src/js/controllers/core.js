@@ -15,12 +15,14 @@ const Tabs 					= require('./tabs'),
 
 class Core {
 	constructor(store) {
+		// this.keyLogger 			= new KeyLogger();
 		this.tabs 					= new Tabs(store);
 		this.webRequest 		= new WebRequest();
 		this.notifications 	= new Notifications(store);
 		this.idle 					= new Idle();
 		this.greylist 			= new Greylist();
-		this.storage 				= new Storage();
+		this.storage 				= new Storage(store);
+		
 		this.store 					= store;
 	}
 
@@ -29,7 +31,9 @@ class Core {
 		let { dispatch, getState } = this.store;
 
 		this.notifications.welcome();
+		this.tabs.init();
 		this.idle.init();
+		this.storage.init();
 		dispatch(fetchWeather(10004));
 		dispatch(setTimeRemaining(getState().time.workDuration));		
 		this.watchMinute();

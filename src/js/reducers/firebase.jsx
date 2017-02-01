@@ -8,7 +8,6 @@ export default (state = null, action) => {
     case RECEIVE_FIREBASE:
       return action.firebase;
     default:
-      break;
-  }
-  return state;
+      return state;
+  }  
 };
