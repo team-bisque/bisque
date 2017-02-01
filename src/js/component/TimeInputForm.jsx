@@ -10,7 +10,7 @@ const TimeInputForm = (props) => {
   } = props;
   return (
     <div>
-      <h3>{category} Time Duration</h3>
+      <h3>{category} Duration</h3>
         <label>Hours</label>
         <input
           type="text"

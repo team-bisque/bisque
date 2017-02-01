@@ -10,6 +10,7 @@ import {
   setWorkDuration,
   setBreakDuration,
   setLunchDuration,
+  setShiftDuration,
   setStartTime
 } from '../action-creators/time';
 

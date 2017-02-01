@@ -20,6 +20,10 @@ export const setLunchDuration = lunchDuration => ({
   type: SET_LUNCH_DURATION, lunchDuration
 });
 
+export const setShiftDuration = shiftDuration => ({
+  type: SET_SHIFT_DURATION, shiftDuration
+});
+
 export const setTimeRemaining = timeRemaining => ({
   type: SET_TIME_REMAINING, timeRemaining
 });
