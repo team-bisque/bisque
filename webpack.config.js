@@ -17,7 +17,6 @@ if (fileSystem.existsSync(secretsPath)) {
 module.exports = {
   entry: {
     newtab: path.join(__dirname, "src", "js", "newtab.js"),
-    options: path.join(__dirname, "src", "js", "options.js"),
     background: path.join(__dirname, "src", "js", "background.js")
   },
   output: {
@@ -26,7 +25,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.(js|jsx)$/, loader: "babel" },
+      { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "babel" },
       { test: /\.css$/, loaders: ["style", "css"] },
       { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file?name=[name].[ext]' }
     ]
@@ -42,11 +41,6 @@ module.exports = {
       template: path.join(__dirname, "src", "newtab.html"),
       filename: "newtab.html",
       chunks: ["newtab"]
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "options.html"),
-      filename: "options.html",
-      chunks: ["options"]
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "background.html"),

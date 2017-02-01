@@ -31,7 +31,7 @@ class Tabs {
     onCompleteState(tabId, changeInfo){
         console.log('onCompleteState')
         if (changeInfo.status === 'complete') {
-            return chrome.tabs.executeScript(tabId, {
+            chrome.tabs.executeScript(tabId, {
                 allFrames: true, 
                 code: "document.body.style.backgroundColor='red'",
                 runAt: 'document_idle'
