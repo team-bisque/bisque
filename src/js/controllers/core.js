@@ -25,7 +25,6 @@ class Core {
 	}
 
 	init(){
-		console.log('background.js core initiated');
 		let { dispatch, getState } = this.store;
 
 		this.notifications.welcome();
