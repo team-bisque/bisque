@@ -18,10 +18,10 @@ export const setBreakDuration = breakDuration => ({
 
 export const setLunchDuration = lunchDuration => ({
   type: SET_LUNCH_DURATION, lunchDuration
+});
 
 export const setTimeRemaining = timeRemaining => ({
-  type: SET_TIME_REMAINING,
-  timeRemaining
+  type: SET_TIME_REMAINING, timeRemaining
 });
 
 export const addFiveMinutes = () => ({
