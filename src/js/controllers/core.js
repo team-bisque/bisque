@@ -24,7 +24,6 @@ class Core {
 	}
 
 	init(){
-		console.log('background.js core initiated');
 		let { dispatch, getState } = this.store;
 
 		this.notifications.welcome();
@@ -59,20 +58,16 @@ class Core {
 
 		dispatch(toggleWork());
 		const isWorking = getState().status.isWorking;
-		console.log('setStatus', isWorking);
 		if(isWorking){
-			console.log('workDuration', getState().time.workDuration);
 			dispatch(setTimeRemaining(getState().time.workDuration));
 			this.workStarts();
 		} else {
-			console.log('breakDuration', getState().time.breakDuration);
 			dispatch(setTimeRemaining(getState().time.breakDuration));
 			this.breakStarts();
 		}
 	}
 
 	breakStarts(){
-		console.log('breakStarts', this)
 		let tabs 				= this.tabs,
 				webRequest 	= this.webRequest;
 
@@ -83,7 +78,6 @@ class Core {
 	}
 
 	workStarts(){
-		console.log('workStarts', this)
 		let tabs 				= this.tabs,
 				webRequest 	= this.webRequest;
 

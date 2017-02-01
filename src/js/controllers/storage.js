@@ -4,41 +4,41 @@
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
+// import React from 'react';
 import { firebaseConfig } from '../apiKeys';
-import { receiveFirebase } from '../action-creators/firebase';
+import { receiveData } from '../action-creators/firebase';
+import { connect } from 'react-redux';
 
 class Storage {
 	// https://developer.chrome.com/extensions/storage
 	constructor(store){
-    this.firebase = require('firebase');
+    this.database = require('firebase').initializeApp(firebaseConfig).database();
     this.store = store;
 	}
 
   init(){
-    this.firebase.initializeApp(firebaseConfig);
+    const dispatchData = this.store.dispatch.bind(this);
 
-    var database = this.firebase.database();
-
-    this.store.dispatch(receiveFirebase(database.ref('testName').path.o))
-  }
-  sync(){
-
-  }
-  get(key, callback) {
-  	chrome.storage.local.get(key, callback);
+    const data = this.database.ref(`users/1`).once('value', function (snapshot) {
+      dispatchData(receiveData(snapshot.val()));
+    })
   }
 
-  set(key, value) {
-  	let data = {};
-  			data[key] = value;
-		chrome.storage.local.set(data);
+  get(tableRef, value) {
+    return this.database.ref(tableRef).once(tableRef, function (snapshot) {
+      return snapshot.val();
+    })
   }
 
-  onChanged(){
-  	chrome.storage.onChanged.addListener((changes, areaName)=>{
-  		alert('store has changed', changes, areaName)
-  	})
+
+  set(tableRef, value) {
+    this.database().ref(tableRef).set(value, () => {
+      return true;
+    });
   }
 }
 
 module.exports = Storage;
+
+// const mapDispatch = dispatch => ({receiveData: (data) => dispatch(receiveData(data))})
+// export default connect(mapDispatch)(Storage)
