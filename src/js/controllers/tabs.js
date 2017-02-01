@@ -25,7 +25,7 @@ class Tabs {
     }
 
     init(){
-        this.addEvent('onUpdated', this.onCompleteState)
+        // this.addEvent('onUpdated', this.onCompleteState)
     }
 
     onCompleteState(tabId, changeInfo){

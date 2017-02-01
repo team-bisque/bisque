@@ -8,7 +8,6 @@ export default (state = null, action) => {
     case AUTHENTICATED:
       return action.user;
     default:
-      break;
-  }
-  return state;
+      return state;
+  }  
 };

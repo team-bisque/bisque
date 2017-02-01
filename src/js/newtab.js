@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import {Store} from 'react-chrome-redux';
+import { Store } from 'react-chrome-redux';
 const proxy = new Store({portName: '1337'});
 
 import '../css/newtab.css';
@@ -14,7 +14,7 @@ import Main from './component/Main';
 const unsubscribe = proxy.subscribe(() => {
    unsubscribe(); // initial connection
 
-   render(
+  render(
   <Provider store={proxy}>
     <Main />
   </Provider>,
