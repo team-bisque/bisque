@@ -1,11 +1,7 @@
 'use strict';
 
 import axios from 'axios';
-import {weatherKey} from '../apiKeys';
-
-import ChromePromise from 'chrome-promise';
-
-const chromep = new ChromePromise();
+import { weatherKey } from '../apiKeys';
 
 import {
   RECEIVE_WEATHER

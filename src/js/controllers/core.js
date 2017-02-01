@@ -2,7 +2,6 @@
 import { setTimeRemaining } from '../action-creators/time';
 import { toggleWork } 			from '../action-creators/status';
 import { fetchWeather } 		from '../action-creators/weather';
-import { addFiveMinutes } 	from '../action-creators/time';
 
 const Tabs 					= require('./tabs'),
 			WebRequest 		= require('./webRequest'),
@@ -34,7 +33,7 @@ class Core {
 		this.tabs.init();
 		this.idle.init();
 		this.storage.init();
-		dispatch(fetchWeather(10004));
+		dispatch(fetchWeather());
 		dispatch(setTimeRemaining(getState().time.workDuration));		
 		this.watchMinute();
 	}
