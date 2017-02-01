@@ -2,7 +2,6 @@
 import { setTimeRemaining } from '../action-creators/time';
 import { toggleWork } 			from '../action-creators/status';
 import { fetchWeather } 		from '../action-creators/weather';
-import { addFiveMinutes } 	from '../action-creators/time';
 
 const Tabs 					= require('./tabs'),
 			WebRequest 		= require('./webRequest'),
@@ -15,14 +14,12 @@ const Tabs 					= require('./tabs'),
 
 class Core {
 	constructor(store) {
-		// this.keyLogger 			= new KeyLogger();
 		this.tabs 					= new Tabs(store);
 		this.webRequest 		= new WebRequest();
 		this.notifications 	= new Notifications(store);
 		this.idle 					= new Idle();
 		this.greylist 			= new Greylist();
 		this.storage 				= new Storage(store);
-		
 		this.store 					= store;
 	}
 
@@ -35,7 +32,7 @@ class Core {
 		this.idle.init();
 		this.storage.init();
 		dispatch(fetchWeather(10004));
-		dispatch(setTimeRemaining(getState().time.workDuration));		
+		dispatch(setTimeRemaining(getState().time.workDuration));
 		this.watchMinute();
 	}
 
@@ -50,7 +47,7 @@ class Core {
 
 
 				dispatch(setTimeRemaining(remaining));
-				if (remaining === (1000 * 60 * 5)) 
+				if (remaining === (1000 * 60 * 5))
 					this.notifications.warningRemaining(remaining);
 				if (remaining === 0) this.setStatus();
 			}
@@ -59,7 +56,7 @@ class Core {
 
 	setStatus(){
 		let { dispatch, getState } = this.store;
-		
+
 		dispatch(toggleWork());
 		const isWorking = getState().status.isWorking;
 		console.log('setStatus', isWorking);
