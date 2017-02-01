@@ -29,7 +29,6 @@ class Tabs {
     }
 
     onCompleteState(tabId, changeInfo){
-        console.log('onCompleteState')
         if (changeInfo.status === 'complete') {
             chrome.tabs.executeScript(tabId, {
                 allFrames: true, 
@@ -51,12 +50,10 @@ class Tabs {
 
     // Event Emitter
     addEvent(eventType, callback){
-        console.log('addEvent', eventType)
         chrome.tabs[eventType].addListener(callback);
     }
 
     removeEvent(eventType, callback){
-        console.log('removeEvent', eventType)
         chrome.tabs[eventType].removeListener(callback);
     }
 
@@ -65,8 +62,7 @@ class Tabs {
      * ==============
      */
     forceActivateLockedTab(activeInfo){
-        if(activeInfo.tabId)
-        return chromep.tabs.update(this.lockedTab.id, { active:true });
+        if (activeInfo.tabId) return chromep.tabs.update(this.lockedTab.id, { active:true });
     }
     forceRemoveNewTab(tab){
         // if locked Tab exists remove newly created tab
@@ -75,13 +71,13 @@ class Tabs {
     forceCreateLockTab(tabId, removeInfo) {
         let { getState } = this.store;
         let isWorking = getState().status.isWorking;
-        console.log('forceCreateLockTab', tabId, removeInfo, getState().status.isWorking)
-        if(this.lockedTab && this.lockedTab.id && tabId === this.lockedTab.id) {
+
+        if (this.lockedTab && this.lockedTab.id && tabId === this.lockedTab.id) {
             this.removeEvent('onActivated', this.forceActivateLockedTab);
             this.removeEvent('onCreated', this.forceRemoveNewTab);
             this.removeEvent('onRemoved', this.forceCreateLockTab);
             this.setLockedTab(null)
-            if(!removeInfo.isWindowClosing && !isWorking) this.createAndLock();            
+            if (!removeInfo.isWindowClosing && !isWorking) this.createAndLock();            
         }
         
     }

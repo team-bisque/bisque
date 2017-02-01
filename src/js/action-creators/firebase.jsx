@@ -1,5 +1,5 @@
 import {
-  RECEIVE_FIREBASE,
+  RECEIVE_DATA,
 } from '../constants';
 
-export const receiveFirebase = firebase => ({ type: RECEIVE_FIREBASE, firebase });
+export const receiveData = data => ({ type: 'RECEIVE_DATA', data });
