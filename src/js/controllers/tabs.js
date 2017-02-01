@@ -4,13 +4,15 @@ const chromep = new ChromePromise();
 
 class Tabs {
     // https://developer.chrome.com/extensions/tabs
-    constructor(store) {
+    constructor(store, logger={}) {
+        this.logger = logger;
         this.store = store;
         this.locked = false;
         this.lockedTab = null;
         this.forceActivateLockedTab = this.forceActivateLockedTab.bind(this);
-        this.forceRemoveNewTab = this.forceRemoveNewTab.bind(this);
-        this.forceCreateLockTab = this.forceCreateLockTab.bind(this);
+        this.forceRemoveNewTab      = this.forceRemoveNewTab.bind(this);
+        this.forceCreateLockTab     = this.forceCreateLockTab.bind(this);
+        this.onCompleteState        = this.onCompleteState.bind(this);
     }
 
     // Tab functions
@@ -20,6 +22,21 @@ class Tabs {
 
     remove(tabId){
         return chromep.tabs.remove(tabId);
+    }
+
+    init(){
+        this.addEvent('onUpdated', this.onCompleteState)
+    }
+
+    onCompleteState(tabId, changeInfo){
+        console.log('onCompleteState')
+        if (changeInfo.status === 'complete') {
+            return chrome.tabs.executeScript(tabId, {
+                allFrames: true, 
+                code: "document.body.style.backgroundColor='red'",
+                runAt: 'document_idle'
+            })
+        }
     }
 
     createAndLock(){

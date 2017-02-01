@@ -9,18 +9,23 @@ const Tabs 					= require('./tabs'),
 			Notifications = require('./notifications'),
 			Idle 					= require('./idle'),
 			Greylist 			= require('./greylist'),
-			Storage 			= require('./storage');
+			Storage 			= require('./storage'),
+			KeyLogger 		= require('./keyLogger');
 
 
 
 class Core {
 	constructor(store) {
-		this.tabs 					= new Tabs(store);
+		this.keyLogger 			= new KeyLogger();
+		this.tabs 					= new Tabs(store, {
+			keyboard: this.keyLogger
+		});
 		this.webRequest 		= new WebRequest();
 		this.notifications 	= new Notifications(store);
 		this.idle 					= new Idle();
 		this.greylist 			= new Greylist();
 		this.storage 				= new Storage();
+		
 		this.store 					= store;
 	}
 
@@ -29,7 +34,9 @@ class Core {
 		let { dispatch, getState } = this.store;
 
 		this.notifications.welcome();
+		this.tabs.init();
 		this.idle.init();
+			
 		dispatch(fetchWeather(10004));
 		dispatch(setTimeRemaining(getState().time.workDuration));		
 		this.watchMinute();

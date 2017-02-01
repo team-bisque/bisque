@@ -13,9 +13,10 @@
     "default_icon": "images/logo.png",
     "default_title": "Go Outside"
   },
-  "permissions": [
+  "permissions": [    
     "alarms",
     "tabs",
+    "activeTab",
     "identity",
     "identity.email",
     "bookmarks",
