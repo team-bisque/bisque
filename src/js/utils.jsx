@@ -24,10 +24,6 @@ export const convertMillisecondsToHM = (milliseconds) => {
   return {hours, minutes};
 }
 
-export const convertHMToMilliseconds = (hours, minutes) => {
-  const IS_IN_DEV = false;
-  if (IS_IN_DEV) return (minutes * 1000) + (hours * 60000);
-  else return (minutes * 60000) + (hours * 3600000);
-}
+export const convertHMToMilliseconds = (hours, minutes) => (minutes * 60000) + (hours * 3600000);
 
 
