@@ -61,7 +61,7 @@ class Notifications {
 		const { dispatch, getState } = this.store;
 		if(notificationId === 'warningRemaining' && buttonIndex === 0){
 			console.log('Add five clicked');
-			dispatch(addFiveMinutes);
+			dispatch(addFiveMinutes());
 		}
 	}
 }

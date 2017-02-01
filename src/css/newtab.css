@@ -5,6 +5,13 @@
   position: relative;
 }
 
+#user {
+  vertical-align: top;
+  text-align: left;
+  padding: 14px 20px 0 0;
+  position: relative;
+}
+
 #icon {
   font-size: 2em;
 }
