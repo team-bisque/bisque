@@ -5,6 +5,7 @@ import {
   SET_LUNCH_DURATION,
   SET_BREAK_DURATION,
   SET_TIME_REMAINING,
+  SET_SHIFT_DURATION,
   ADD_FIVE_MINUTES,
 } from '../constants';
 

@@ -13,7 +13,7 @@ const TimeInputForm = (props) => {
       <h3>{category} Duration</h3>
         <label>Hours</label>
         <input
-          type="text"
+          type="number"
           value={hours}
           className="form-control"
           id="hours"
@@ -21,7 +21,7 @@ const TimeInputForm = (props) => {
         />
         <label>Minutes</label>
           <input
-            type="text"
+            type="number"
             value={minutes}
             className="form-control"
             id="minutes"
