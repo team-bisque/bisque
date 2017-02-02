@@ -1,6 +1,6 @@
 'use strict';
 
-import {provider} from '../auth';
+import {firebro} from '../background';
 
 import {
   AUTHENTICATED,
@@ -8,31 +8,18 @@ import {
 
 export const authenticated = user => ({ type: AUTHENTICATED, user });
 
-// export const whoami = () =>
-//   dispatch =>
-//     axios.get('/api/auth/whoami')
-//       .then(user => dispatch(authenticated(user.data)))
-//       .then(action => {
-//         if (action.user) {
-//           dispatch(fetchGoals(action.user.id));
-//           dispatch(fetchMeals(action.user.id));
-//           browserHistory.push('/meals');
-//         }
-//       })
-//       .catch(failed => dispatch(authenticated(null)));
-
 export const login = () =>
-  dispatch =>
-    firebase.auth().signInWithPopup(provider)
+  dispatch => {
+    console.log('CREATING PROVIDER');
+    const provider = new firebro.auth.GoogleAuthProvider();
+    console.log(provider);
+    console.log('BEGINNING AUTHENTICATION');
+    return firebro.auth().signInWithPopup(provider)
       .then(res => {
-        const GAPI_Token = res.credential.accessToken;
-        console.log(GAPI_Token);
+        console.log('RECEIVING USER');
+        console.log(res.user);
+        console.log('DISPATCHING USER');
         dispatch(authenticated(res.user));
       })
-      .catch(err => console.err(err))
-
-// export const logout = () =>
-//   dispatch =>
-//     axios.post('/api/auth/logout')
-//       .then(() => dispatch(whoami()))
-//       .catch(() => dispatch(whoami()));
+      .catch(err => console.error(err));
+  }

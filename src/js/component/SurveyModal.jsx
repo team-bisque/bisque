@@ -5,6 +5,11 @@ import { Modal, Button, Grid, Row, Col } from 'react-bootstrap';
 
 require('../../css/survey-modal.css')
 
+/*
+TO-DOS:
+    -- Replace current buttons with radio button groups
+*/
+
 export default class SurveyModal extends React.Component {
 
     constructor (props) {
