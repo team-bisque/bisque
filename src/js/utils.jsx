@@ -13,7 +13,7 @@ export const callBackground = (method, ...args) => {
       }
     })
   });
-}
+};
 
 
 export const convertMillisecondsToHM = (milliseconds) => {
@@ -22,8 +22,14 @@ export const convertMillisecondsToHM = (milliseconds) => {
   totalSeconds %= 3600;
   let minutes = Math.floor(totalSeconds / 60);
   return {hours, minutes};
-}
+};
 
 export const convertHMToMilliseconds = (hours, minutes) => (minutes * 60000) + (hours * 3600000);
 
+export const convertMillisecondsToMinutes = (milliseconds) => {
+  let totalSeconds = milliseconds / 1000;
+  let minutes = Math.floor(totalSeconds / 60);
+  return minutes;
+};
 
+export const convertMinutesToMilliseconds = (minutes) => minutes * 60000;
