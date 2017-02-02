@@ -3,31 +3,31 @@ import { setTimeRemaining } from '../action-creators/time';
 import { toggleWork } 			from '../action-creators/status';
 import { fetchWeather } 		from '../action-creators/weather';
 
-const Tabs 					= require('./tabs'),
-			WebRequest 		= require('./webRequest'),
-			Notifications = require('./notifications'),
-			Idle 					= require('./idle'),
-			Greylist 			= require('./greylist'),
-			Storage 			= require('./storage');
+const Tabs 			= require('./tabs'),
+	  WebRequest 	= require('./webRequest'),
+	  Notifications = require('./notifications'),
+	  Idle 			= require('./idle'),
+	  Greylist 		= require('./greylist'),
+	  Storage 		= require('./storage');
 
 
 
 class Core {
 	constructor(store) {
-		this.tabs 					= new Tabs(store);
-		this.webRequest 		= new WebRequest();
+		this.tabs 			= new Tabs(store);
+		this.webRequest 	= new WebRequest();
 		this.notifications 	= new Notifications(store);
-		this.idle 					= new Idle();
-		this.greylist 			= new Greylist();
-		this.storage 				= new Storage(store);
-		this.store 					= store;
+		this.idle 			= new Idle();
+		this.greylist 		= new Greylist();
+		this.storage 		= new Storage(store);
+		this.store 			= store;
 	}
 
 	init(){
 		let { dispatch, getState } = this.store;
 
 		this.notifications.welcome();
-		this.tabs.init();
+		// this.tabs.init();
 		this.idle.init();
 		this.storage.init();
 		dispatch(fetchWeather(10004));
@@ -68,22 +68,16 @@ class Core {
 	}
 
 	breakStarts(){
-		let tabs 				= this.tabs,
-				webRequest 	= this.webRequest;
-
-		tabs.createAndLock()
-      .then(() => {
-				webRequest.addOnBeforeRequestEvent();
-			}).catch(console.error);
+		// let tabs = this.tabs, webRequest = this.webRequest;
+		// tabs.createAndLock()
+      	// .then(() => webRequest.addOnBeforeRequestEvent()).catch(console.error);
 	}
 
 	workStarts(){
-		let tabs 				= this.tabs,
-				webRequest 	= this.webRequest;
-
-		tabs.remove(tabs.lockedTab.id)
-				.then(() => webRequest.removeOnBeforeRequestEvent())
-				.catch(console.error);
+		// let tabs = this.tabs, webRequest = this.webRequest;
+		// tabs.remove(tabs.lockedTab.id)
+		// 	.then(() => webRequest.removeOnBeforeRequestEvent())
+		// 	.catch(console.error);
 	}
 }
 
