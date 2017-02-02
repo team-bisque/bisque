@@ -19,7 +19,7 @@ class Storage {
   init(){
     const dispatchData = this.store.dispatch.bind(this);
 
-    const data = this.database.ref(`users/1`).once('value', function (snapshot) {
+    const data = this.database.ref().once('value', function (snapshot) {
       dispatchData(receiveData(snapshot.val()));
     })
   }

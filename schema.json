@@ -1,0 +1,23 @@
+{
+    "user": {
+        "user_id": "integer",
+        "google-acct-name": "string",
+        "start-work-time": "integer-time",
+        "end-work-time": "integer-time",
+        "lunch-time": "integer-time",
+        "word-count-goal": "integer",
+        "website-greylist": [],
+        "avg-productivity-score": "float",
+        "avg-happiness-score": "float"
+    },
+    "work_history": {
+        "user_id": "integer",
+        "work-session-start": "datetime-integer",
+        "work-session-end": "datetime-integer",
+        "minutes-distracted": "integer",
+        "word-count": "float",
+        "words-per-min": "integer",
+        "productivity-score": "integer",
+        "happiness-score": "integer"
+    }
+}
