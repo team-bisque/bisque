@@ -29,6 +29,8 @@ var manifest = require("../src/manifest.json"),
 manifest.description = process.env.npm_package_description;
 manifest.version = process.env.npm_package_version;
 
+manifest.oauth2.client_id = '75953039302-cavl7cquucb1j4cfsga2fv4bv3kqq2h6.apps.googleusercontent.com';
+
 fileSystem.writeFileSync(
   path.join(__dirname, "../build/manifest.json"),
   JSON.stringify(manifest)

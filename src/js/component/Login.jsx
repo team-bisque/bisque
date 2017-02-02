@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {authenticated} from '../action-creators/auth';
+import {tabAuthenticate} from '../action-creators/auth';
 import {connect} from 'react-redux';
 
 export class Login extends Component {
@@ -9,12 +9,9 @@ export class Login extends Component {
   }
 
   clickHandler() {
-    const firebase = this.props.firebase;
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    firebase.auth().signInWithPopup(provider)
-      .then(res => authenticated(res.user))
-      .catch(err => console.error(err))
+    console.log('LOGGING IN!');
+    console.log(this.props.tabAuthenticate);
+    this.props.tabAuthenticate();
   }
 
   render () {
@@ -24,6 +21,8 @@ export class Login extends Component {
   }
 }
 
-const mapState = ({firebase}) => ({firebase});
+const mapState = null;
 
-export default connect(mapState, {authenticated})(Login)
+const mapDispatch = {tabAuthenticate};
+
+export default connect(mapState, mapDispatch)(Login);

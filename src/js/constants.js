@@ -19,3 +19,6 @@ export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
 
 // Weather
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';
+
+// Aliases
+export const TAB_ALIAS_LOGIN = 'TAB_ALIAS_LOGIN';

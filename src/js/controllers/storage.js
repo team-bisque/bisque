@@ -6,15 +6,6 @@ const chromep = new ChromePromise();
 
 import { firebaseKey } from '../apiKeys';
 import { receiveFirebase } from '../action-creators/firebase';
-// const firebase = require('firebase')
-
-// firebase.initializeApp({
-//   apiKey: firebaseKey,
-//   authDomain: 'go-outside-76d86.firebaseapp.com',
-//   databaseURL: 'https://go-outside-76d86.firebaseio.com',
-//   storageBucket: 'go-outside-76d86.appspot.com',
-//   messagingSenderId: '75953039302'
-// });
 
 
 class Storage {
