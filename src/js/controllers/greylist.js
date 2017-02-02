@@ -1,27 +1,35 @@
-'use strict'
+'use strict';
 
 class GreyList {
 	constructor() {
 		this.listUrls = [
-			"youtube.com",
-			"buzzfeed.com"
+			'youtube.com',
+			'buzzfeed.com'
 		];
 		this.visitAttempts = 0;
 	}
 
-	isOnList(url){
-		// parse url 
+	isOnList(url) {
+		// parse url
 		// check if url is on this list
-		let requestUrl = "https://www.buzzfee.com/acticle/1"; // <-- url
-		requestUrl.split('/')[2];
-		return this.listUrls.filter(greyUrl => requestUrl.includes(greyUrl));
+		const domain = this.sliceToDomain(url);
+		return this.listUrls.filter(greyUrl => domain.includes(greyUrl));
 	}
 
-	watchVisit() {
-		if(this.isOnList()){
-			this.visitAttempts ++;
+	watchVisit(url) {
+		if (this.isOnList(url)) {
+			this.visitAttempts++;
 		}
-	}	
+	}
+
+	sliceToDomain(url) {
+		return url.split('/')[2];
+	}
+
+	addToList(url) {
+		const domain = this.sliceToDomain(url);
+		this.listUrls.push(domain);
+	}
 }
 
 module.exports = GreyList;
