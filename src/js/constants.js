@@ -2,7 +2,7 @@
 export const AUTHENTICATED = 'AUTHENTICATED';
 
 // firebase
-export const RECEIVE_FIREBASE = 'RECEIVE_FIREBASE';
+export const RECEIVE_DATA = 'RECEIVE_DATA';
 
 // Status
 export const TOGGLE_WORK = 'TOGGLE_WORK';

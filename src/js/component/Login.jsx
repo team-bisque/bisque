@@ -22,7 +22,6 @@ export class Login extends Component {
 }
 
 const mapState = null;
-
 const mapDispatch = {tabAuthenticate};
 
 export default connect(mapState, mapDispatch)(Login);

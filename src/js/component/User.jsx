@@ -1,8 +1,6 @@
 'use strict';
 
 import React from 'react';
-
-import WhoAmI from './WhoAmI';
 import Login from './Login';
 
 export default function User (props) {
