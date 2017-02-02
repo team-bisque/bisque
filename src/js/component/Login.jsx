@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {login} from '../action-creators/auth';
+import {tabAuthenticate} from '../action-creators/auth';
 import {connect} from 'react-redux';
 
 export class Login extends Component {
@@ -9,7 +9,9 @@ export class Login extends Component {
   }
 
   clickHandler() {
-    this.props.login();
+    console.log('LOGGING IN!');
+    console.log(this.props.tabAuthenticate);
+    this.props.tabAuthenticate();
   }
 
   render () {
@@ -20,9 +22,6 @@ export class Login extends Component {
 }
 
 const mapState = null;
-
-const mapDispatch = dispatch => ({
-  login: () => dispatch(login())
-});
+const mapDispatch = {tabAuthenticate};
 
 export default connect(mapState, mapDispatch)(Login);

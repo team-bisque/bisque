@@ -1,25 +1,17 @@
 'use strict';
-
-import {firebro} from '../background';
-
 import {
   AUTHENTICATED,
+  TAB_ALIAS_LOGIN
 } from '../constants';
 
-export const authenticated = user => ({ type: AUTHENTICATED, user });
+const Auth = require('../controllers/auth')
+const auth = new Auth();
+
+export const tabAuthenticate = () => ({
+  type: TAB_ALIAS_LOGIN
+});
 
 export const login = () =>
-  dispatch => {
-    console.log('CREATING PROVIDER');
-    const provider = new firebro.auth.GoogleAuthProvider();
-    console.log(provider);
-    console.log('BEGINNING AUTHENTICATION');
-    return firebro.auth().signInWithPopup(provider)
-      .then(res => {
-        console.log('RECEIVING USER');
-        console.log(res.user);
-        console.log('DISPATCHING USER');
-        dispatch(authenticated(res.user));
-      })
-      .catch(err => console.error(err));
-  }
+  dispatch => auth.authenticate(true)  
+
+export const authenticate = user => ({ type: AUTHENTICATED, user });

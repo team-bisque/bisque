@@ -3,24 +3,27 @@ import { setTimeRemaining } from '../action-creators/time';
 import { toggleWork } 			from '../action-creators/status';
 import { fetchWeather } 		from '../action-creators/weather';
 
-const Tabs 			= require('./tabs'),
-	  WebRequest 	= require('./webRequest'),
-	  Notifications = require('./notifications'),
-	  Idle 			= require('./idle'),
-	  Greylist 		= require('./greylist'),
-	  Storage 		= require('./storage');
+const Tabs 					= require('./tabs'),
+			WebRequest 		= require('./webRequest'),
+			Notifications = require('./notifications'),
+			Idle 					= require('./idle'),
+			Greylist 			= require('./greylist'),
+			Storage 			= require('./storage'),
+			Auth 					= require('./auth');
 
 
 
 class Core {
 	constructor(store) {
-		this.tabs 			= new Tabs(store);
-		this.webRequest 	= new WebRequest();
+		// this.keyLogger 			= new KeyLogger();
+		this.auth 					= new Auth();
+		this.tabs 					= new Tabs(store);
+		this.webRequest 		= new WebRequest();
 		this.notifications 	= new Notifications(store);
-		this.idle 			= new Idle();
-		this.greylist 		= new Greylist();
-		this.storage 		= new Storage(store);
-		this.store 			= store;
+		this.idle 					= new Idle();
+		this.greylist 			= new Greylist();
+		this.storage 				= new Storage(store);
+		this.store 					= store;
 	}
 
 	init(){
@@ -30,7 +33,8 @@ class Core {
 		// this.tabs.init();
 		this.idle.init();
 		this.storage.init();
-		dispatch(fetchWeather(10004));
+		this.auth.onAuthStateChanged();
+		dispatch(fetchWeather());
 		dispatch(setTimeRemaining(getState().time.workDuration));
 		this.watchMinute();
 	}
@@ -43,8 +47,6 @@ class Core {
 			// When paused, interval keeps running -- but does nothing
 			if (!getState().status.pause) {
 				let remaining = getState().time.timeRemaining - 60000;
-
-
 				dispatch(setTimeRemaining(remaining));
 				if (remaining === (1000 * 60 * 5))
 					this.notifications.warningRemaining(remaining);
