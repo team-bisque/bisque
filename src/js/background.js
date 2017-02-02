@@ -14,6 +14,6 @@ const Core = require('./controllers/core');
 const core = new Core(store);
 core.init();
 
-const firebro = core.storage.firebase;
+// const firebro = core.storage.firebase;
 
-export {firebro};
+// export {firebro};
