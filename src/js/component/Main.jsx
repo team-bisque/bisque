@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 
 // Components
 import Status from './Status';
-// import User from './User';
-import Login from './Login';
+import User from './User';
+// import Login from './Login';
 
 import Weather from './Weather';
 import SurveyModal from './SurveyModal';
@@ -32,7 +32,7 @@ export function Main (props) {
   return (
     <div style={style.background} className="row">
       <div className="row">
-        <Login />
+        <User user={auth}/>
         <Weather weather={weather} />
       </div>
       <Status status={status} time={time} />

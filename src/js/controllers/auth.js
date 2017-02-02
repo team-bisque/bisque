@@ -17,10 +17,10 @@ class Auth extends Storage {
 		firebase.auth().onAuthStateChanged((user) => {
 			console.log('onAuthStateChanged', user);
 		  if (user) store.dispatch(authenticate(user));
-		  store.dispatch(authenticate(null));
+		  else store.dispatch(authenticate(null));
 		})
 	}
-
+///
 	authenticate(interactive){		
 		const { firebase } = this;
 

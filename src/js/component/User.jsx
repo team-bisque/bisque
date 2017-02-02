@@ -11,7 +11,7 @@ export default function User (props) {
   return (
     <div id="user">
       {user
-        ? <div><WhoAmI /></div>
+        ? <h3>{user.displayName}</h3>
         : <span><Login /></span>}
     </div>
   );

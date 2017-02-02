@@ -34,7 +34,7 @@
   "options_page": "background.html",
   "content_security_policy": "script-src 'self' https://www.gstatic.com https://cdn.firebase.com https://*.firebaseio.com https://googleapis.com; object-src 'self'",
   "oauth2": {
-    "client_id": "75953039302-342cl32npn4rsaejm31dnhhk6pbsfc6s.apps.googleusercontent.com",
+    "client_id": "75953039302-cavl7cquucb1j4cfsga2fv4bv3kqq2h6.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/userinfo.email",
       "https://www.googleapis.com/auth/userinfo.profile"
