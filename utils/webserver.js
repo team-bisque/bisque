@@ -4,7 +4,7 @@ var WebpackDevServer = require("webpack-dev-server"),
     env = require("./env"),
     path = require("path");
 
-require("./prepare");
+require("./prepare_dev");
 
 var excludeEntriesToHotReload = (config.excludeEntriesToHotReload || []);
 

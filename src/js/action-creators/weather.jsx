@@ -16,12 +16,13 @@ const openweather =
 
 // Helper function
 function getPreciseLocation(){
-	return new Promise((resolve, reject) => {
-		navigator.geolocation.getCurrentPosition(position => {
-			resolve(position.coords );
-		});
-	});
-}
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(position => {
+      resolve(position.coords );  
+    });
+  });
+} 
+
 
 // Action creator function
 export const receiveWeather = (weather) =>
@@ -29,7 +30,12 @@ export const receiveWeather = (weather) =>
 
 export const fetchWeather = (zip) =>
   dispatch => {
-    axios.get(`${openweather}&zip=${zip},us`)
+    getPreciseLocation()
+    .then(coords => {
+      if(coords) return axios.get(`${openweather}&lat=${coords.latitude}&lon=${coords.longitude}`);
+      return axios.get('https://freegeoip.net/json/')
+              .then(res => axios.get(`${openweather}&zip=${res.data.zip_code},us`));
+    })
     .then(res => res.data)
     .then(data => dispatch(receiveWeather(data)))
     .catch(err => console.error('Problem fetching weather', err));
