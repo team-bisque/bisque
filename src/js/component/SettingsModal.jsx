@@ -26,6 +26,7 @@ import {
   setStartTime
 } from '../action-creators/time';
 
+const firebase = require('../controllers/firebase');
 
 class Settings extends Component {
   constructor(props) {
@@ -130,7 +131,6 @@ class Settings extends Component {
   }
 
   handleSelect(tabKey) {
-    console.log(tabKey);
     this.setState({tabKey});
   }
 
@@ -144,22 +144,26 @@ class Settings extends Component {
       breakMinutes,
       lunchHours,
       lunchMinutes,
-      shiftHours,
-      shiftMinutes
     } = this.state;
     const workDuration = convertHMToMilliseconds(workHours, workMinutes);
     const breakDuration = convertHMToMilliseconds(breakHours, breakMinutes);
     const lunchDuration = convertHMToMilliseconds(lunchHours, lunchMinutes);
-    const shiftDuration = convertHMToMilliseconds(shiftHours, shiftMinutes);
+    this.updateDuration(setWorkDuration(workDuration))
+    this.updateDuration(setBreakDuration(breakDuration))
+    this.updateDuration(setLunchDuration(lunchDuration))
     store.dispatch(setWorkDuration(workDuration));
     store.dispatch(setBreakDuration(breakDuration));
     store.dispatch(setLunchDuration(lunchDuration));
-    store.dispatch(setShiftDuration(shiftDuration));
-    chrome.storage.sync.set({workDuration, breakDuration, lunchDuration, shiftDuration}, () => {
-      if (chrome.runtime.error) {
-        console.log("Runtime error.");
-      }
-    });
+  }
+
+  updateDuration(dispatcher, setting, time) {
+    const userId = store.getState().auth;
+
+    firebase.database().ref('users/' + userId).set({
+      [setting]: time
+    })
+
+    store.dispatch(dispatcher(setting));
   }
 
   workHoursHandleChange(event) {

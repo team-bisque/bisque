@@ -1,49 +1,50 @@
 'use strict';
 import { setTimeRemaining } from '../action-creators/time';
-import { toggleWork } 			from '../action-creators/status';
-import { fetchWeather } 		from '../action-creators/weather';
+import { toggleWork } 	 	from '../action-creators/status';
+import { fetchWeather } 	from '../action-creators/weather';
+import { receiveData }		from '../action-creators/db';
 
-const Tabs 					= require('./tabs'),
-			WebRequest 		= require('./webRequest'),
-			Notifications = require('./notifications'),
-			Idle 					= require('./idle'),
-			Greylist 			= require('./greylist'),
-			Storage 			= require('./storage'),
-			Auth 					= require('./auth');
+const Tabs 			= require('./tabs'),
+	  Auth			= require('./auth'),
+	  WebRequest 	= require('./webRequest'),
+	  Notifications = require('./notifications'),
+	  Idle 			= require('./idle'),
+	  Greylist 		= require('./greylist'),
+	  firebase      = require('./firebase');
 
 
 
 class Core {
 	constructor(store) {
-		// this.keyLogger 			= new KeyLogger();
-		this.auth 					= new Auth();
-		this.tabs 					= new Tabs(store);
-		this.webRequest 		= new WebRequest();
+		this.tabs 			= new Tabs(store);
+		this.webRequest 	= new WebRequest();
+		this.auth = new Auth();
 		this.notifications 	= new Notifications(store);
-		this.idle 					= new Idle();
-		this.greylist 			= new Greylist();
-		this.storage 				= new Storage(store);
-		this.store 					= store;
+		this.idle 			= new Idle();
+		this.greylist 		= new Greylist();
+		this.store 			= store;
 	}
 
 	init(){
 		let { dispatch, getState } = this.store;
 
+		const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
+
 		this.notifications.welcome();
-		// this.tabs.init();
-		this.idle.init();
-		this.storage.init();
+		this.idle._init();
 		this.auth.onAuthStateChanged();
-		dispatch(fetchWeather());
+		dispatch(fetchWeather(10004));
+		dispatch(receiveData(storedData))
 		dispatch(setTimeRemaining(getState().time.workDuration));
+
 		this.watchMinute();
 	}
 
 	watchMinute(){
 		let { dispatch, getState } = this.store,
-				minute = 5000; //<=== 5 seconds for testing,  (1000 * 60);
+				minute = getState().time.timeRemaining;
 
-		setInterval(()=>{
+		setInterval(() => {
 			// When paused, interval keeps running -- but does nothing
 			if (!getState().status.pause) {
 				let remaining = getState().time.timeRemaining - 60000;
