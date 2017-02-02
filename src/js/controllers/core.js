@@ -11,8 +11,6 @@ const Tabs 					= require('./tabs'),
 			Greylist 			= require('./greylist'),
 			Storage 			= require('./storage');
 
-
-
 class Core {
 	constructor(store) {
 		// this.keyLogger 			= new KeyLogger();
@@ -22,7 +20,7 @@ class Core {
 		this.idle 					= new Idle();
 		this.greylist 			= new Greylist();
 		this.storage 				= new Storage(store);
-		
+
 		this.store 					= store;
 	}
 
@@ -30,12 +28,16 @@ class Core {
 		console.log('background.js core initiated');
 		let { dispatch, getState } = this.store;
 
-		this.notifications.welcome();
+		if (!this.store.getStatus().auth) {
+			this.notificaitons.login();
+		} else {
+			this.notifications.welcome();
+		}
+
 		this.tabs.init();
 		this.idle.init();
 		this.storage.init();
 		dispatch(fetchWeather(10004));
-		dispatch(setTimeRemaining(getState().time.workDuration));		
 		this.watchMinute();
 	}
 
@@ -50,25 +52,26 @@ class Core {
 
 
 				dispatch(setTimeRemaining(remaining));
-				if (remaining === (1000 * 60 * 5)) 
-					this.notifications.warningRemaining(remaining);
-				if (remaining === 0) this.setStatus();
+				if (remaining === (1000 * 60 * 5)) {
+					this.notifications.warning(remaining);
+				}
+				else if (remaining <= 0) {
+					this.notifications.statusChange();
+				}
 			}
 		}, minute);
 	}
 
 	setStatus(){
 		let { dispatch, getState } = this.store;
-		
+
 		dispatch(toggleWork());
 		const isWorking = getState().status.isWorking;
 		console.log('setStatus', isWorking);
-		if(isWorking){
-			console.log('workDuration', getState().time.workDuration);
+		if (isWorking){
 			dispatch(setTimeRemaining(getState().time.workDuration));
 			this.workStarts();
 		} else {
-			console.log('breakDuration', getState().time.breakDuration);
 			dispatch(setTimeRemaining(getState().time.breakDuration));
 			this.breakStarts();
 		}
