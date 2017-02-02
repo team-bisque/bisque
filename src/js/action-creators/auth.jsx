@@ -4,7 +4,7 @@ import {
   TAB_ALIAS_LOGIN
 } from '../constants';
 
-const Auth = require('../controllers/auth')
+const Auth = require('../controllers/Auth')
 const auth = new Auth();
 
 export const tabAuthenticate = () => ({
@@ -12,6 +12,6 @@ export const tabAuthenticate = () => ({
 });
 
 export const login = () =>
-  dispatch => auth.authenticate(true)  
+  dispatch => auth.authenticate(true)
 
 export const authenticate = user => ({ type: AUTHENTICATED, user });

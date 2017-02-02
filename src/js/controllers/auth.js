@@ -2,7 +2,7 @@
 import { authenticate } from '../action-creators/auth';
 import store         		 from '../store';
 
-const Storage = require('./storage');
+const Storage = require('./Storage');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
@@ -21,13 +21,13 @@ class Auth extends Storage {
 		})
 	}
 ///
-	authenticate(interactive){		
+	authenticate(interactive){
 		const { firebase } = this;
 
 		chrome.identity.getAuthToken({
 			interactive: !!interactive,
 			scopes: ['profile', 'email']
-		}, token => {			
+		}, token => {
 			if (chrome.runtime.lastError && !interactive) {
       	console.log('It was not possible to get a token programmatically.');
     	} else if (chrome.runtime.lastError) {
