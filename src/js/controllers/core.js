@@ -1,8 +1,6 @@
 'use strict';
 import { setTimeRemaining } from '../action-creators/time';
-import { toggleWork } 			from '../action-creators/status';
 import { fetchWeather } 		from '../action-creators/weather';
-import { addFiveMinutes } 	from '../action-creators/time';
 
 const Tabs 					= require('./tabs'),
 			WebRequest 		= require('./webRequest'),
@@ -26,76 +24,84 @@ class Core {
 
 	init(){
 		console.log('background.js core initiated');
-		let { dispatch, getState } = this.store;
-
-		if (!this.store.getStatus().auth) {
-			this.notificaitons.login();
-		} else {
-			this.notifications.welcome();
-		}
+		const { dispatch, getState } = this.store;
 
 		this.tabs.init();
 		this.idle.init();
 		this.storage.init();
+
 		dispatch(fetchWeather(10004));
+		// if (!this.store.getState().auth) {
+		// 	console.log('no user');
+		// 	this.notifications.login();
+		// } else {
+			console.log('welcome notification');
+			this.notifications.welcome();
+		// }
 		this.watchMinute();
 	}
 
 	watchMinute(){
-		let { dispatch, getState } = this.store,
-				minute = 5000; //<=== 5 seconds for testing,  (1000 * 60);
+		const { dispatch, getState } = this.store,
+				minute = 60000; // 5 seconds for testing
 
-		setInterval(()=>{
+		setInterval(() => {
 			// When paused, interval keeps running -- but does nothing
 			if (!getState().status.pause) {
-				let remaining = getState().time.timeRemaining - 60000;
+				// Deprecate time remaining by 1 minute and dispatch to storee
+				const time = getState().status.timeRemaining - 60000;
+				dispatch(setTimeRemaining(time));
 
-
-				dispatch(setTimeRemaining(remaining));
-				if (remaining === (1000 * 60 * 5)) {
-					this.notifications.warning(remaining);
+				if (time === 5 * minute) { // 5 Minutess
+					this.notifications.warningNote();
 				}
-				else if (remaining <= 0) {
+				else if (time === 0) {
 					this.notifications.statusChange();
 				}
+				else if (time === -5 * minute) {
+					this.notifications.whereAreYou();
+					dispatch(setTimeRemaining(-1 * minute));
+				}
+			} else {
+				console.log('We are paused');
 			}
-		}, minute);
+		}, 5000); // 5 seconds for testing
 	}
 
 	setStatus(){
-		let { dispatch, getState } = this.store;
-
-		dispatch(toggleWork());
-		const isWorking = getState().status.isWorking;
-		console.log('setStatus', isWorking);
-		if (isWorking){
-			dispatch(setTimeRemaining(getState().time.workDuration));
-			this.workStarts();
-		} else {
-			dispatch(setTimeRemaining(getState().time.breakDuration));
-			this.breakStarts();
-		}
+		// let { dispatch, getState } = this.store;
+		//
+		// dispatch(toggleWork());
+		// const isWorking = getState().status.isWorking;
+		// console.log('setStatus', isWorking);
+		// if (isWorking){
+		// 	dispatch(setTimeRemaining(getState().time.workDuration));
+		// 	this.workStarts();
+		// } else {
+		// 	dispatch(setTimeRemaining(getState().time.breakDuration));
+		// 	this.breakStarts();
+		// }
 	}
 
 	breakStarts(){
-		console.log('breakStarts', this)
-		let tabs 				= this.tabs,
-				webRequest 	= this.webRequest;
-
-		tabs.createAndLock()
-      .then(() => {
-				webRequest.addOnBeforeRequestEvent();
-			}).catch(console.error);
+		// console.log('breakStarts', this)
+		// let tabs 				= this.tabs,
+		// 		webRequest 	= this.webRequest;
+		//
+		// tabs.createAndLock()
+    //   .then(() => {
+		// 		webRequest.addOnBeforeRequestEvent();
+		// 	}).catch(console.error);
 	}
 
 	workStarts(){
-		console.log('workStarts', this)
-		let tabs 				= this.tabs,
-				webRequest 	= this.webRequest;
-
-		tabs.remove(tabs.lockedTab.id)
-				.then(() => webRequest.removeOnBeforeRequestEvent())
-				.catch(console.error);
+	// 	console.log('workStarts', this)
+	// 	let tabs 				= this.tabs,
+	// 			webRequest 	= this.webRequest;
+	//
+	// 	tabs.remove(tabs.lockedTab.id)
+	// 			.then(() => webRequest.removeOnBeforeRequestEvent())
+	// 			.catch(console.error);
 	}
 }
 

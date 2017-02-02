@@ -6,26 +6,38 @@ const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
 class Notifications {
-	// https://developer.chrome.com/extensions/notification
+	// https://developer.chrome.com/apps/notifications
 	constructor(store) {
 		this.store = store;
 		this.turnoff = null;
 		this.clickHandler = this.clickHandler.bind(this);
 	}
 
-	create(notificationId, options){
-		if (!options.type) options['type'] = 'basic';
+	create(noteId, options){
+		if (!options.type) options.type = 'basic';
 		// We can hook in specific logos to this later!
-		if (!options.iconUrl) options['iconUrl'] = './images/logo.png';
-		return chromep.notifications.create(notificationId, options);
+		if (!options.iconUrl) options.iconUrl = './images/logo.png';
+		return chrome.notifications.create(noteId, options);
 	}
 
-	clear(notificationId){
-		return chromep.notifications.clear(notificationId)
+	clear(noteId){
+		return chrome.notifications.clear(noteId);
 	}
 
-	update(notificationId, options){
-		return chromep.notifications.update(notificationId, options)
+	update(noteId, options){
+		return chrome.notifications.update(noteId, options);
+	}
+
+	login(){
+		this.create('login', {
+			title: 'Welcome to Bisque!',
+			message: 'Please login to get started',
+			buttons: [
+				{ title: 'Login with Google' }
+			]
+		});
+
+		chrome.notifications.onButtonClicked.addListener(this.clickHandler);
 	}
 
 	welcome(){
@@ -34,117 +46,94 @@ class Notifications {
 			title: 'Welcome!',
 			message: 'Ready to get to work?',
 			buttons: [
-				{ title: 'Yes' },
-				{ title: 'No' }
+				{ title: 'Let’s do it!' },
+				{ title: 'Not yet' }
 			]
 		});
 
 		chrome.notifications.onButtonClicked.addListener(this.clickHandler);
 	}
 
-	warning(timeRemaining){
-		var remainingMinute = new Date(timeRemaining).getMinutes();
-
-		let status = this.store.getState().status.isWorking ? 'work' : 'break';
+	warningNote(){
+		const message = this.store.getState().status.isWorking ? 'work' : 'break';
 		this.create('warning', {
-			title: `You have ${remainingMinute} minutes left`,
-			message: `Your ${status} time is about to end...`,
+			title: `Are you almost ready?`,
+			message: `Your ${message} time is about to end...`,
 			buttons: [
-				{ title: 'Thanks!' },
-				{ title: '5 more minutes...' },
-				{ title: 'How am I doing?'},
-				{ title: 'Settings...' }
+				{ title: 'Looking forward to it!' },
+				{ title: '5 more minutes...' }
 			]
 		});
-
-		// Auto closes warning after 7.5 seconds
-		setTimeout(() => {
-			this.clear('warning');
-		}, 7500);
 
 		chrome.notifications.onButtonClicked.addListener(this.clickHandler);
 	}
 
 	statusChange(){
-		let status = this.store.getState().status.isWorking ? 'get back to work' : 'take a break';
-		this.create('status', {
+		const message = this.store.getState().status.isWorking ? 'take a break' : 'get back to work';
+		this.create('statusChange', {
 			title: `Time's up!`,
+			message: `Tell Bisque what to do`,
 			buttons: [
-				{ title: `Let’s ${status}!`},
-				{ title: '5 more minutes...' },
-				{ title: `I'm clocking out early`}
+				{ title: `Let’s ${message}!`},
+				{ title: '5 more minutes...' }
 			]
 		});
-
-		setTimeout(() => {
-			this.update('status', { message: 'Are you still here?'});
-		}, 30000)
-
-		this.turnOff = setTimeout(() => {
-			// After 30 mins & no response, turn off Bisque
-		}, 1800000);
 
 		chrome.notifications.onButtonClicked.addListener(this.clickHandler);
 	}
 
-	setStatus(){
-		const { dispatch, getState } = this.store;
-		dispatch(toggleWork());
-		const isWorking = getState().status.isWorking;
+	whereAreYou(){
+		this.create('whereAreYou', {
+			title: `Where’ve you gone?`,
+			message: `Tell Bisque what to do`,
+			buttons: [
+				{ title: `Let’s get back to work!`},
+				{ title: `I’m clocking out early`}
+			],
+			requireInteraction: true
+		});
 
-		if (isWorking){
-			dispatch(setTimeRemaining(getState().time.workDuration));
-			this.workStarts();
-		} else {
-			dispatch(setTimeRemaining(getState().time.breakDuration));
-			this.breakStarts();
-		}
+		chrome.notifications.onButtonClicked.addListener(this.clickHandler);
 	}
 
-	clickHandler(notificationId, buttonIndex){
-		const { dispatch, getState } = this.store;
+	clickHandler(noteId, buttonIndex){
+		const { dispatch } = this.store;
+		console.log(noteId);
 
-		if (notificationId === 'welcome') {
-			if (buttonIndex === 0) {
-				dispatch(setTimeRemaining(getState().time.workDuration));
-				this.clear('welcome');
-			}
-			else if (buttonIndex === 1) {
+		switch (noteId) {
+			case 'login':
+				chrome.tabs.create({});
+				break;
 
-			}
+			case 'welcome':
+				// User is ready
+				if (!buttonIndex) dispatch(toggleWork());
+				break;
+
+			case 'warning':
+				// User wants 5 more minutes
+				if  (buttonIndex) dispatch(addFiveMinutes());
+				break;
+
+			case 'statusChange':
+				if (!buttonIndex) { // User is ready
+					dispatch(toggleWork());
+					chrome.tabs.create({});
+				}
+				if (buttonIndex) {
+					dispatch(addFiveMinutes());
+				}
+				break;
+
+			case 'whereAreYou':
+				if (!buttonIndex) dispatch(toggleWork());
+				if (buttonIndex) dispatch(togglePause());
+				break;
+
+			default:
+				break;
 		}
-
-		else if (notificationId === 'warning') {
-			if  (buttonIndex === 0) { // Thanks!
-				this.clear('warning');
-			}
-			else if (buttonIndex === 1){ // 5 more minutes...
-				this.store.dispatch(addFiveMinutes());
-				this.clear('warning');
-			}
-			else if (buttonIndex === 2){ // Data...
-				this.clear('warning');
-				// Add some state change to show data modal
-				return chrome.tabs.create({});
-			}
-			else if (buttonIndex === 3) { // Settings...
-				this.clear('warning');
-				// Add some state change to show settings modal
-				return chrome.tabs.create({});
-			}
-		}
-
-		else if (notificationId === 'status') {
-			if (buttonIndex === 0) { // User is ready
-				clearTimeout(this.turnOff);
-				this.setStatus();
-				this.store.dispatch(toggleWork());
-			}
-			else if (buttonIndex === 1) { // User is ending work
-				clearTimeout(this.turnOff);
-				this.store.dispatch(togglePause());
-			}
-		}
+		this.clear(noteId);
 	}
 }
 module.exports = Notifications;
