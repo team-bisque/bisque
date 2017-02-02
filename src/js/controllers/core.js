@@ -69,7 +69,6 @@ class Core {
 
 	breakStarts(){
 		let tabs = this.tabs, webRequest = this.webRequest;
-		tabs.createAndLock()
       	.then(() => webRequest.addOnBeforeRequestEvent()).catch(console.error);
 	}
 
