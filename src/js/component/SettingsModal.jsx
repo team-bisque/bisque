@@ -2,7 +2,16 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Modal, Button, Grid, Row, Col} from 'react-bootstrap';
+import {
+  Modal,
+  Button,
+  Grid, Row,
+  Col,
+  Form,
+  FormControl,
+  FormGroup,
+  ControlLabel
+} from 'react-bootstrap';
 
 require('../../css/survey-modal.css');
 
@@ -247,13 +256,13 @@ class Settings extends Component {
               <Row className="statistics">
                 <Form inline>
                   <FormGroup controlId="formInlineName">
-                    <ControlLabel>Duration</ControlLabel>
+                    <ControlLabel>WorkHours</ControlLabel>
                     {' '}
                     <FormControl type="text" placeholder={workHours || 0} onChange={workHoursHandleChange} />
                   </FormGroup>
                   {' '}
-                  <FormGroup controlId="formInlineEmail">
-                    <ControlLabel>Email</ControlLabel>
+                  <FormGroup controlId="formInlineName">
+                    <ControlLabel>WorkMinutes</ControlLabel>
                     {' '}
                     <FormControl type="text" placeholder={workMinutes || 0} onChange={workMinutesHandleChange} />
                   </FormGroup>

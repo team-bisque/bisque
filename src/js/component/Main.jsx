@@ -8,7 +8,7 @@ import User from './User';
 
 import Weather from './Weather';
 import SurveyModal from './SurveyModal';
-import Settings from './Settings';
+import SettingsModal from './SettingsModal';
 
 const bg = Math.floor(Math.random() * (8 - 1)) + 1;
 
@@ -36,10 +36,7 @@ export function Main (props) {
         <Weather weather={weather} />
       </div>
       <Status status={status} time={time} />
-      <SurveyModal status={status} />
-      <div>
-        <Settings />
-      </div>
+      <SettingsModal />
     </div>
   );
 }
