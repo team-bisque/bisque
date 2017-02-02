@@ -1,4 +1,7 @@
 'use strict';
+import { authenticate } from '../action-creators/auth';
+import store         		 from '../store';
+
 const Storage = require('./storage');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -7,6 +10,15 @@ class Auth extends Storage {
 	constructor() {
 		super();
 		console.log('Auth Class', this);
+	}
+
+	onAuthStateChanged(){
+		const { firebase } = this;
+		firebase.auth().onAuthStateChanged((user) => {
+			console.log('onAuthStateChanged', user);
+		  if (user) store.dispatch(authenticate(user));
+		  store.dispatch(authenticate(null));
+		})
 	}
 
 	authenticate(interactive){		

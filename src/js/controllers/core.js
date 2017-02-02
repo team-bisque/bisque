@@ -8,13 +8,15 @@ const Tabs 					= require('./tabs'),
 			Notifications = require('./notifications'),
 			Idle 					= require('./idle'),
 			Greylist 			= require('./greylist'),
-			Storage 			= require('./storage');
+			Storage 			= require('./storage'),
+			Auth 			= require('./auth');
 
 
 
 class Core {
 	constructor(store) {
 		// this.keyLogger 			= new KeyLogger();
+		this.auth 					= new Auth();
 		this.tabs 					= new Tabs(store);
 		this.webRequest 		= new WebRequest();
 		this.notifications 	= new Notifications(store);
@@ -33,6 +35,7 @@ class Core {
 		this.tabs.init();
 		this.idle.init();
 		this.storage.init();
+		this.auth.onAuthStateChanged();
 		dispatch(fetchWeather());
 		dispatch(setTimeRemaining(getState().time.workDuration));		
 		this.watchMinute();
