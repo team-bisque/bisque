@@ -68,15 +68,16 @@ class Core {
 	}
 
 	breakStarts(){
-		let tabs = this.tabs, webRequest = this.webRequest;
-      	.then(() => webRequest.addOnBeforeRequestEvent()).catch(console.error);
+		// let tabs = this.tabs, webRequest = this.webRequest;
+		// tabs.createAndLock()
+      	// .then(() => webRequest.addOnBeforeRequestEvent()).catch(console.error);
 	}
 
 	workStarts(){
-		let tabs = this.tabs, webRequest = this.webRequest;
-		tabs.remove(tabs.lockedTab.id)
-			.then(() => webRequest.removeOnBeforeRequestEvent())
-			.catch(console.error);
+		// let tabs = this.tabs, webRequest = this.webRequest;
+		// tabs.remove(tabs.lockedTab.id)
+		// 	.then(() => webRequest.removeOnBeforeRequestEvent())
+		// 	.catch(console.error);
 	}
 }
 
