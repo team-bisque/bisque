@@ -9,26 +9,26 @@ import { firebaseConfig } from '../apiKeys';
 import { receiveFirebase } from '../action-creators/firebase';
 
 class Storage {
-	// https://developer.chrome.com/extensions/storage
-	constructor(store){
-    this.database = require('firebase').initializeApp(firebaseConfig).database();
+  // https://developer.chrome.com/extensions/storage
+  constructor(store){
+    this.firebase = require('firebase').initializeApp(firebaseConfig).database();
     this.store = store;
-	}
+  }
 
   init(){
     const dispatchData = this.store.dispatch.bind(this);
-    var database = this.firebase.database();
+    // var database = this.firebase.database();
     // console.log('database', database)
 
     // console.log('ref', database.ref('testName').path.o)
     
-    this.store.dispatch(receiveFirebase({test:'asdf'}));
+    // this.store.dispatch(receiveFirebase({test:'asdf'}));
   }
   sync(){
-  	
+    
   }
   get(key, callback) {
-  	chrome.storage.local.get(key, callback);
+    chrome.storage.local.get(key, callback);
     const data = this.database.ref().once('value', function (snapshot) {
       dispatchData(receiveData(snapshot.val()));
     })
