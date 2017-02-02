@@ -4,6 +4,7 @@ import {
 	SET_WORK_DURATION,
 	SET_BREAK_DURATION,
 	SET_LUNCH_DURATION,
+	SET_SHIFT_DURATION,
 	SET_START_TIME,
 	SET_TIME_REMAINING,
 	ADD_FIVE_MINUTES,
@@ -13,6 +14,7 @@ const initialState = {
   workDuration: (1000 * 60) * 8,
   breakDuration: (1000 * 60) * 6,
   lunchDuration: (1000 * 60) * 5,
+  shiftDuration: (1000 * 60) * 60,
   startTime: 0,
   timeRemaining: 0
 };
@@ -30,6 +32,9 @@ export default (state = initialState, action) => {
 			break;
 		case SET_LUNCH_DURATION:
 			newState.lunchDuration = action.lunchDuration;
+			break;
+		case SET_SHIFT_DURATION:
+			newState.shiftDuration = action.shiftDuration;
 			break;
 		case SET_START_TIME:
 			newState.startTime = action.startTime;
