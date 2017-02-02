@@ -5,17 +5,17 @@ import {connect} from 'react-redux';
 import {
   Modal,
   Button,
-  Grid, Row,
+  Grid,
+  Row,
   Col,
   Form,
-  FormControl,
-  FormGroup,
-  ControlLabel
+  Tabs,
+  Tab
 } from 'react-bootstrap';
 
 require('../../css/survey-modal.css');
 
-import TimeInputForm from './TimeInputForm';
+import DurationInputGroup from './DurationInputGroup';
 import store from '../store';
 import {convertMillisecondsToHM, convertHMToMilliseconds} from '../utils';
 import {
@@ -58,7 +58,8 @@ class Settings extends Component {
       shiftHours,
       shiftMinutes,
       modalShowing: true,
-      notNumberWarning: false
+      notNumberWarning: false,
+      tabKey: 1
     };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
@@ -126,6 +127,11 @@ class Settings extends Component {
 
   hideModal () {
     this.setState({modalShowing: false});
+  }
+
+  handleSelect(tabKey) {
+    console.log(tabKey);
+    this.setState({tabKey});
   }
 
   handleSubmit(event) {
@@ -249,29 +255,59 @@ class Settings extends Component {
           container={this}
         >
           <Modal.Header closeButton>
-            <Modal.Title>What Time Blocks Work For You?</Modal.Title>
+            <Modal.Title>Settings</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Grid fluid={true} className="survey-wrapper">
-              <Row className="statistics">
-                <Form inline>
-                  <FormGroup controlId="formInlineName">
-                    <ControlLabel>WorkHours</ControlLabel>
-                    {' '}
-                    <FormControl type="text" placeholder={workHours || 0} onChange={workHoursHandleChange} />
-                  </FormGroup>
-                  {' '}
-                  <FormGroup controlId="formInlineName">
-                    <ControlLabel>WorkMinutes</ControlLabel>
-                    {' '}
-                    <FormControl type="text" placeholder={workMinutes || 0} onChange={workMinutesHandleChange} />
-                  </FormGroup>
-                </Form>
-              </Row>
-            </Grid>
+            <Tabs defaultActiveKey={2}>
+              <Tab eventKey={1} title="Duration">
+                <Grid fluid={true} className="survey-wrapper">
+                  <Row className="statistics">
+                    <Form inline>
+                      <Col xs={12} md={6}>
+                        <DurationInputGroup
+                          hours={workHours}
+                          minutes={workMinutes}
+                          hoursHandleChange={workHoursHandleChange}
+                          minutesHandleChange={workMinutesHandleChange}
+                          category={'Work'}
+                        />
+                      </Col>
+                      <Col xs={12} md={6}>
+                        <DurationInputGroup
+                          hours={breakHours}
+                          minutes={breakMinutes}
+                          hoursHandleChange={breakHoursHandleChange}
+                          minutesHandleChange={breakMinutesHandleChange}
+                          category={'Break'}
+                        />
+                      </Col>
+                      <Col xs={12} md={6}>
+                        <DurationInputGroup
+                          hours={lunchHours}
+                          minutes={lunchMinutes}
+                          hoursHandleChange={lunchHoursHandleChange}
+                          minutesHandleChange={lunchMinutesHandleChange}
+                          category={'Lunch'}
+                        />
+                      </Col>
+                      <Col xs={12} md={6}>
+                        <DurationInputGroup
+                          hours={shiftHours}
+                          minutes={shiftMinutes}
+                          hoursHandleChange={shiftHoursHandleChange}
+                          minutesHandleChange={shiftMinutesHandleChange}
+                          category={'Shift'}
+                        />
+                      </Col>
+                    </Form>
+                  </Row>
+                </Grid>
+              </Tab>
+              <Tab eventKey={2} title="Greylist">Greylist Tab Content Goes Here</Tab>
+            </Tabs>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={handleSubmit}>Change Schedule</Button>
+            <center><Button onClick={handleSubmit}>Change Settings</Button></center>
           </Modal.Footer>
         </Modal>
       </div>
