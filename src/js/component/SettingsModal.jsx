@@ -45,7 +45,6 @@ class Settings extends Component {
       lunchDuration,
       shiftDuration
     } = props.settings;
-    const greyList = new Greylist();
     const workMinutes = convertMillisecondsToMinutes(workDuration);
     const breakMinutes = convertMillisecondsToMinutes(breakDuration);
     const lunchMinutes = convertMillisecondsToMinutes(lunchDuration);
@@ -53,13 +52,15 @@ class Settings extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      greyList,
+      urlList: [],
       modalShowing: false,
       notNumberWarning: false
     };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.newUrlHandleChange = this.newUrlHandleChange.bind(this);
+    this.editUrlHandleChange = this.editUrlHandleChange.bind(this);
     this.workMinutesHandleChange = this.workMinutesHandleChange.bind(this);
     this.breakMinutesHandleChange = this.breakMinutesHandleChange.bind(this);
     this.lunchMinutesHandleChange = this.lunchMinutesHandleChange.bind(this);
@@ -70,25 +71,25 @@ class Settings extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      greyList
+      urlList
     } = this.state;
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-    chrome.storage.sync.get({workDuration, breakDuration, lunchDuration, greyList}, (storage) => {
-      const {workDuration, breakDuration, lunchDuration, greyList} = storage;
-      store.dispatch(setWorkDuration(workDuration));
-      store.dispatch(setBreakDuration(breakDuration));
-      store.dispatch(setLunchDuration(lunchDuration));
-      const workMinutes = convertMillisecondsToMinutes(workDuration);
-      const breakMinutes = convertMillisecondsToMinutes(breakDuration);
-      const lunchMinutes = convertMillisecondsToMinutes(lunchDuration);
-      this.setState({
-        workMinutes,
-        breakMinutes,
-        lunchMinutes,
-      });
-    });
+    this.updateDuration(setWorkDuration, 'work', workDuration);
+    this.updateDuration(setBreakDuration, 'break', breakDuration);
+    this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
+  }
+
+  updateDuration(actionCreator, timeCategory, duration) {
+    const userId = store.getState().auth;
+    console.log(`USERID`, userId);
+
+    // firebase.database().ref('users/' + userId).set({
+    //   [timeCategory]: duration
+    // })
+
+    store.dispatch(actionCreator(duration));
   }
 
   showModal () {
@@ -113,16 +114,6 @@ class Settings extends Component {
     this.updateDuration(setWorkDuration, 'work', workDuration);
     this.updateDuration(setBreakDuration, 'break', breakDuration);
     this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
-  }
-
-  updateDuration(actionCreator, timeCategory, duration) {
-    const userId = store.getState().auth;
-
-    firebase.database().ref('users/' + userId).set({
-      [timeCategory]: duration
-    })
-
-    store.dispatch(actionCreator(duration));
   }
 
   workMinutesHandleChange(event) {
@@ -151,12 +142,10 @@ class Settings extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      greyList,
+      urlList,
       modalShowing,
       notNumberWarning
     } = this.state;
-
-    const {listUrls} = greyList;
 
     const {
       showModal,
@@ -199,7 +188,11 @@ class Settings extends Component {
                   />
                 </Tab>
                 <Tab eventKey={2} title="Greylist">
-                  <SettingsGreylistTab listUrls={listUrls}/>
+                  <SettingsGreylistTab
+                    urlList={urlList}
+                    newUrlHandleChange={newUrlHandleChange}
+                    editUrlHandleChange={editUrlHandleChange}
+                  />
                 </Tab>
               </Tabs>
             </Modal.Body>
@@ -213,7 +206,7 @@ class Settings extends Component {
   }
 }
 
-const mapState = ({settings}) => ({settings});
+const mapState = ({settings, auth}) => ({settings, auth});
 const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(Settings);

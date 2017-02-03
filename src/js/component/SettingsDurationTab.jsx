@@ -9,12 +9,10 @@ import {
   Button,
   Grid,
   Row,
-  Col,
   Form,
   FormGroup,
   FormControl,
   ControlLabel,
-  Tab
 } from 'react-bootstrap';
 
 const SettingsDurationTab = (props) => {

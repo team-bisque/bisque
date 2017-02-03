@@ -2,7 +2,7 @@
 
 class GreyList {
 	constructor() {
-		this.listUrls = [
+		this.urlList = [
 			'youtube.com',
 			'buzzfeed.com'
 		];
@@ -13,7 +13,7 @@ class GreyList {
 		// parse url
 		// check if url is on this list
 		const domain = this.sliceToDomain(url);
-		return this.listUrls.filter(greyUrl => domain.includes(greyUrl)).length;
+		return !!(this.urlList.filter(greyUrl => domain.includes(greyUrl)).length);
 	}
 
 	watchVisit(url) {
@@ -28,7 +28,7 @@ class GreyList {
 
 	addToList(url) {
 		const domain = this.sliceToDomain(url);
-		this.listUrls.push(domain);
+		this.urlList.push(domain);
 	}
 }
 
