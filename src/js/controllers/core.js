@@ -1,5 +1,5 @@
 'use strict';
-import { setTimeRemaining } from '../action-creators/status';
+import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
 import { receiveData } from '../action-creators/db';
 
@@ -59,7 +59,7 @@ class Core {
 				}
 				else if (time === -5 * minute) {
 					this.notifications.whereAreYou();
-					dispatch(setTimeRemaining(-1 * minute));
+					dispatch(togglePause());
 				}
 			} else {
         // When paused, interval keeps running -- but does nothing
