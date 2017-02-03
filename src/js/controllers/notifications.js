@@ -1,6 +1,9 @@
 'use strict';
-import { addFiveMinutes } from '../action-creators/time';
-import { toggleWork, togglePause } from '../action-creators/status';
+import {
+	addFiveMinutes,
+	toggleWork,
+	togglePause
+} from '../action-creators/status';
 
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -9,31 +12,27 @@ class Notifications {
 	// https://developer.chrome.com/apps/notifications
 	constructor(store) {
 		this.store = store;
-		this.turnoff = null;
 		this.clickHandler = this.clickHandler.bind(this);
 	}
 
 	create(noteId, options){
+		// Notes demand type and icon Url
+		// but we're not getting fancy yet
+		// So it's easier to set defaults like this
 		if (!options.type) options.type = 'basic';
-		// We can hook in specific logos to this later!
 		if (!options.iconUrl) options.iconUrl = './images/logo.png';
 		return chrome.notifications.create(noteId, options);
 	}
 
-	clear(noteId){
-		return chrome.notifications.clear(noteId);
-	}
-
-	update(noteId, options){
-		return chrome.notifications.update(noteId, options);
-	}
-
 	login(){
-		this.create('login', {
+		chrome.notifications.create('login', {
 			title: 'Welcome to Bisque!',
 			message: 'Please login to get started',
+			iconUrl: './images/logo.png',
+			type: 'basic',
 			buttons: [
-				{ title: 'Login with Google' }
+				{ title: 'Login with Google' },
+				{ title: 'What is this?' }
 			]
 		});
 
@@ -41,10 +40,12 @@ class Notifications {
 	}
 
 	welcome(){
-		// create notification
-		this.create('welcome', {
+		chrome.notifications.create('welcome', {
 			title: 'Welcome!',
 			message: 'Ready to get to work?',
+			iconUrl: './images/logo.png',
+			type: 'basic',
+			isClickable: true,
 			buttons: [
 				{ title: 'Let’s do it!' },
 				{ title: 'Not yet' }
@@ -54,11 +55,16 @@ class Notifications {
 		chrome.notifications.onButtonClicked.addListener(this.clickHandler);
 	}
 
-	warningNote(){
-		const message = this.store.getState().status.isWorking ? 'work' : 'break';
-		this.create('warning', {
+	warning(){
+		const message = this.store.getState().status.isWorking
+			? 'work'
+			: 'break';
+
+		chrome.notifications.create('warning', {
 			title: `Are you almost ready?`,
 			message: `Your ${message} time is about to end...`,
+			iconUrl: './images/logo.png',
+			type: 'basic',
 			buttons: [
 				{ title: 'Looking forward to it!' },
 				{ title: '5 more minutes...' }
@@ -69,10 +75,15 @@ class Notifications {
 	}
 
 	statusChange(){
-		const message = this.store.getState().status.isWorking ? 'take a break' : 'get back to work';
-		this.create('statusChange', {
+		const message = this.store.getState().status.isWorking
+			? 'take a break'
+			: 'get back to work';
+
+		chrome.notifications.create.create('statusChange', {
 			title: `Time's up!`,
 			message: `Tell Bisque what to do`,
+			iconUrl: './images/logo.png',
+			type: 'basic',
 			buttons: [
 				{ title: `Let’s ${message}!`},
 				{ title: '5 more minutes...' }
@@ -83,9 +94,11 @@ class Notifications {
 	}
 
 	whereAreYou(){
-		this.create('whereAreYou', {
+		chrome.notifications.create('whereAreYou', {
 			title: `Where’ve you gone?`,
 			message: `Tell Bisque what to do`,
+			iconUrl: './images/logo.png',
+			type: 'basic',
 			buttons: [
 				{ title: `Let’s get back to work!`},
 				{ title: `I’m clocking out early`}
@@ -102,7 +115,8 @@ class Notifications {
 
 		switch (noteId) {
 			case 'login':
-				chrome.tabs.create({});
+				if (!buttonIndex) chrome.tabs.create({});
+				else console.log('Show user intro');
 				break;
 
 			case 'welcome':
@@ -133,7 +147,7 @@ class Notifications {
 			default:
 				break;
 		}
-		this.clear(noteId);
+		chrome.notifications.clear(noteId);
 	}
 }
 module.exports = Notifications;

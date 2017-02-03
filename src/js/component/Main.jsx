@@ -25,7 +25,7 @@ const style = {
 
 export function Main (props) {
 
-  const {status, time, weather, auth} = props;
+  const {status, settings, weather, auth} = props;
 
   return (
     <div style={style.background} className="row">
@@ -33,10 +33,8 @@ export function Main (props) {
         <User user={auth} />
         <Weather weather={weather} />
       </div>
-      <Status status={status} time={time} />
-      <div>
-        <SettingsModal />
-      </div>
+      <Status status={status} />
+      <SettingsModal />
     </div>
   );
 }

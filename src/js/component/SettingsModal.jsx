@@ -29,8 +29,10 @@ import {
   setBreakDuration,
   setLunchDuration,
   setStartTime
-} from '../action-creators/time';
+} from '../action-creators/settings';
 import Greylist from '../controllers/Greylist';
+
+
 const firebase = require('../controllers/firebase');
 
 
@@ -41,7 +43,8 @@ class Settings extends Component {
       workDuration,
       breakDuration,
       lunchDuration,
-    } = props.time;
+      shiftDuration
+    } = props.settings;
     const greyList = new Greylist();
     const workMinutes = convertMillisecondsToMinutes(workDuration);
     const breakMinutes = convertMillisecondsToMinutes(breakDuration);
@@ -210,7 +213,7 @@ class Settings extends Component {
   }
 }
 
-const mapState = ({time}) => ({time});
+const mapState = ({settings}) => ({settings});
 const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(Settings);
