@@ -29,10 +29,10 @@ class Core {
 		});
 		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
-    	this.auth.onAuthStateChanged();
+  	this.auth.onAuthStateChanged();
 
 		
-		dispatch(fetchWeather(10004));
+		dispatch(fetchWeather());
 		// if (!this.store.getState().auth) {
 		// 	console.log('no user');
 		// 	this.notifications.login();
