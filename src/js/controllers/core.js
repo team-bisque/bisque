@@ -24,12 +24,14 @@ class Core {
 
 	init(){
 		const { dispatch, getState } = this.store;
-    const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
+    	firebase.database().ref().once('value', (snapshot) => {
+			dispatch(receiveData(snapshot.val()));
+		});
 		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
-    this.auth.onAuthStateChanged();
+    	this.auth.onAuthStateChanged();
 
-    dispatch(receiveData(storedData));
+		
 		dispatch(fetchWeather(10004));
 		// if (!this.store.getState().auth) {
 		// 	console.log('no user');
