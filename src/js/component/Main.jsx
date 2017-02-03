@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 // Components
 import Status from './Status';
 import User from './User';
-// import Login from './Login';
+
 import Weather from './Weather';
 import SurveyModal from './SurveyModal';
 import SettingsModal from './SettingsModal';
