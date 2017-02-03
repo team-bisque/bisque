@@ -6,16 +6,15 @@ import {
   ADD_FIVE_MINUTES,
   TOGGLE_WORK,
   TOGGLE_PAUSE,
-  // TOGGLE_LUNCH
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
 
+// Pause begins true, waits for user to start
 const initialState = {
   timeRemaining: 0,
   isWorking: false,
-  pause: true,
-  // lunch: false
+  isPaused: true,
 };
 
 export default (state = initialState, action) => {
@@ -31,24 +30,21 @@ export default (state = initialState, action) => {
       break;
 
     case TOGGLE_WORK:
+      // First, toggle work
       newState.isWorking = !newState.isWorking;
-      // Unpause
-      if (newState.pause) newState.pause = !newState.pause;
-      // Set the clock
+      // Second, make sure we're unpaused
+      if (newState.isPaused) newState.isPaused = !newState.isPaused;
+      // Last, put time on the clock
       if (newState.isWorking) {
-        newState.timeRemaining = store.getState().time.workDuration;
+        newState.timeRemaining = store.getState().settings.workDuration;
       } else {
-        newState.timeRemaining = store.getState().time.breakDuration;
+        newState.timeRemaining = store.getState().settings.breakDuration;
       }
       break;
 
     case TOGGLE_PAUSE:
-      newState.pause = !newState.pause;
+      newState.isPaused = !newState.isPaused;
       break;
-
-    // case TOGGLE_LUNCH:
-    //   newState.lunch = !newState.lunch;
-    //   break;
 
     default:
       break;
