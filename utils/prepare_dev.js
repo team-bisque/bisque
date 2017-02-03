@@ -21,6 +21,7 @@ fileSystem.copySync(path.join(__dirname, "../src/js/controllers/KeyLogger.js"), 
  */
 
 var manifest = require("../src/manifest.json"),
+		apiKeys = require("../src/js/apiKeys.js"),
     fileSystem = require("fs"),
     path = require("path"),
     env = require("./env");
@@ -29,7 +30,7 @@ var manifest = require("../src/manifest.json"),
 manifest.description = process.env.npm_package_description;
 manifest.version = process.env.npm_package_version;
 
-manifest.oauth2.client_id = '75953039302-cavl7cquucb1j4cfsga2fv4bv3kqq2h6.apps.googleusercontent.com';
+manifest.oauth2.client_id = apiKeys.googleClientID;
 
 fileSystem.writeFileSync(
   path.join(__dirname, "../build/manifest.json"),

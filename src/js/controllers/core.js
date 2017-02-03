@@ -1,85 +1,108 @@
 'use strict';
 import { setTimeRemaining } from '../action-creators/time';
-import { toggleWork } 			from '../action-creators/status';
 import { fetchWeather } 		from '../action-creators/weather';
+import { receiveData }		from '../action-creators/db';
 
 const Tabs 					= require('./Tabs'),
 			WebRequest 		= require('./WebRequest'),
 			Notifications = require('./Notifications'),
 			Idle 					= require('./Idle'),
 			Greylist 			= require('./Greylist'),
-			Storage 			= require('./Storage'),
 			Auth 					= require('./Auth');
-
-
+      firebase      = require('./firebase');
 
 class Core {
 	constructor(store) {
-		// this.keyLogger 			= new KeyLogger();
-		this.auth 					= new Auth();
-		this.tabs 					= new Tabs(store);
-		this.webRequest 		= new WebRequest();
+		this.tabs 			= new Tabs(store);
+		this.webRequest 	= new WebRequest();
+		this.auth = new Auth();
 		this.notifications 	= new Notifications(store);
+
 		this.idle 					= new Idle();
 		this.greylist 			= new Greylist();
-		this.storage 				= new Storage(store);
 		this.store 					= store;
 	}
 
 	init(){
-		let { dispatch, getState } = this.store;
-
-		this.notifications.welcome();
+		const { dispatch, getState } = this.store;
+    const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
 		// this.tabs.init();
-		this.idle.init();
-		this.storage.init();
-		this.auth.onAuthStateChanged();
-		dispatch(fetchWeather());
-		dispatch(setTimeRemaining(getState().time.workDuration));
+		this.idle._init();
+    this.auth.onAuthStateChanged();
+
+    dispatch(receiveData(storedData));
+		dispatch(fetchWeather(10004));
+		// if (!this.store.getState().auth) {
+		// 	console.log('no user');
+		// 	this.notifications.login();
+		// } else {
+			console.log('welcome notification');
+			this.notifications.welcome();
+		// }
 		this.watchMinute();
 	}
 
 	watchMinute(){
-		let { dispatch, getState } = this.store,
-				minute = 5000; //<=== 5 seconds for testing,  (1000 * 60);
+		const { dispatch, getState } = this.store,
+				minute = 60000; // 5 seconds for testing
 
-		setInterval(()=>{
-			// When paused, interval keeps running -- but does nothing
+		setInterval(() => {
 			if (!getState().status.pause) {
-				let remaining = getState().time.timeRemaining - 60000;
-				dispatch(setTimeRemaining(remaining));
-				if (remaining === (1000 * 60 * 5))
-					this.notifications.warningRemaining(remaining);
-				if (remaining === 0) this.setStatus();
+				// Deprecate time remaining by 1 minute and dispatch to storee
+				const time = getState().status.timeRemaining - 60000;
+				dispatch(setTimeRemaining(time));
+
+				if (time === 5 * minute) { // 5 Minutes
+					this.notifications.warningNote();
+				}
+				else if (time === 0) {
+					this.notifications.statusChange();
+				}
+				else if (time === -5 * minute) {
+					this.notifications.whereAreYou();
+					dispatch(setTimeRemaining(-1 * minute));
+				}
+			} else {
+        // When paused, interval keeps running -- but does nothing
+				console.log('We are paused');
 			}
-		}, minute);
+		}, 5000); // 5 seconds for testing
 	}
 
 	setStatus(){
-		let { dispatch, getState } = this.store;
-
-		dispatch(toggleWork());
-		const isWorking = getState().status.isWorking;
-		if(isWorking){
-			dispatch(setTimeRemaining(getState().time.workDuration));
-			this.workStarts();
-		} else {
-			dispatch(setTimeRemaining(getState().time.breakDuration));
-			this.breakStarts();
-		}
+		// let { dispatch, getState } = this.store;
+		//
+		// dispatch(toggleWork());
+		// const isWorking = getState().status.isWorking;
+		// console.log('setStatus', isWorking);
+		// if (isWorking){
+		// 	dispatch(setTimeRemaining(getState().time.workDuration));
+		// 	this.workStarts();
+		// } else {
+		// 	dispatch(setTimeRemaining(getState().time.breakDuration));
+		// 	this.breakStarts();
+		// }
 	}
 
 	breakStarts(){
-		// let tabs = this.tabs, webRequest = this.webRequest;
+		// console.log('breakStarts', this)
+		// let tabs 				= this.tabs,
+		// 		webRequest 	= this.webRequest;
+		//
 		// tabs.createAndLock()
-      	// .then(() => webRequest.addOnBeforeRequestEvent()).catch(console.error);
+    //   .then(() => {
+		// 		webRequest.addOnBeforeRequestEvent();
+		// 	}).catch(console.error);
 	}
 
 	workStarts(){
-		// let tabs = this.tabs, webRequest = this.webRequest;
-		// tabs.remove(tabs.lockedTab.id)
-		// 	.then(() => webRequest.removeOnBeforeRequestEvent())
-		// 	.catch(console.error);
+	// 	console.log('workStarts', this)
+	// 	let tabs 				= this.tabs,
+	// 			webRequest 	= this.webRequest;
+	//
+	// 	tabs.remove(tabs.lockedTab.id)
+	// 			.then(() => webRequest.removeOnBeforeRequestEvent())
+	// 			.catch(console.error);
 	}
 }
 

@@ -29,6 +29,7 @@ import {
   setStartTime
 } from '../action-creators/time';
 
+const firebase = require('../controllers/firebase');
 
 class Settings extends Component {
   constructor(props) {
@@ -89,6 +90,9 @@ class Settings extends Component {
     this.setState({modalShowing: false});
   }
 
+  handleSelect(tabKey) {
+    this.setState({tabKey});
+  }
   handleSubmit(event) {
     event.preventDefault();
     this.hideModal();
@@ -108,6 +112,7 @@ class Settings extends Component {
         console.error("Runtime error.");
       }
     });
+
   }
 
   workMinutesHandleChange(event) {
