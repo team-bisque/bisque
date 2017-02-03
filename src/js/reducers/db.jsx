@@ -1,12 +1,12 @@
 
 import {
-  RECEIVE_FIREBASE,
+  RECEIVE_DATA,
 } from '../constants';
 
 export default (state = null, action) => {
   switch (action.type) {
-    case RECEIVE_FIREBASE:
-      return action.firebase;
+    case RECEIVE_DATA:
+      return action.data;
     default:
       return state;
   }  

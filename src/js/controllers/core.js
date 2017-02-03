@@ -1,35 +1,36 @@
 'use strict';
 import { setTimeRemaining } from '../action-creators/time';
 import { fetchWeather } 		from '../action-creators/weather';
+import { receiveData }		from '../action-creators/db';
 
-const Tabs 					= require('./tabs'),
-			WebRequest 		= require('./webRequest'),
-			Notifications = require('./notifications'),
-			Idle 					= require('./idle'),
-			Greylist 			= require('./greylist'),
-			Storage 			= require('./storage');
+const Tabs 			= require('./tabs'),
+	  Auth			= require('./auth'),
+	  WebRequest 	= require('./webRequest'),
+	  Notifications = require('./notifications'),
+	  Idle 			= require('./idle'),
+	  Greylist 		= require('./greylist'),
+	  firebase      = require('./firebase');
 
 class Core {
 	constructor(store) {
-		// this.keyLogger 			= new KeyLogger();
-		this.tabs 					= new Tabs(store);
-		this.webRequest 		= new WebRequest();
+		this.tabs 			= new Tabs(store);
+		this.webRequest 	= new WebRequest();
+		this.auth = new Auth();
 		this.notifications 	= new Notifications(store);
+
 		this.idle 					= new Idle();
 		this.greylist 			= new Greylist();
-		this.storage 				= new Storage(store);
-
 		this.store 					= store;
 	}
 
 	init(){
-		console.log('background.js core initiated');
 		const { dispatch, getState } = this.store;
+    const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
+		// this.tabs.init();
+		this.idle._init();
+    this.auth.onAuthStateChanged();
 
-		this.tabs.init();
-		this.idle.init();
-		this.storage.init();
-
+    dispatch(receiveData(storedData));
 		dispatch(fetchWeather(10004));
 		// if (!this.store.getState().auth) {
 		// 	console.log('no user');
@@ -46,13 +47,12 @@ class Core {
 				minute = 60000; // 5 seconds for testing
 
 		setInterval(() => {
-			// When paused, interval keeps running -- but does nothing
 			if (!getState().status.pause) {
 				// Deprecate time remaining by 1 minute and dispatch to storee
 				const time = getState().status.timeRemaining - 60000;
 				dispatch(setTimeRemaining(time));
 
-				if (time === 5 * minute) { // 5 Minutess
+				if (time === 5 * minute) { // 5 Minutes
 					this.notifications.warningNote();
 				}
 				else if (time === 0) {
@@ -63,6 +63,7 @@ class Core {
 					dispatch(setTimeRemaining(-1 * minute));
 				}
 			} else {
+        // When paused, interval keeps running -- but does nothing
 				console.log('We are paused');
 			}
 		}, 5000); // 5 seconds for testing

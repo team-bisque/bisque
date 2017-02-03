@@ -1,3 +1,7 @@
+.modal-container {
+    color: black;
+}
+
 p, h4 {
     text-align: center;
 }
@@ -6,6 +10,9 @@ h4 {
     margin-bottom: 30px;
 }
 
+.modal-container {
+    color: black;
+}
 
 .quick-survey-question {
     font-style: italic;
