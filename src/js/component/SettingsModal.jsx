@@ -12,16 +12,14 @@ import {
   Grid,
   Row,
   Col,
-  Form,
-  FormGroup,
-  FormControl,
-  ControlLabel,
   Tabs,
   Tab
 } from 'react-bootstrap';
 
 //Local
 import store from '../store';
+import SettingsDurationTab from './SettingsDurationTab';
+import SettingsGreylistTab from './SettingsGreylistTab';
 import {
   convertMillisecondsToMinutes,
   convertMinutesToMilliseconds
@@ -33,8 +31,8 @@ import {
   setStartTime
 } from '../action-creators/time';
 import Greylist from '../controllers/Greylist';
-
 const firebase = require('../controllers/firebase');
+
 
 class Settings extends Component {
   constructor(props) {
@@ -98,13 +96,6 @@ class Settings extends Component {
     this.setState({modalShowing: false});
   }
 
-<<<<<<< HEAD
-=======
-  handleSelect(tabKey) {
-    this.setState({tabKey});
-  }
-
->>>>>>> master
   handleSubmit(event) {
     event.preventDefault();
     this.hideModal();
@@ -116,22 +107,19 @@ class Settings extends Component {
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-    this.updateDuration(setWorkDuration(workDuration));
-    this.updateDuration(setBreakDuration(breakDuration));
-    this.updateDuration(setLunchDuration(lunchDuration));
-    store.dispatch(setWorkDuration(workDuration));
-    store.dispatch(setBreakDuration(breakDuration));
-    store.dispatch(setLunchDuration(lunchDuration));
+    this.updateDuration(setWorkDuration, 'work', workDuration);
+    this.updateDuration(setBreakDuration, 'break', breakDuration);
+    this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
   }
 
-  updateDuration(dispatcher, setting, time) {
+  updateDuration(actionCreator, timeCategory, duration) {
     const userId = store.getState().auth;
 
     firebase.database().ref('users/' + userId).set({
-      [setting]: time
+      [timeCategory]: duration
     })
 
-    store.dispatch(dispatcher(setting));
+    store.dispatch(actionCreator(duration));
   }
 
   workMinutesHandleChange(event) {
@@ -176,11 +164,15 @@ class Settings extends Component {
       lunchMinutesHandleChange
     } = this;
 
-    console.log("LISTURLS IN RENDER", listUrls);
-
     return (
       <div>
-        <div><center><button onClick={showModal}><span className="glyphicon glyphicon-cog settings-icon"></span></button></center></div>
+        <div>
+          <center>
+            <button onClick={showModal}>
+              <span className="glyphicon glyphicon-cog settings-icon"></span>
+            </button>
+          </center>
+        </div>
         <div className="modal-container">
           <Modal
             className="survey"
@@ -194,43 +186,17 @@ class Settings extends Component {
             <Modal.Body>
               <Tabs defaultActiveKey={1} id="settings-tabs">
                 <Tab eventKey={1} title="Duration">
-                  <Grid fluid={true} className="survey-wrapper">
-                    <Row className="statistics">
-                      <Form inline>
-                        <center>
-                        <Row>
-                        <FormGroup controlId="work-minutes">
-                          <ControlLabel className="settings-text">Work Minutes</ControlLabel>
-                          <FormControl type="number" value={workMinutes || 0} onChange={workMinutesHandleChange} />
-                        </FormGroup>
-                        </Row>
-                        <Row>
-                        <FormGroup controlId="break-minutes">
-                          <ControlLabel className="settings-text">Break Minutes</ControlLabel>
-                          <FormControl type="number" value={breakMinutes || 0} onChange={breakMinutesHandleChange} />
-                        </FormGroup>
-                        </Row>
-                        <Row>
-                        <FormGroup controlId="lunch-minutes">
-                          <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
-                          <FormControl type="number" value={lunchMinutes || 0} onChange={lunchMinutesHandleChange} />
-                        </FormGroup>
-                        </Row>
-                        </center>
-                      </Form>
-                    </Row>
-                  </Grid>
+                  <SettingsDurationTab
+                    workMinutes={workMinutes}
+                    breakMinutes={breakMinutes}
+                    lunchMinutes={lunchMinutes}
+                    workMinutesHandleChange={workMinutesHandleChange}
+                    breakMinutesHandleChange={breakMinutesHandleChange}
+                    lunchMinutesHandleChange={lunchMinutesHandleChange}
+                  />
                 </Tab>
                 <Tab eventKey={2} title="Greylist">
-                  <div>
-                  <ul>
-                    {listUrls.map((url, index) => {
-                      return (
-                        <li key={index}>{url}</li>
-                      )
-                    })}
-                  </ul>
-                  </div>
+                  <SettingsGreylistTab listUrls={listUrls}/>
                 </Tab>
               </Tabs>
             </Modal.Body>
