@@ -14,7 +14,7 @@ const initialState = {
   workDuration: 8 * minute,
   breakDuration: 6 * minute,
   lunchDuration: 5 * minute,
-  shiftDuration: 60 * minute
+  shiftDuration: 60 * minute,
   startTime: 0,
 };
 
