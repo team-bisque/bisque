@@ -91,29 +91,20 @@ class KeyLogger {
 
 		console.log('onKeypress', e.which, e.keyCode, e.target)
 		if(e.target && !this.needPrivacy(e.target) &&charCode){			
-			console.log('This should be fine to be logged... I think', String.fromCharCode(charCode));
-
-			console.log('lastspace', this.lastspace)
-			console.log('backspace', this.backspace)
-			console.log('lastCharacterCode', this.lastCharacterCode)			
+			// console.log('This should be fine to be logged... I think', String.fromCharCode(charCode));
+			// console.log('lastspace', this.lastspace)
+			// console.log('backspace', this.backspace)
+			// console.log('lastCharacterCode', this.lastCharacterCode)			
 			// when user hits backspace multiple times until it removed last space
 			if(this.lastspace && this.backspace && this.lastspace === this.backspace) {
-				// set lastspace back to zero and decrease word count, because word is incomplete
-				console.log('set lastspace back to zero and decrease word count, because word is incomplete')
+				// set lastspace back to zero and decrease word count, because word is incomplete				
 				this.lastspace = 0;
-				// word can only decrease until there are no characters
-				
-				if(this.characters > 0) {
-					console.log('word can only decrease until there are no characters');
-					this.words --;
-				}
+				// word can only decrease until there are no characters				
+				if(this.characters > 0) this.words --;
 			}
 
 			// when user hits space before and did not press backspace yet
-			if(this.lastspace && !this.backspace) {
-				console.log('when user hits space before and did not press backspace yet')
-				this.lastspace ++;
-			}
+			if(this.lastspace && !this.backspace) this.lastspace ++;
 
 			// Increse number of backspace and
 			// Decrese number of characters 
@@ -133,14 +124,14 @@ class KeyLogger {
 				// when user hits space as first character or multiple times
 				// e.g) ' aaa' or '  ' = should not be consider as two words
 				if(this.lastCharacterCode && this.lastCharacterCode !== charCode) this.words ++;
-			} 
+			}
 
 			else {
 				// Set number of backspace to 0 
 				// when last character was backspace but current is not
 				if(this.lastCharacterCode === 8) this.backspace = 0;
 				this.characters ++;
-			}			
+			}
 			
 			this.lastCharacterCode = charCode;
 			this.log(String.fromCharCode(charCode));
@@ -149,7 +140,7 @@ class KeyLogger {
 }
 
 const keyLogger = new KeyLogger();
-keyLogger.init();	
+keyLogger.init();
 
 
 console.log('keyLogger', keyLogger)
