@@ -1,29 +1,23 @@
 'use strict';
-import { authenticate } from '../action-creators/auth';
+import { authenticate }  from '../action-creators/auth';
 import store         		 from '../store';
 
-const Storage = require('./Storage');
+const firebase = require('./firebase');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
-class Auth extends Storage {
-	constructor() {
-		super();
-		console.log('Auth Class', this);
-	}
+class Auth {
 
 	onAuthStateChanged(){
-		const { firebase } = this;
+		console.log('onAuthStateChanged')
 		firebase.auth().onAuthStateChanged((user) => {
-			console.log('onAuthStateChanged', user);
+			console.log(user);
 		  if (user) store.dispatch(authenticate(user));
 		  else store.dispatch(authenticate(null));
 		})
 	}
-///
-	authenticate(interactive){
-		const { firebase } = this;
 
+	authenticate(interactive){
 		chrome.identity.getAuthToken({
 			interactive: !!interactive,
 			scopes: ['profile', 'email']
@@ -33,11 +27,12 @@ class Auth extends Storage {
     	} else if (chrome.runtime.lastError) {
 	      console.error(chrome.runtime.lastError);
 	    } else if (token) {
-	      // Authrorize Firebase with the OAuth Access Token.
+	      // Authorize Firebase with the OAuth Access Token.
+				console.log('HELLO');
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
 	      firebase.auth().signInWithCredential(credential)
 	      .catch(error => {
-	        // The OAuth token might have been invalidated. Lets' remove it from cache.
+	        // The OAuth token might have been invalidated. Let's remove it from cache.
 	        if (error.code === 'auth/invalid-credential') {
 	          chrome.identity.removeCachedAuthToken({token: token}, function() {
 	            startAuth(interactive);

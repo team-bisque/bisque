@@ -15,7 +15,7 @@ class Idle {
     this.DetectionInterval = 15;    
   }
 
-  init(){
+  _init(){
     this.setDetectionInterval(this.DetectionInterval);
     this.onStateChanged();
     this.queryState();

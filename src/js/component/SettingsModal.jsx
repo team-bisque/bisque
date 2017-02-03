@@ -34,6 +34,7 @@ import {
 } from '../action-creators/time';
 import Greylist from '../controllers/Greylist';
 
+const firebase = require('../controllers/firebase');
 
 class Settings extends Component {
   constructor(props) {
@@ -97,6 +98,13 @@ class Settings extends Component {
     this.setState({modalShowing: false});
   }
 
+<<<<<<< HEAD
+=======
+  handleSelect(tabKey) {
+    this.setState({tabKey});
+  }
+
+>>>>>>> master
   handleSubmit(event) {
     event.preventDefault();
     this.hideModal();
@@ -108,14 +116,22 @@ class Settings extends Component {
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
+    this.updateDuration(setWorkDuration(workDuration));
+    this.updateDuration(setBreakDuration(breakDuration));
+    this.updateDuration(setLunchDuration(lunchDuration));
     store.dispatch(setWorkDuration(workDuration));
     store.dispatch(setBreakDuration(breakDuration));
     store.dispatch(setLunchDuration(lunchDuration));
-    chrome.storage.sync.set({workDuration, breakDuration, lunchDuration}, () => {
-      if (chrome.runtime.error) {
-        console.error("Runtime error.");
-      }
-    });
+  }
+
+  updateDuration(dispatcher, setting, time) {
+    const userId = store.getState().auth;
+
+    firebase.database().ref('users/' + userId).set({
+      [setting]: time
+    })
+
+    store.dispatch(dispatcher(setting));
   }
 
   workMinutesHandleChange(event) {
