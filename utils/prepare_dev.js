@@ -21,7 +21,7 @@ fileSystem.copySync(path.join(__dirname, "../src/js/controllers/keyLogger.js"), 
  */
 
 var manifest = require("../src/manifest.json"),
-		apiKeys = require("../src/js/apiKeys.js")
+		apiKeys = require("../src/js/apiKeys.js"),
     fileSystem = require("fs"),
     path = require("path"),
     env = require("./env");
