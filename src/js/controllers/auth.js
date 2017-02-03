@@ -27,8 +27,8 @@ class Auth {
     	} else if (chrome.runtime.lastError) {
 	      console.error(chrome.runtime.lastError);
 	    } else if (token) {
+				console.log(token);
 	      // Authrorize Firebase with the OAuth Access Token.
-				console.log('HELLO');
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
 	      firebase.auth().signInWithCredential(credential)
 	      .catch(error => {
