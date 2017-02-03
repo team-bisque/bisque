@@ -1,13 +1,13 @@
 
 import {
-  AUTHENTICATED,
+  AUTHENTICATE,
 } from '../constants';
 
 export default (state = null, action) => {
   switch (action.type) {
-    case AUTHENTICATED:
+    case AUTHENTICATE:
       return action.user;
     default:
       return state;
-  }  
+  }
 };

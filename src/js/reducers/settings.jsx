@@ -6,20 +6,18 @@ import {
 	SET_LUNCH_DURATION,
 	SET_SHIFT_DURATION,
 	SET_START_TIME,
-	SET_TIME_REMAINING,
-	ADD_FIVE_MINUTES,
 } from '../constants';
 
+const minute = 60 * 1000; // In miliseconds
+
 const initialState = {
-  workDuration: (1000 * 60) * 8,
-  breakDuration: (1000 * 60) * 6,
-  lunchDuration: (1000 * 60) * 5,
-  shiftDuration: (1000 * 60) * 60,
+  workDuration: 8 * minute,
+  breakDuration: 6 * minute,
+  lunchDuration: 5 * minute,
+  shiftDuration: 60 * minute,
   startTime: 0,
-  timeRemaining: 0
 };
 
-// reducer
 export default (state = initialState, action) => {
 	let newState = Object.assign({}, state);
 
@@ -39,11 +37,7 @@ export default (state = initialState, action) => {
 		case SET_START_TIME:
 			newState.startTime = action.startTime;
 			break;
-		case SET_TIME_REMAINING:
-			newState.timeRemaining = action.timeRemaining;
-			break;
-		case ADD_FIVE_MINUTES:
-			newState.timeRemaining += (1000 * 60) * 5;
+		default:
 			break;
 	}
 	return newState;

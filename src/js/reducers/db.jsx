@@ -9,5 +9,5 @@ export default (state = null, action) => {
       return action.data;
     default:
       return state;
-  }  
+  }
 };

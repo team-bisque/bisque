@@ -3,10 +3,6 @@
 import axios from 'axios';
 import {weatherKey} from '../apiKeys';
 
-import ChromePromise from 'chrome-promise';
-
-const chromep = new ChromePromise();
-
 import {
   RECEIVE_WEATHER
 } from '../constants';
@@ -18,21 +14,20 @@ const openweather =
 function getPreciseLocation(){
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(position => {
-      resolve(position.coords );  
+      resolve(position.coords );
     });
   });
-} 
-
+}
 
 // Action creator function
 export const receiveWeather = (weather) =>
   ({weather, type: RECEIVE_WEATHER});
 
-export const fetchWeather = (zip) =>
+export const fetchWeather = () =>
   dispatch => {
     getPreciseLocation()
     .then(coords => {
-      if(coords) return axios.get(`${openweather}&lat=${coords.latitude}&lon=${coords.longitude}`);
+      if (coords) return axios.get(`${openweather}&lat=${coords.latitude}&lon=${coords.longitude}`);
       return axios.get('https://freegeoip.net/json/')
               .then(res => axios.get(`${openweather}&zip=${res.data.zip_code},us`));
     })
@@ -40,6 +35,3 @@ export const fetchWeather = (zip) =>
     .then(data => dispatch(receiveWeather(data)))
     .catch(err => console.error('Problem fetching weather', err));
   };
-
-
-//https://api.ipify.org/?format=json

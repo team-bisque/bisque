@@ -1,87 +1,108 @@
 'use strict';
-import { setTimeRemaining } from '../action-creators/time';
-import { toggleWork } 	 	from '../action-creators/status';
-import { fetchWeather } 	from '../action-creators/weather';
-import { receiveData }		from '../action-creators/db';
+import { setTimeRemaining } from '../action-creators/status';
+import { fetchWeather } from '../action-creators/weather';
+import { receiveData } from '../action-creators/db';
 
-const Tabs 			= require('./tabs'),
-	  Auth			= require('./auth'),
-	  WebRequest 	= require('./webRequest'),
-	  Notifications = require('./notifications'),
-	  Idle 			= require('./idle'),
-	  Greylist 		= require('./greylist'),
-	  firebase      = require('./firebase');
-
-
+const Tabs = require('./tabs'),
+			Auth = require('./auth'),
+			WebRequest 	= require('./webRequest'),
+			Notifications = require('./notifications'),
+			Idle = require('./idle'),
+			Greylist = require('./greylist'),
+			firebase = require('./firebase');
 
 class Core {
 	constructor(store) {
-		this.tabs 			= new Tabs(store);
-		this.webRequest 	= new WebRequest();
+		this.tabs = new Tabs(store);
+		this.webRequest = new WebRequest();
 		this.auth = new Auth();
-		this.notifications 	= new Notifications(store);
-		this.idle 			= new Idle();
-		this.greylist 		= new Greylist();
-		this.store 			= store;
+		this.notifications = new Notifications(store);
+		this.idle = new Idle();
+		this.greylist = new Greylist();
+		this.store = store;
 	}
 
 	init(){
-		let { dispatch, getState } = this.store;
-
-		const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
-
-		this.notifications.welcome();
+		const { dispatch, getState } = this.store;
+    const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
+		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
-		this.auth.onAuthStateChanged();
-		dispatch(fetchWeather(10004));
-		dispatch(receiveData(storedData))
-		dispatch(setTimeRemaining(getState().time.workDuration));
+    this.auth.onAuthStateChanged();
 
+    dispatch(receiveData(storedData));
+		dispatch(fetchWeather(10004));
+		// if (!this.store.getState().auth) {
+		// 	console.log('no user');
+		// 	this.notifications.login();
+		// } else {
+			console.log('welcome notification');
+			this.notifications.welcome();
+		// }
 		this.watchMinute();
 	}
 
 	watchMinute(){
-		let { dispatch, getState } = this.store,
-				minute = getState().time.timeRemaining;
+		const { dispatch, getState } = this.store,
+				minute = 60000; // 5 seconds for testing
 
 		setInterval(() => {
-			// When paused, interval keeps running -- but does nothing
-			if (!getState().status.pause) {
-				let remaining = getState().time.timeRemaining - 60000;
-				dispatch(setTimeRemaining(remaining));
-				if (remaining === (1000 * 60 * 5))
-					this.notifications.warningRemaining(remaining);
-				if (remaining === 0) this.setStatus();
+			if (!getState().status.isPaused) {
+				// Deprecate time remaining by 1 minute and dispatch to storee
+				const time = getState().status.timeRemaining - 60000;
+				dispatch(setTimeRemaining(time));
+
+				if (time === 5 * minute) { // 5 Minutes
+					this.notifications.warning();
+				}
+				else if (time === 0) {
+					this.notifications.statusChange();
+				}
+				else if (time === -5 * minute) {
+					this.notifications.whereAreYou();
+					dispatch(setTimeRemaining(-1 * minute));
+				}
+			} else {
+        // When paused, interval keeps running -- but does nothing
+				console.log('We are paused');
 			}
-		}, minute);
+		}, 5000); // 5 seconds for testing
 	}
 
-	setStatus(){
-		let { dispatch, getState } = this.store;
+	// setStatus(){
+		// let { dispatch, getState } = this.store;
+		//
+		// dispatch(toggleWork());
+		// const isWorking = getState().status.isWorking;
+		// console.log('setStatus', isWorking);
+		// if (isWorking){
+		// 	dispatch(setTimeRemaining(getState().time.workDuration));
+		// 	this.workStarts();
+		// } else {
+		// 	dispatch(setTimeRemaining(getState().time.breakDuration));
+		// 	this.breakStarts();
+		// }
+	// }
 
-		dispatch(toggleWork());
-		const isWorking = getState().status.isWorking;
-		if(isWorking){
-			dispatch(setTimeRemaining(getState().time.workDuration));
-			this.workStarts();
-		} else {
-			dispatch(setTimeRemaining(getState().time.breakDuration));
-			this.breakStarts();
-		}
-	}
-
-	breakStarts(){
-		// let tabs = this.tabs, webRequest = this.webRequest;
+	// breakStarts(){
+		// console.log('breakStarts', this)
+		// let tabs 				= this.tabs,
+		// 		webRequest 	= this.webRequest;
+		//
 		// tabs.createAndLock()
-      	// .then(() => webRequest.addOnBeforeRequestEvent()).catch(console.error);
-	}
+    //   .then(() => {
+		// 		webRequest.addOnBeforeRequestEvent();
+		// 	}).catch(console.error);
+	// }
 
-	workStarts(){
-		// let tabs = this.tabs, webRequest = this.webRequest;
-		// tabs.remove(tabs.lockedTab.id)
-		// 	.then(() => webRequest.removeOnBeforeRequestEvent())
-		// 	.catch(console.error);
-	}
+	// workStarts(){
+	// 	console.log('workStarts', this)
+	// 	let tabs 				= this.tabs,
+	// 			webRequest 	= this.webRequest;
+	//
+	// 	tabs.remove(tabs.lockedTab.id)
+	// 			.then(() => webRequest.removeOnBeforeRequestEvent())
+	// 			.catch(console.error);
+	// }
 }
 
 module.exports = Core;
