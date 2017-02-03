@@ -3,13 +3,13 @@ import { setTimeRemaining } from '../action-creators/time';
 import { toggleWork } 			from '../action-creators/status';
 import { fetchWeather } 		from '../action-creators/weather';
 
-const Tabs 					= require('./tabs'),
-			WebRequest 		= require('./webRequest'),
-			Notifications = require('./notifications'),
-			Idle 					= require('./idle'),
-			Greylist 			= require('./greylist'),
-			Storage 			= require('./storage'),
-			Auth 					= require('./auth');
+const Tabs 					= require('./Tabs'),
+			WebRequest 		= require('./WebRequest'),
+			Notifications = require('./Notifications'),
+			Idle 					= require('./Idle'),
+			Greylist 			= require('./Greylist'),
+			Storage 			= require('./Storage'),
+			Auth 					= require('./Auth');
 
 
 

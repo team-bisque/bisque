@@ -13,7 +13,7 @@ class GreyList {
 		// parse url
 		// check if url is on this list
 		const domain = this.sliceToDomain(url);
-		return this.listUrls.filter(greyUrl => domain.includes(greyUrl));
+		return this.listUrls.filter(greyUrl => domain.includes(greyUrl)).length;
 	}
 
 	watchVisit(url) {

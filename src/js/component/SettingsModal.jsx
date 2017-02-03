@@ -1,7 +1,9 @@
 'use strict';
 
+//CSS
 require('../../css/settings-modal.css');
 
+//Libraries
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {
@@ -17,6 +19,8 @@ import {
   Tabs,
   Tab
 } from 'react-bootstrap';
+
+//Local
 import store from '../store';
 import {
   convertMillisecondsToMinutes,
@@ -28,6 +32,7 @@ import {
   setLunchDuration,
   setStartTime
 } from '../action-creators/time';
+import Greylist from '../controllers/Greylist';
 
 
 class Settings extends Component {
@@ -38,6 +43,7 @@ class Settings extends Component {
       breakDuration,
       lunchDuration,
     } = props.time;
+    const greyList = new Greylist();
     const workMinutes = convertMillisecondsToMinutes(workDuration);
     const breakMinutes = convertMillisecondsToMinutes(breakDuration);
     const lunchMinutes = convertMillisecondsToMinutes(lunchDuration);
@@ -45,6 +51,7 @@ class Settings extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
+      greyList,
       modalShowing: false,
       notNumberWarning: false
     };
@@ -60,13 +67,14 @@ class Settings extends Component {
     const {
       workMinutes,
       breakMinutes,
-      lunchMinutes
+      lunchMinutes,
+      greyList
     } = this.state;
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-    chrome.storage.sync.get({workDuration, breakDuration, lunchDuration}, (storage) => {
-      const {workDuration, breakDuration, lunchDuration} = storage;
+    chrome.storage.sync.get({workDuration, breakDuration, lunchDuration, greyList}, (storage) => {
+      const {workDuration, breakDuration, lunchDuration, greyList} = storage;
       store.dispatch(setWorkDuration(workDuration));
       store.dispatch(setBreakDuration(breakDuration));
       store.dispatch(setLunchDuration(lunchDuration));
@@ -136,9 +144,12 @@ class Settings extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
+      greyList,
       modalShowing,
       notNumberWarning
     } = this.state;
+
+    const {listUrls} = greyList;
 
     const {
       showModal,
@@ -148,6 +159,8 @@ class Settings extends Component {
       breakMinutesHandleChange,
       lunchMinutesHandleChange
     } = this;
+
+    console.log("LISTURLS IN RENDER", listUrls);
 
     return (
       <div>
@@ -171,19 +184,19 @@ class Settings extends Component {
                         <center>
                         <Row>
                         <FormGroup controlId="work-minutes">
-                          <ControlLabel>Work Minutes</ControlLabel>
+                          <ControlLabel className="settings-text">Work Minutes</ControlLabel>
                           <FormControl type="number" value={workMinutes || 0} onChange={workMinutesHandleChange} />
                         </FormGroup>
                         </Row>
                         <Row>
                         <FormGroup controlId="break-minutes">
-                          <ControlLabel>Break Minutes</ControlLabel>
+                          <ControlLabel className="settings-text">Break Minutes</ControlLabel>
                           <FormControl type="number" value={breakMinutes || 0} onChange={breakMinutesHandleChange} />
                         </FormGroup>
                         </Row>
                         <Row>
                         <FormGroup controlId="lunch-minutes">
-                          <ControlLabel>Lunch Minutes</ControlLabel>
+                          <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
                           <FormControl type="number" value={lunchMinutes || 0} onChange={lunchMinutesHandleChange} />
                         </FormGroup>
                         </Row>
@@ -192,7 +205,17 @@ class Settings extends Component {
                     </Row>
                   </Grid>
                 </Tab>
-                <Tab eventKey={2} title="Greylist">Greylist Tab Content Goes Here</Tab>
+                <Tab eventKey={2} title="Greylist">
+                  <div>
+                  <ul>
+                    {listUrls.map((url, index) => {
+                      return (
+                        <li key={index}>{url}</li>
+                      )
+                    })}
+                  </ul>
+                  </div>
+                </Tab>
               </Tabs>
             </Modal.Body>
             <Modal.Footer>

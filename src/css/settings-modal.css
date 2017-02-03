@@ -10,6 +10,11 @@ h4 {
     margin-bottom: 30px;
 }
 
+li {
+    font-weight: bold;
+    color: black;
+}
+
 .modal-container {
     color: black;
 }
@@ -39,8 +44,9 @@ h4 {
     display: inline-block;
 }
 
-.time-begun, .time-completed, .words-written, .wpm, .progress-to-goal_title {
+.time-begun, .time-completed, .words-written, .wpm, .progress-to-goal_title, .settings-text {
     font-weight: bold;
+    color: black;
 }
 
 .survey-wrapper .checkin .btn-group {
