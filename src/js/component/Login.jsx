@@ -9,8 +9,6 @@ export class Login extends Component {
   }
 
   clickHandler() {
-    console.log('LOGGING IN!');
-    console.log(this.props.tabAuthenticate);
     this.props.tabAuthenticate();
   }
 
