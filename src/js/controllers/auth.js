@@ -21,7 +21,7 @@ class Auth {
 		chrome.identity.getAuthToken({
 			interactive: !!interactive,
 			scopes: ['profile', 'email']
-		}, token => {			
+		}, token => {
 			if (chrome.runtime.lastError && !interactive) {
       	console.log('It was not possible to get a token programmatically.');
     	} else if (chrome.runtime.lastError) {

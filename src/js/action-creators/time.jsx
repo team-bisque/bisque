@@ -5,7 +5,6 @@ import {
   SET_LUNCH_DURATION,
   SET_BREAK_DURATION,
   SET_TIME_REMAINING,
-  SET_SHIFT_DURATION,
   ADD_FIVE_MINUTES,
 } from '../constants';
 
@@ -19,10 +18,6 @@ export const setBreakDuration = breakDuration => ({
 
 export const setLunchDuration = lunchDuration => ({
   type: SET_LUNCH_DURATION, lunchDuration
-});
-
-export const setShiftDuration = shiftDuration => ({
-  type: SET_SHIFT_DURATION, shiftDuration
 });
 
 export const setTimeRemaining = timeRemaining => ({

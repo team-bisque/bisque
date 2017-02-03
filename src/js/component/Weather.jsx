@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export default function Steps (props) {
+export default function Weather (props) {
   const { weather } = props;
   // Current weather is broadcast in weather.main
   // weather.name is the city name
@@ -14,7 +14,7 @@ export default function Steps (props) {
 
   const daynight = 'night';
 
-  return weather ? 
+  return weather ?
     (
       <div id="weather">
         <div id="icon">

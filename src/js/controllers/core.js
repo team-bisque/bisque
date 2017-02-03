@@ -3,13 +3,13 @@ import { setTimeRemaining } from '../action-creators/time';
 import { fetchWeather } 		from '../action-creators/weather';
 import { receiveData }		from '../action-creators/db';
 
-const Tabs 			= require('./tabs'),
-	  Auth			= require('./auth'),
-	  WebRequest 	= require('./webRequest'),
-	  Notifications = require('./notifications'),
-	  Idle 			= require('./idle'),
-	  Greylist 		= require('./greylist'),
-	  firebase      = require('./firebase');
+const Tabs 					= require('./Tabs'),
+			WebRequest 		= require('./WebRequest'),
+			Notifications = require('./Notifications'),
+			Idle 					= require('./Idle'),
+			Greylist 			= require('./Greylist'),
+			Auth 					= require('./Auth');
+      firebase      = require('./firebase');
 
 class Core {
 	constructor(store) {
