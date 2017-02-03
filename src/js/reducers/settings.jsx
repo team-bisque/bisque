@@ -18,7 +18,6 @@ const initialState = {
   startTime: 0,
 };
 
-// reducer
 export default (state = initialState, action) => {
 	let newState = Object.assign({}, state);
 
@@ -37,6 +36,8 @@ export default (state = initialState, action) => {
 			break;
 		case SET_START_TIME:
 			newState.startTime = action.startTime;
+			break;
+		default:
 			break;
 	}
 	return newState;

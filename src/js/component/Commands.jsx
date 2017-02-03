@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {addFiveMinutes} from '../action-creators/time';
-import {togglePause} from '../action-creators/status';
+import {addFiveMinutes, togglePause} from '../action-creators/status';
 
 class Commands extends Component {
   constructor(props) {
@@ -23,36 +22,35 @@ class Commands extends Component {
   render () {
     return (
       <div>
-        <button
-          name="time"
-          onClick={this.clickHandler}
-          className="btn btn-warning btn-s">
-          <span className="glyphicon glyphicon-hourglass" />
-          Gimme 5 more minutes!
-        </button>
         {
-          this.props.pause
+          this.props.isPaused
             ? (<button
                 name="pause"
                 onClick={this.clickHandler}
                 className="btn btn-danger btn-s">
-                <span className="glyphicon glyphicon-alert" />
-                Unpause yourself
+                <span className="glyphicon glyphicon-hourglass" /> Unpause yourself
               </button>)
-            : (<button
-                name="pause"
-                onClick={this.clickHandler}
-                className="btn btn-danger btn-s">
-                <span className="glyphicon glyphicon-alert" />
-                $@*% hit the fan, sorry!
-              </button>)
+            : (<div>
+                <button
+                  name="time"
+                  onClick={this.clickHandler}
+                  className="btn btn-warning btn-s">
+                  <span className="glyphicon glyphicon-time" /> Gimme 5 more minutes!
+                </button>
+                <button
+                  name="pause"
+                  onClick={this.clickHandler}
+                  className="btn btn-danger btn-s">
+                  <span className="glyphicon glyphicon-hourglass" /> $@*% hit the fan, sorry!
+                </button>
+              </div>)
         }
       </div>
     );
   }
 }
 
-const mapState = (state, {status}) => ({pause: status.pause});
+const mapState = (state, {status}) => ({isPaused: status.isPaused});
 
 const mapDispatch = dispatch => ({
   addFiveMinutes: () => dispatch(addFiveMinutes()),

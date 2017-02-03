@@ -1,26 +1,25 @@
 'use strict';
-import { setTimeRemaining } from '../action-creators/time';
-import { fetchWeather } 		from '../action-creators/weather';
-import { receiveData }		from '../action-creators/db';
+import { setTimeRemaining } from '../action-creators/status';
+import { fetchWeather } from '../action-creators/weather';
+import { receiveData } from '../action-creators/db';
 
-const Tabs 			= require('./tabs'),
-	  Auth			= require('./auth'),
-	  WebRequest 	= require('./webRequest'),
-	  Notifications = require('./notifications'),
-	  Idle 			= require('./idle'),
-	  Greylist 		= require('./greylist'),
-	  firebase      = require('./firebase');
+const Tabs = require('./tabs'),
+			Auth = require('./auth'),
+			WebRequest 	= require('./webRequest'),
+			Notifications = require('./notifications'),
+			Idle = require('./idle'),
+			Greylist = require('./greylist'),
+			firebase = require('./firebase');
 
 class Core {
 	constructor(store) {
-		this.tabs 			= new Tabs(store);
-		this.webRequest 	= new WebRequest();
+		this.tabs = new Tabs(store);
+		this.webRequest = new WebRequest();
 		this.auth = new Auth();
-		this.notifications 	= new Notifications(store);
-
-		this.idle 					= new Idle();
-		this.greylist 			= new Greylist();
-		this.store 					= store;
+		this.notifications = new Notifications(store);
+		this.idle = new Idle();
+		this.greylist = new Greylist();
+		this.store = store;
 	}
 
 	init(){
@@ -47,13 +46,13 @@ class Core {
 				minute = 60000; // 5 seconds for testing
 
 		setInterval(() => {
-			if (!getState().status.pause) {
+			if (!getState().status.isPaused) {
 				// Deprecate time remaining by 1 minute and dispatch to storee
 				const time = getState().status.timeRemaining - 60000;
 				dispatch(setTimeRemaining(time));
 
 				if (time === 5 * minute) { // 5 Minutes
-					this.notifications.warningNote();
+					this.notifications.warning();
 				}
 				else if (time === 0) {
 					this.notifications.statusChange();
@@ -69,7 +68,7 @@ class Core {
 		}, 5000); // 5 seconds for testing
 	}
 
-	setStatus(){
+	// setStatus(){
 		// let { dispatch, getState } = this.store;
 		//
 		// dispatch(toggleWork());
@@ -82,9 +81,9 @@ class Core {
 		// 	dispatch(setTimeRemaining(getState().time.breakDuration));
 		// 	this.breakStarts();
 		// }
-	}
+	// }
 
-	breakStarts(){
+	// breakStarts(){
 		// console.log('breakStarts', this)
 		// let tabs 				= this.tabs,
 		// 		webRequest 	= this.webRequest;
@@ -93,9 +92,9 @@ class Core {
     //   .then(() => {
 		// 		webRequest.addOnBeforeRequestEvent();
 		// 	}).catch(console.error);
-	}
+	// }
 
-	workStarts(){
+	// workStarts(){
 	// 	console.log('workStarts', this)
 	// 	let tabs 				= this.tabs,
 	// 			webRequest 	= this.webRequest;
@@ -103,7 +102,7 @@ class Core {
 	// 	tabs.remove(tabs.lockedTab.id)
 	// 			.then(() => webRequest.removeOnBeforeRequestEvent())
 	// 			.catch(console.error);
-	}
+	// }
 }
 
 module.exports = Core;

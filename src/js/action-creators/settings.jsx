@@ -4,9 +4,8 @@ import {
   SET_WORK_DURATION,
   SET_LUNCH_DURATION,
   SET_BREAK_DURATION,
-  SET_TIME_REMAINING,
   SET_SHIFT_DURATION,
-  ADD_FIVE_MINUTES,
+  SET_START_TIME
 } from '../constants';
 
 export const setWorkDuration = workDuration => ({
@@ -25,10 +24,6 @@ export const setShiftDuration = shiftDuration => ({
   type: SET_SHIFT_DURATION, shiftDuration
 });
 
-export const setTimeRemaining = timeRemaining => ({
-  type: SET_TIME_REMAINING, timeRemaining
-});
-
-export const addFiveMinutes = () => ({
-	type: ADD_FIVE_MINUTES
+export const setStartTime = startTime => ({
+  type: SET_START_TIME, startTime
 });

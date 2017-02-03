@@ -24,7 +24,7 @@ import {
   setLunchDuration,
   setShiftDuration,
   setStartTime
-} from '../action-creators/time';
+} from '../action-creators/settings';
 
 const firebase = require('../controllers/firebase');
 
@@ -36,7 +36,7 @@ class Settings extends Component {
       breakDuration,
       lunchDuration,
       shiftDuration
-    } = props.time;
+    } = props.settings;
     const workTimeObject = convertMillisecondsToHM(workDuration);
     const workHours = workTimeObject.hours;
     const workMinutes = workTimeObject.minutes;

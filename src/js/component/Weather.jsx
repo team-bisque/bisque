@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export default function Steps (props) {
+export default function Weather (props) {
   const { weather } = props;
   // Current weather is broadcast in weather.main
   // weather.name is the city name
@@ -14,14 +14,15 @@ export default function Steps (props) {
 
   const daynight = 'night';
 
-  return weather ? 
-    (
-      <div id="weather">
-        <div id="icon">
-          <i className={`wi wi-owm-${daynight}-${weather.weather[0].id}`}></i>
-          <span>{`${Math.round((weather.main.temp - 273.15) * 1.8 + 32)}°`}</span>
+  return weather
+    ? (
+        <div id="weather">
+          <div id="icon">
+            <i className={`wi wi-owm-${daynight}-${weather.weather[0].id}`}></i>
+            <span>{` ${Math.round((weather.main.temp - 273.15) * 1.8 + 32)}°`}</span>
+          </div>
+          <span id="city">{weather.name}</span>
         </div>
-        <span id="city">{weather.name}</span>
-      </div>
-    ) : <div id="weather"></div>
+      )
+    : (<div id="weather"></div>);
 }
