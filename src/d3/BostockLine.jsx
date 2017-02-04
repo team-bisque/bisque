@@ -50,9 +50,8 @@ export class BostockLine extends Component {
     x.domain(d3.extent(formattedData, d => d.date));
     y.domain(d3.extent(formattedData, d => d.close));
 
-    // x-axis label
     g.append('g')
-      .attr('transform', `translate(0,${this.props.height})`)
+      .attr('transform', `translate(0,${this.props.height})`) // Creates relative coords for data points
       .call(d3.axisBottom(x))
     .select('.domain')
       .remove();
