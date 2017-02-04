@@ -3,6 +3,7 @@ import { setTimeRemaining } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
 import { receiveData } from '../action-creators/db';
 
+
 const Tabs = require('./tabs'),
 			Auth = require('./auth'),
 			WebRequest 	= require('./webRequest'),
@@ -23,13 +24,14 @@ class Core {
 	}
 
 	init(){
+		const json = require('../../d3/data.json');
 		const { dispatch, getState } = this.store;
     const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
 		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
     this.auth.onAuthStateChanged();
 
-    dispatch(receiveData(storedData));
+    dispatch(receiveData(json));
 		dispatch(fetchWeather(10004));
 		// if (!this.store.getState().auth) {
 		// 	console.log('no user');

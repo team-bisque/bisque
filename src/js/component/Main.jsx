@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 // Components
 import Status from './Status';
 import User from './User';
-
+import BostockLine from '../../d3/BostockLine'
 import Weather from './Weather';
 import SurveyModal from './SurveyModal';
 import SettingsModal from './SettingsModal';
@@ -16,7 +16,7 @@ const style = {
   background: {
     width: 100 + '%',
     height: 100 + 'vh',
-    background: `url("images/wallpapers/${bg}.jpg") no-repeat center center fixed`,
+    background: `url("images/wallpapers/${3}.jpg") no-repeat center center fixed`,
     backgroundSize: 'cover',
     display: 'flex',
     flexDirection: 'column',
@@ -27,16 +27,11 @@ const style = {
 
 export function Main (props) {
 
-  const {status, settings, weather, auth} = props;
+  const {status, settings, weather, db, auth} = props;
 
   return (
     <div style={style.background} className="row">
-      <div className="row">
-        <User user={auth} />
-        <Weather weather={weather} />
-      </div>
-      <Status status={status} />
-      <SettingsModal settings={settings} />
+      <BostockLine data={db} width={960} height={500} />
     </div>
   );
 }
