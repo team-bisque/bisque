@@ -6,7 +6,8 @@ import {
   SET_BREAK_DURATION,
   SET_START_TIME,
   ADD_URL,
-  REMOVE_URL
+  REMOVE_URL,
+  EDIT_URL
 } from '../constants';
 
 export const setWorkDuration = workDuration => ({
@@ -35,6 +36,14 @@ export const addUrl = url => {
 export const removeUrl = index => {
   return {
     type: REMOVE_URL,
+    index
+  }
+}
+
+export const editUrl = (url, index) => {
+  return {
+    type: EDIT_URL,
+    url,
     index
   }
 }

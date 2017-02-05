@@ -6,7 +6,8 @@ import {
 	SET_LUNCH_DURATION,
 	SET_START_TIME,
 	ADD_URL,
-	REMOVE_URL
+	REMOVE_URL,
+	EDIT_URL
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
@@ -24,8 +25,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	let newState = Object.assign({}, state);
-
-	switch (action.type){
+	switch (action.type) {
 		case SET_WORK_DURATION:
 			newState.workDuration = action.workDuration;
 			break;
@@ -42,12 +42,11 @@ export default (state = initialState, action) => {
 	    newState.urlList.push(action.url);
 	    break;
 	  case REMOVE_URL:
-	    if (action.index < 0) {
-	      console.log("URL wasn't on the list!");
-	    } else {
-	      newState.urlList = newState.urlList.filter((e, i) => i !== action.index);
-	    }
+	    newState.urlList = newState.urlList.filter((e, i) => i !== action.index);
 	    break;
+    case EDIT_URL:
+    	newState.urlList = newState.urlList.map((e, i) => i === action.index ? action.url : e);
+    	break;
 		default:
 			break;
 	}

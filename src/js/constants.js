@@ -21,6 +21,7 @@ export const SET_START_TIME = 'SET_START_TIME';
 // greylist
 export const ADD_URL = 'ADD_URL';
 export const REMOVE_URL = 'REMOVE_URL';
+export const EDIT_URL = 'EDIT_URL';
 
 // weather
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';

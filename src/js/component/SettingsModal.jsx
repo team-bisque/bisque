@@ -31,19 +31,20 @@ import {
   setStartTime
 } from '../action-creators/settings';
 import Greylist from '../controllers/Greylist';
-
-
 const firebase = require('../controllers/firebase');
 
 
-class Settings extends Component {
+
+
+class SettingsModal extends Component {
   constructor(props) {
     super(props);
     const {
       workDuration,
       breakDuration,
       lunchDuration,
-      shiftDuration
+      shiftDuration,
+      urlList
     } = props.settings;
     const workMinutes = convertMillisecondsToMinutes(workDuration);
     const breakMinutes = convertMillisecondsToMinutes(breakDuration);
@@ -52,10 +53,13 @@ class Settings extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      urlList: [],
+      urlList,
+      currentUrl: '',
       modalShowing: false,
       notNumberWarning: false
     };
+    this.saveEditUrl = this.saveEditUrl.bind(this);
+    this.saveNewUrl = this.saveNewUrl.bind(this);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -83,7 +87,6 @@ class Settings extends Component {
 
   updateDuration(actionCreator, timeCategory, duration) {
     const userId = store.getState().auth;
-    console.log(`USERID`, userId);
 
     // firebase.database().ref('users/' + userId).set({
     //   [timeCategory]: duration
@@ -107,6 +110,7 @@ class Settings extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
+      urlList
     } = this.state;
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
@@ -114,6 +118,23 @@ class Settings extends Component {
     this.updateDuration(setWorkDuration, 'work', workDuration);
     this.updateDuration(setBreakDuration, 'break', breakDuration);
     this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
+  }
+
+  editUrlHandleChange(event) {
+    const index = event.target.getAttribute('index');
+    console.log(index);
+    this.state.urlList[index] = event.target.value;
+  }
+
+  newUrlHandleChange(event) {
+    this.setState({currentUrl: event.target.value});
+  }
+
+  saveNewUrl() {
+  }
+
+  saveEditUrl(url, index) {
+    console.log(url, index);
   }
 
   workMinutesHandleChange(event) {
@@ -143,6 +164,7 @@ class Settings extends Component {
       breakMinutes,
       lunchMinutes,
       urlList,
+      currentUrl,
       modalShowing,
       notNumberWarning
     } = this.state;
@@ -153,16 +175,20 @@ class Settings extends Component {
       handleSubmit,
       workMinutesHandleChange,
       breakMinutesHandleChange,
-      lunchMinutesHandleChange
+      lunchMinutesHandleChange,
+      newUrlHandleChange,
+      editUrlHandleChange,
+      saveNewUrl,
+      saveEditUrl
     } = this;
 
     return (
       <div>
         <div>
           <center>
-            <button onClick={showModal}>
+            <Button onClick={showModal}>
               <span className="glyphicon glyphicon-cog settings-icon"></span>
-            </button>
+            </Button>
           </center>
         </div>
         <div className="modal-container">
@@ -190,6 +216,9 @@ class Settings extends Component {
                 <Tab eventKey={2} title="Greylist">
                   <SettingsGreylistTab
                     urlList={urlList}
+                    currentUrl={currentUrl}
+                    saveNewUrl={saveNewUrl}
+                    saveEditUrl={saveEditUrl}
                     newUrlHandleChange={newUrlHandleChange}
                     editUrlHandleChange={editUrlHandleChange}
                   />
@@ -206,7 +235,7 @@ class Settings extends Component {
   }
 }
 
-const mapState = ({settings, auth}) => ({settings, auth});
+const mapState = ({settings}) => ({settings});
 const mapDispatch = null;
 
-export default connect(mapState, mapDispatch)(Settings);
+export default connect(mapState, mapDispatch)(SettingsModal);
