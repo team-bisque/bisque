@@ -9,6 +9,7 @@ import User from './User';
 import Weather from './Weather';
 import SurveyModal from './SurveyModal';
 import SettingsModal from './SettingsModal';
+import Graph from './Graph';
 
 const bg = Math.floor(Math.random() * (8 - 1)) + 1;
 
@@ -27,7 +28,7 @@ const style = {
 
 export function Main (props) {
 
-  const {status, settings, weather, auth} = props;
+  const {status, settings, weather, auth, db} = props;
 
   return (
     <div style={style.background} className="row">
@@ -37,6 +38,7 @@ export function Main (props) {
       </div>
       <Status status={status} />
       <SettingsModal settings={settings} />
+      <Graph db={db}/>
     </div>
   );
 }
