@@ -70,6 +70,30 @@ export class Line extends Component {
       .datum(formattedData)
       .attr('class', 'line') // Provide CSS
       .attr('d', line); // draw the line
+
+    // Defining the vertical line
+    const vertical = g.append('div')
+      .attr('class', 'remove')
+      .style('position', 'absolute')
+      .style('z-index', '19')
+      .style('width', '1px')
+      .style('height', '380px')
+      .style('top', '10px')
+      .style('bottom', '30px')
+      .style('left', '0px')
+      .style('background', '#fff');
+
+    // Mouseover events for vertical line
+    g.on('mousemove', function(){
+       let mousex = d3.mouse(this);
+       mousex = mousex[0] + 5;
+       vertical.style('left', `${mousex}px`);
+     })
+    .on('mouseover', function(){
+       let mousex = d3.mouse(this);
+       mousex = mousex[0] + 5;
+       vertical.style('left', `${mousex}px`);
+     });
   }
 
   render() {
