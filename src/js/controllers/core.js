@@ -24,14 +24,13 @@ class Core {
 	}
 
 	init(){
-		const json = require('../../d3/data.json');
 		const { dispatch, getState } = this.store;
     const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
 		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
     this.auth.onAuthStateChanged();
 
-    dispatch(receiveData(json));
+    dispatch(receiveData(storedData));
 		dispatch(fetchWeather(10004));
 		// if (!this.store.getState().auth) {
 		// 	console.log('no user');
