@@ -1,6 +1,7 @@
 'use strict';
 import { authenticate }  from '../action-creators/auth';
 import store         		 from '../store';
+import { receiveHistory, receiveSettings } from '../action-creators/db';
 
 const firebase = require('./firebase');
 const ChromePromise = require('chrome-promise');
@@ -9,15 +10,29 @@ const chromep = new ChromePromise();
 class Auth {
 
 	onAuthStateChanged(){
-		console.log('onAuthStateChanged')
-		firebase.auth().onAuthStateChanged((user) => {
-			console.log(user);
-		  if (user) store.dispatch(authenticate(user));
-		  else store.dispatch(authenticate(null));
+		firebase.auth().onAuthStateChanged(user => {
+		  if (user) {
+				const userId = user.uid;
+
+				store.dispatch(authenticate(user));
+
+				firebase.database().ref('user_history/' + userId).once('value', (snapshot) => {
+					store.dispatch(receiveHistory(snapshot.val()));
+				});
+
+				firebase.database().ref('users/' + userId).once('value', (snapshot) => {
+					store.dispatch(receiveSettings(snapshot.val()));
+				});
+
+			} else store.dispatch(authenticate(null));
 		})
 	}
 
+<<<<<<< HEAD
 	authenticate(interactive){
+=======
+	authenticate(interactive) {
+>>>>>>> master
 		chrome.identity.getAuthToken({
 			interactive: !!interactive,
 			scopes: ['profile', 'email']
@@ -25,10 +40,9 @@ class Auth {
 			if (chrome.runtime.lastError && !interactive) {
       	console.log('It was not possible to get a token programmatically.');
     	} else if (chrome.runtime.lastError) {
-	      console.error(chrome.runtime.lastError);
+				throw new Error(chrome.runtime.lastError);
 	    } else if (token) {
-	      // Authorize Firebase with the OAuth Access Token.
-				console.log('HELLO');
+	      // Authrorize Firebase with the OAuth Access Token.
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
 	      firebase.auth().signInWithCredential(credential)
 	      .catch(error => {

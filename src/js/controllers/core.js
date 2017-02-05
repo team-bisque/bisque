@@ -1,7 +1,7 @@
 'use strict';
-import { setTimeRemaining } from '../action-creators/status';
+import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-import { receiveData } from '../action-creators/db';
+
 
 const Tabs 					= require('./Tabs'),
 			WebRequest 		= require('./WebRequest'),
@@ -24,42 +24,45 @@ class Core {
 
 	init(){
 		const { dispatch, getState } = this.store;
-    const storedData = firebase.database().ref().once('value', (snapshot) => snapshot);
+
 		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
-    this.auth.onAuthStateChanged();
 
-    dispatch(receiveData(storedData));
-		dispatch(fetchWeather(10004));
-		// if (!this.store.getState().auth) {
-		// 	console.log('no user');
-		// 	this.notifications.login();
-		// } else {
-			console.log('welcome notification');
+		this.auth.onAuthStateChanged();
+
+		dispatch(fetchWeather());
+
+		if (!this.store.getState().auth) {
+			this.notifications.login();
+		} else {
 			this.notifications.welcome();
-		// }
+		}
+
 		this.watchMinute();
 	}
 
 	watchMinute(){
-		const { dispatch, getState } = this.store,
-				minute = 60000; // 5 seconds for testing
+		const { dispatch, getState } = this.store
+		const minute = 60000; // 5 seconds for testing
 
 		setInterval(() => {
 			if (!getState().status.isPaused) {
 				// Deprecate time remaining by 1 minute and dispatch to storee
-				const time = getState().status.timeRemaining - 60000;
+				const time = getState().status.timeRemaining - minute;
 				dispatch(setTimeRemaining(time));
 
 				if (time === 5 * minute) { // 5 Minutes
+					console.log(time);
 					this.notifications.warning();
 				}
 				else if (time === 0) {
+					console.log(time);
 					this.notifications.statusChange();
 				}
 				else if (time === -5 * minute) {
+					console.log(time);
 					this.notifications.whereAreYou();
-					dispatch(setTimeRemaining(-1 * minute));
+					dispatch(togglePause());
 				}
 			} else {
         // When paused, interval keeps running -- but does nothing

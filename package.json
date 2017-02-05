@@ -28,6 +28,8 @@
     "bootstrap": "^3.3.7",
     "chrome-promise": "^2.0.2",
     "css-loader": "^0.25.0",
+    "d3": "^4.5.0",
+    "d3-time-format": "^2.0.3",
     "file-loader": "^0.10.0",
     "firebase": "^3.6.8",
     "fs-extra": "^0.30.0",

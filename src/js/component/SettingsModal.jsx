@@ -120,11 +120,9 @@ class SettingsModal extends Component {
     this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
   }
 
-  editUrlHandleChange(event) {
-    const index = event.target.getAttribute('index');
-    console.log(index);
-    this.state.urlList[index] = event.target.value;
-  }
+
+  updateDuration(dispatcher, setting, time) {
+    const userId = store.getState().auth.uid;
 
   newUrlHandleChange(event) {
     this.setState({currentUrl: event.target.value});
@@ -133,8 +131,11 @@ class SettingsModal extends Component {
   saveNewUrl() {
   }
 
-  saveEditUrl(url, index) {
-    console.log(url, index);
+workHoursHandleChange(event) {
+    let workHours = +event.target.value;
+    const notNumberWarning = isNaN(workHours);
+    if (notNumberWarning) workHours = this.state.workHours;
+    this.setState({workHours, notNumberWarning});
   }
 
   workMinutesHandleChange(event) {
@@ -233,9 +234,9 @@ class SettingsModal extends Component {
       </div>
     );
   }
-}
+};
 
-const mapState = ({settings}) => ({settings});
+const mapState = ({settings}) => ({settings})
 const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(SettingsModal);

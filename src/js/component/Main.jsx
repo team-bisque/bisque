@@ -7,6 +7,7 @@ import Status from './Status';
 import User from './User';
 import Weather from './Weather';
 import SettingsModal from './SettingsModal';
+import LineGraph from './graphs/Line'
 
 const bg = Math.floor(Math.random() * (8 - 1)) + 1;
 
@@ -25,7 +26,7 @@ const style = {
 
 export function Main (props) {
 
-  const {status, settings, weather, auth} = props;
+  const {status, settings, weather, auth, db} = props;
 
   return (
     <div style={style.background} className="row">
@@ -35,6 +36,7 @@ export function Main (props) {
       </div>
       <Status status={status} />
       <SettingsModal />
+      <LineGraph db={db} width={960} height={500} yAxis={'Words Per Minute'}/>
     </div>
   );
 }

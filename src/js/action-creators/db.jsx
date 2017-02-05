@@ -1,5 +1,7 @@
 import {
-  RECEIVE_DATA,
+  RECEIVE_HISTORY,
+  RECEIVE_SETTINGS
 } from '../constants';
 
-export const receiveData = data => ({ type: 'RECEIVE_DATA', data });
+export const receiveHistory = history => ({ type: 'RECEIVE_HISTORY', history });
+export const receiveSettings = settings => ({ type: 'RECEIVE_SETTINGS', settings });
