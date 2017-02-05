@@ -5,11 +5,10 @@ import {connect} from 'react-redux';
 // Components
 import Status from './Status';
 import User from './User';
-
 import Weather from './Weather';
 import SurveyModal from './SurveyModal';
 import SettingsModal from './SettingsModal';
-import Graph from './Graph';
+import LineGraph from './graphs/Line'
 
 const bg = Math.floor(Math.random() * (8 - 1)) + 1;
 
@@ -38,7 +37,7 @@ export function Main (props) {
       </div>
       <Status status={status} />
       <SettingsModal settings={settings} />
-      <Graph db={db}/>
+      <LineGraph db={db} width={960} height={500} yAxis={'Words Per Minute'}/>
     </div>
   );
 }
