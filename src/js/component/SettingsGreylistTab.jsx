@@ -43,7 +43,7 @@ const SettingsGreylistTab = (props) => {
                     onChange={(event) => editUrlHandleChange(event, index)}
                   />
                 </FormGroup>
-                <Button onClick={(event) => removeUrl(index)}><span className="glyphicon glyphicon-minus"></span></Button>
+                <Button onClick={(event) => removeUrl(event, index)}><span className="glyphicon glyphicon-minus"></span></Button>
               </Row>
             )
           }).reverse()}
