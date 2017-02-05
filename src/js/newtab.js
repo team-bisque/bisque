@@ -12,7 +12,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Main from './component/Main';
 
 const unsubscribe = proxy.subscribe(() => {
-   unsubscribe(); // initial connection
+  unsubscribe(); // initial connection
 
   render(
   <Provider store={proxy}>

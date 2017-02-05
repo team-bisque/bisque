@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {addFiveMinutes, togglePause} from '../action-creators/status';
+import {addFiveMinutes, togglePause, toggleWork} from '../action-creators/status';
 
 class Commands extends Component {
   constructor(props) {
@@ -16,12 +16,31 @@ class Commands extends Component {
       this.props.addFiveMinutes();
     } else if (button === 'pause') {
       this.props.togglePause();
+    } else if (button === 'toggle') {
+      this.props.toggleWork();
     }
   }
 
   render () {
     return (
       <div>
+        <div>
+          {
+            !this.props.isWorking
+              ? <button
+                  name="toggle"
+                  onClick={this.clickHandler}
+                  className="btn btn-default btn-s">
+                  <span className="glyphicon glyphicon-briefcase" /> Start work
+                </button>
+              : <button
+                  name="toggle"
+                  onClick={this.clickHandler}
+                  className="btn btn-default btn-s">
+                  <span className="glyphicon glyphicon-sunglasses" /> Take a break
+                </button>
+          }
+        </div>
         {
           this.props.isPaused
             ? (<button
@@ -35,13 +54,13 @@ class Commands extends Component {
                   name="time"
                   onClick={this.clickHandler}
                   className="btn btn-warning btn-s">
-                  <span className="glyphicon glyphicon-time" /> Gimme 5 more minutes!
+                  <span className="glyphicon glyphicon-time" /> 5 more minutes
                 </button>
                 <button
                   name="pause"
                   onClick={this.clickHandler}
                   className="btn btn-danger btn-s">
-                  <span className="glyphicon glyphicon-hourglass" /> $@*% hit the fan, sorry!
+                  <span className="glyphicon glyphicon-hourglass" /> I can't even
                 </button>
               </div>)
         }
@@ -50,11 +69,15 @@ class Commands extends Component {
   }
 }
 
-const mapState = (state, {status}) => ({isPaused: status.isPaused});
+const mapState = (state, {status}) => ({
+  isPaused: status.isPaused,
+  isWorking: status.isWorking
+});
 
 const mapDispatch = dispatch => ({
   addFiveMinutes: () => dispatch(addFiveMinutes()),
-  togglePause: () => dispatch(togglePause())
+  togglePause: () => dispatch(togglePause()),
+  toggleWork: () => dispatch(toggleWork())
 });
 
 export default connect(mapState, mapDispatch)(Commands);

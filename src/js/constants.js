@@ -2,7 +2,8 @@
 export const AUTHENTICATE = 'AUTHENTICATE';
 
 // db
-export const RECEIVE_DATA = 'RECEIVE_DATA';
+export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
+export const RECEIVE_SETTINGS = 'RECEIVE_SETTINGS';
 
 // settings
 export const TOGGLE_WORK = 'TOGGLE_WORK';

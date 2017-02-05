@@ -4,7 +4,7 @@ import React from 'react';
 import Login from './Login';
 
 export default function User (props) {
-  const {user} = props;
+  const {user, db} = props;
 
   return (
     <div id="user">
