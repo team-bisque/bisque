@@ -14,7 +14,7 @@ const SettingsGreylistTab = (props) => {
     newUrlHandleChange,
     editUrlHandleChange,
     saveNewUrl,
-    saveEditUrl,
+    removeUrl,
     currentUrl
   } = props;
   return (
@@ -24,17 +24,26 @@ const SettingsGreylistTab = (props) => {
             <Form inline>
             <Row>
               <FormGroup>
-                <FormControl key={'add'} type="text" value={currentUrl} onChange={newUrlHandleChange} />
+                <FormControl
+                  key={'add'}
+                  type="text"
+                  value={currentUrl}
+                  onChange={newUrlHandleChange}
+                />
               <Button onClick={saveNewUrl}><span className="glyphicon glyphicon-plus"></span></Button>
               </FormGroup>
               </Row>
           {urlList.map((url, index) => {
             return (
-                    <Row>
-              <FormGroup key={index}>
-                <FormControl key={index} index={index} type="text" value={url} onChange={editUrlHandleChange} />
-                <Button onClick={(url, index) => saveEditUrl(url, index)}><span className="glyphicon glyphicon-plus"></span></Button>
-              </FormGroup>
+              <Row key={index}>
+                <FormGroup>
+                  <FormControl
+                    type="text"
+                    value={url}
+                    onChange={(event) => editUrlHandleChange(event, index)}
+                  />
+                </FormGroup>
+                <Button onClick={(event) => removeUrl(index)}><span className="glyphicon glyphicon-minus"></span></Button>
               </Row>
             )
           }).reverse()}
@@ -50,12 +59,5 @@ export default SettingsGreylistTab;
 /*
 
 
-<Button onClick={addUrl}>
-  <span className="glyphicon glyphicon-plus"></span>
-</Button>
 
-
-<Button onClick={addUrl}>
-  <span className="glyphicon glyphicon-plus"></span>
-</Button>
 */

@@ -58,7 +58,7 @@ class SettingsModal extends Component {
       modalShowing: false,
       notNumberWarning: false
     };
-    this.saveEditUrl = this.saveEditUrl.bind(this);
+    this.removeUrl = this.removeUrl.bind(this);
     this.saveNewUrl = this.saveNewUrl.bind(this);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
@@ -85,16 +85,6 @@ class SettingsModal extends Component {
     this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
   }
 
-  updateDuration(actionCreator, timeCategory, duration) {
-    const userId = store.getState().auth;
-
-    // firebase.database().ref('users/' + userId).set({
-    //   [timeCategory]: duration
-    // })
-
-    store.dispatch(actionCreator(duration));
-  }
-
   showModal () {
     this.setState({modalShowing: true});
   }
@@ -115,27 +105,43 @@ class SettingsModal extends Component {
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-    this.updateDuration(setWorkDuration, 'work', workDuration);
-    this.updateDuration(setBreakDuration, 'break', breakDuration);
-    this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
+
   }
 
+  updateDuration(actionCreator, timeCategory, duration) {
+    const userId = store.getState().auth;
 
-  updateDuration(dispatcher, setting, time) {
-    const userId = store.getState().auth.uid;
+    // firebase.database().ref('users/' + userId).set({
+    //   [timeCategory]: duration
+    // })
+
+    store.dispatch(actionCreator(duration));
+  }
+
+  editUrlHandleChange(event, indexToChange) {
+    const {value} = event.target;
+    const urlList = this.state.urlList.map((url, index) =>
+      (index === indexToChange) ? value : url
+    );
+    this.setState({urlList});
+  }
 
   newUrlHandleChange(event) {
     this.setState({currentUrl: event.target.value});
   }
 
   saveNewUrl() {
+    const {urlList, currentUrl} = this.state;
+    urlList.push(currentUrl);
+    this.setState({urlList, currentUrl: ''});
   }
 
-workHoursHandleChange(event) {
-    let workHours = +event.target.value;
-    const notNumberWarning = isNaN(workHours);
-    if (notNumberWarning) workHours = this.state.workHours;
-    this.setState({workHours, notNumberWarning});
+  removeUrl(event, indexToRemove) {
+    console.log(indexToRemove);
+    const urlList = this.state.urlList.filter((url, index) =>
+      index !== indexToRemove
+    );
+    this.setState({urlList});
   }
 
   workMinutesHandleChange(event) {
@@ -180,7 +186,7 @@ workHoursHandleChange(event) {
       newUrlHandleChange,
       editUrlHandleChange,
       saveNewUrl,
-      saveEditUrl
+      removeUrl
     } = this;
 
     return (
@@ -219,7 +225,7 @@ workHoursHandleChange(event) {
                     urlList={urlList}
                     currentUrl={currentUrl}
                     saveNewUrl={saveNewUrl}
-                    saveEditUrl={saveEditUrl}
+                    removeUrl={removeUrl}
                     newUrlHandleChange={newUrlHandleChange}
                     editUrlHandleChange={editUrlHandleChange}
                   />
@@ -234,9 +240,9 @@ workHoursHandleChange(event) {
       </div>
     );
   }
-};
+}
 
-const mapState = ({settings}) => ({settings})
+const mapState = ({settings}) => ({settings});
 const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(SettingsModal);

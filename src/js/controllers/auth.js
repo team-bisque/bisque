@@ -28,11 +28,7 @@ class Auth {
 		})
 	}
 
-<<<<<<< HEAD
 	authenticate(interactive){
-=======
-	authenticate(interactive) {
->>>>>>> master
 		chrome.identity.getAuthToken({
 			interactive: !!interactive,
 			scopes: ['profile', 'email']
