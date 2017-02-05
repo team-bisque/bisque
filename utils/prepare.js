@@ -12,7 +12,7 @@ fileSystem.emptyDirSync(path.join(__dirname, "../build"));
 
 fileSystem.copySync(path.join(__dirname, "../src/images"), path.join(__dirname, "../build/images"))
 fileSystem.copySync(path.join(__dirname, "../src/js/controllers/keyLogger.js"), path.join(__dirname, "../build/keyLogger.js"))
-
+fileSystem.copySync(path.join(__dirname, "../node_modules/d3/build/d3.min.js"), path.join(__dirname, "../build/d3.min.js"))
 
 /*
  * =================

@@ -157,7 +157,7 @@ class Settings extends Component {
   }
 
   updateDuration(dispatcher, setting, time) {
-    const userId = store.getState().auth;
+    const userId = store.getState().auth.uid;
 
     firebase.database().ref('users/' + userId).set({
       [setting]: time
@@ -167,7 +167,6 @@ class Settings extends Component {
   }
 
   workHoursHandleChange(event) {
-    console.log(event);
     let workHours = +event.target.value;
     const notNumberWarning = isNaN(workHours);
     if (notNumberWarning) workHours = this.state.workHours;

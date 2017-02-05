@@ -1,7 +1,6 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-import { receiveData } from '../action-creators/db';
 
 const Tabs = require('./tabs'),
 			Auth = require('./auth'),
@@ -24,22 +23,20 @@ class Core {
 
 	init(){
 		const { dispatch, getState } = this.store;
-    	firebase.database().ref().once('value', (snapshot) => {
-			dispatch(receiveData(snapshot.val()));
-		});
+
 		this.tabs.init(); // <-- for keylogger;
 		this.idle._init();
-  	this.auth.onAuthStateChanged();
 
-		
+		this.auth.onAuthStateChanged();
+
 		dispatch(fetchWeather());
-		// if (!this.store.getState().auth) {
-		// 	console.log('no user');
-		// 	this.notifications.login();
-		// } else {
-			console.log('welcome notification');
+
+		if (!this.store.getState().auth) {
+			this.notifications.login();
+		} else {
 			this.notifications.welcome();
-		// }
+		}
+
 		this.watchMinute();
 	}
 
