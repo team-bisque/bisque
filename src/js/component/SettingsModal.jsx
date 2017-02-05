@@ -24,12 +24,7 @@ import {
   convertMillisecondsToMinutes,
   convertMinutesToMilliseconds
 } from '../utils';
-import {
-  setWorkDuration,
-  setBreakDuration,
-  setLunchDuration,
-  setStartTime
-} from '../action-creators/settings';
+import {saveSettings} from '../action-creators/settings';
 import Greylist from '../controllers/Greylist';
 const firebase = require('../controllers/firebase');
 
@@ -43,7 +38,6 @@ class SettingsModal extends Component {
       workDuration,
       breakDuration,
       lunchDuration,
-      shiftDuration,
       urlList
     } = props.settings;
     const workMinutes = convertMillisecondsToMinutes(workDuration);
@@ -55,8 +49,7 @@ class SettingsModal extends Component {
       lunchMinutes,
       urlList,
       currentUrl: '',
-      modalShowing: false,
-      notNumberWarning: false
+      modalShowing: false
     };
     this.removeUrl = this.removeUrl.bind(this);
     this.saveNewUrl = this.saveNewUrl.bind(this);
@@ -68,21 +61,6 @@ class SettingsModal extends Component {
     this.workMinutesHandleChange = this.workMinutesHandleChange.bind(this);
     this.breakMinutesHandleChange = this.breakMinutesHandleChange.bind(this);
     this.lunchMinutesHandleChange = this.lunchMinutesHandleChange.bind(this);
-  }
-
-  componentDidMount() {
-    const {
-      workMinutes,
-      breakMinutes,
-      lunchMinutes,
-      urlList
-    } = this.state;
-    const workDuration = convertMinutesToMilliseconds(workMinutes);
-    const breakDuration = convertMinutesToMilliseconds(breakMinutes);
-    const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-    this.updateDuration(setWorkDuration, 'work', workDuration);
-    this.updateDuration(setBreakDuration, 'break', breakDuration);
-    this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
   }
 
   showModal () {
@@ -105,7 +83,9 @@ class SettingsModal extends Component {
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-
+    store.dispatch(saveSettings({
+      workMinutes, breakMinutes, lunchMinutes, urlList
+    }));
   }
 
   updateDuration(actionCreator, timeCategory, duration) {
@@ -146,23 +126,17 @@ class SettingsModal extends Component {
 
   workMinutesHandleChange(event) {
     let workMinutes = +event.target.value;
-    const notNumberWarning = isNaN(workMinutes);
-    if (notNumberWarning) workMinutes = this.state.workMinutes;
-    this.setState({workMinutes, notNumberWarning});
+    this.setState({workMinutes});
   }
 
   breakMinutesHandleChange(event) {
     let breakMinutes = +event.target.value;
-    const notNumberWarning = isNaN(breakMinutes);
-    if (notNumberWarning) breakMinutes = this.state.breakMinutes;
-    this.setState({breakMinutes, notNumberWarning});
+    this.setState({breakMinutes});
   }
 
   lunchMinutesHandleChange(event) {
-    let lunchMinutes = +event.target.value;
-    const notNumberWarning = isNaN(lunchMinutes);
-    if (notNumberWarning) lunchMinutes = this.state.lunchMinutes;
-    this.setState({lunchMinutes, notNumberWarning});
+    let lunchMinutes = event.target.value;
+    this.setState({lunchMinutes});
   }
 
   render() {
@@ -172,8 +146,7 @@ class SettingsModal extends Component {
       lunchMinutes,
       urlList,
       currentUrl,
-      modalShowing,
-      notNumberWarning
+      modalShowing
     } = this.state;
 
     const {

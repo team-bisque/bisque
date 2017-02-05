@@ -1,13 +1,8 @@
 'use strict';
 
 import {
-	SET_WORK_DURATION,
-	SET_BREAK_DURATION,
-	SET_LUNCH_DURATION,
-	SET_START_TIME,
-	ADD_URL,
-	REMOVE_URL,
-	EDIT_URL
+	SAVE_SETTINGS
+	SET_START_TIME
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
@@ -16,7 +11,6 @@ const initialState = {
   workDuration: 8 * minute,
   breakDuration: 6 * minute,
   lunchDuration: 5 * minute,
-  startTime: 0,
   urlList: [
     'youtube.com',
     'buzzfeed.com'

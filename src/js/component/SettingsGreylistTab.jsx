@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Button,
   Row,
+  Grid,
   Form,
   FormGroup,
   FormControl,
@@ -19,37 +20,39 @@ const SettingsGreylistTab = (props) => {
   } = props;
   return (
     <div>
-      <center>
+      <Grid fluid={true} className="survey-wrapper">
         <Row>
-            <Form inline>
-            <Row>
-              <FormGroup>
-                <FormControl
-                  key={'add'}
-                  type="text"
-                  value={currentUrl}
-                  onChange={newUrlHandleChange}
-                />
-              <Button onClick={saveNewUrl}><span className="glyphicon glyphicon-plus"></span></Button>
-              </FormGroup>
-              </Row>
-          {urlList.map((url, index) => {
-            return (
-              <Row key={index}>
+          <Form inline>
+            <center>
+              <Row>
                 <FormGroup>
                   <FormControl
+                    key={'add'}
                     type="text"
-                    value={url}
-                    onChange={(event) => editUrlHandleChange(event, index)}
+                    value={currentUrl}
+                    onChange={newUrlHandleChange}
                   />
+                <Button onClick={saveNewUrl}><span className="glyphicon glyphicon-plus"></span></Button>
                 </FormGroup>
-                <Button onClick={(event) => removeUrl(event, index)}><span className="glyphicon glyphicon-minus"></span></Button>
               </Row>
-            )
-          }).reverse()}
+            {urlList.map((url, index) => {
+              return (
+                <Row key={index}>
+                  <FormGroup>
+                    <FormControl
+                      type="text"
+                      value={url}
+                      onChange={(event) => editUrlHandleChange(event, index)}
+                    />
+                  </FormGroup>
+                  <Button onClick={(event) => removeUrl(event, index)}><span className="glyphicon glyphicon-minus"></span></Button>
+                </Row>
+              )
+            }).reverse()}
+            </center>
           </Form>
-          </Row>
-      </center>
+        </Row>
+      </Grid>
     </div>)
 }
 
