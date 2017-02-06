@@ -9,53 +9,56 @@ export class Donut extends Component {
 
   componentDidMount() {
     const minutes =  [
-      {label: 'remaining', count: 10},
-      {label: 'spent', count: 50}
+      {label: 'remaining', count: this.props.minutes},
+      {label: 'spent', count: 60 - this.props.minutes}
     ]
-    const width = 360;
-    const height = 360;
-    const donutWidth = 75;
-    const radius = Math.min(360, 360) / 2;
+    const {diameter, center} = this.props
+    const radius = diameter / 2;
 
-    const red = '#a92a2a';
-    const pink = '#ffb794';
-    const transparent = 'rgba(255, 183, 148, 0.3)'
+    let colors = ['#fff', 'rgba(255, 255, 255, 0.3)'];
+    // Less than 5 minutes triggers pink color
+    if (minutes[0].count < 6) colors = ['#ffb794', 'rgba(255, 183, 148, 0.3)'];
+    if (minutes[0].count < 1) colors = ['#a92a2a', 'rgba(169, 42, 42, 0.3)']
 
     const color = d3.scaleOrdinal()
-      .range([pink, transparent])
+      .range(colors)
 
     const g = d3.select('svg')
       .append('g')
-      .attr('transform', `translate(180,180)`)
+      .attr('transform', `translate(${radius},${radius})`)
 
     const svg = d3.select('svg')
       .append('svg')
-        .attr('width', width)
-        .attr('height', height)
+        .attr('width', diameter)
+        .attr('height', diameter)
       .append('g')
-        .attr('transform', `translate(${width / 2},${height / 2})`)
+        .attr('transform', `translate(${radius},${radius})`)
 
     const arc = d3.arc()
-      .innerRadius(radius - donutWidth)
+      .innerRadius(radius - center)
       .outerRadius(radius);
 
     const pie = d3.pie()
       .value(d => d.count)
-      .sort(null) // No auto-sorting
+      .sort(null); // No auto-sorting
 
     const path = svg.selectAll('path')
       .data(pie(minutes))
       .enter()
-      .append('path')
+        .append('path')
         .attr('d', arc)
         .attr('fill', (d, i) => color(d.data.label))
   }
 
   render() {
-    return <svg width="360" height="360" />
+    return <svg width={this.props.diameter} height={this.props.diameter} />
   }
 }
 
-const mapState = ({status}) => ({minutes: status.timeRemaining});
+const mapState = ({status}, {diameter, center}) => ({
+  minutes: status.timeRemaining / 60000,
+  diameter,
+  center
+});
 
 export default connect(mapState, null)(Donut);
