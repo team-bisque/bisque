@@ -8,10 +8,11 @@ import Timer from './Timer';
 import User from './User';
 import Login from './Login';
 import Settings from './Settings';
+import Graph from './Graph';
 
 import Weather from './Weather';
-import SurveyModal from './SurveyModal';
 import SettingsModal from './SettingsModal';
+
 
 
 import { setRoute } from '../reducers/route';
@@ -90,8 +91,9 @@ class Main extends React.Component{
   }
 
 
+
   render(){
-    const { status, settings, weather, auth, route } = this.props;    
+    const { status, settings, weather, auth, route, db } = this.props;    
     // alert(meta.width, meta.height)
     // console.log('render with state', this.state)
     // let user = null; // for test
@@ -101,7 +103,7 @@ class Main extends React.Component{
     } else if (this.props.route === "settings"){
       child = (<Settings {...this.props}/>);
     } else if (this.props.route === "chart"){
-      child = (<div>this is graph place holder</div>);
+      child = (<Graph {...this.props}/>);
     }
 
     return (
@@ -113,7 +115,6 @@ class Main extends React.Component{
         }}
         onMouseMove={this.handleMouseMove}>
         <img src={this.state.src} onLoad={this.onImageLoad.bind(this)} style={{display: 'none'}}/>
-
 
         <User {...this.props} />
         <Weather weather={weather} />
@@ -138,7 +139,6 @@ class Main extends React.Component{
       </div>
     );
   }
-  
 }
 
 const mapState = (state) => (state);

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import React from 'react';
 import { Modal, Button, Grid, Row, Col } from 'react-bootstrap';
 
-require('../../css/survey-modal.css')
+require('../../css/survey-modal.css');
 
 /*
 TO-DOS:
@@ -26,7 +26,7 @@ export default class SurveyModal extends React.Component {
   }
 
   componentDidMount () {
-    this.showModal()
+    this.showModal();
   }
 
   showModal () {
@@ -34,7 +34,7 @@ export default class SurveyModal extends React.Component {
   }
 
   hideModal () {
-    this.setState({modalShowing: false})
+    this.setState({modalShowing: false});
   }
 
   render () {

@@ -10,6 +10,6 @@ chrome.browserAction.onClicked.addListener(() => {
   return chrome.tabs.create({});
 });
 
-const Core = require('./controllers/core');
+const Core = require('./controllers/Core');
 const core = new Core(store);
 core.init();

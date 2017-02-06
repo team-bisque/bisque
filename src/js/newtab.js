@@ -16,7 +16,7 @@ import '../style.scss';
 import Main from './component/Main';
 
 const unsubscribe = proxy.subscribe(() => {
-   unsubscribe(); // initial connection
+  unsubscribe(); // initial connection
 
   render(
   <Provider store={proxy}>

@@ -2,7 +2,8 @@
 export const AUTHENTICATE = 'AUTHENTICATE';
 
 // db
-export const RECEIVE_DATA = 'RECEIVE_DATA';
+export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
+export const RECEIVE_SETTINGS = 'RECEIVE_SETTINGS';
 
 // settings
 export const TOGGLE_WORK = 'TOGGLE_WORK';
@@ -17,6 +18,11 @@ export const SET_BREAK_DURATION = 'SET_BREAK_DURATION';
 export const SET_LUNCH_DURATION = 'SET_LUNCH_DURATION';
 export const SET_SHIFT_DURATION = 'SET_SHIFT_DURATION';
 export const SET_START_TIME = 'SET_START_TIME';
+
+// greylist
+export const ADD_URL = 'ADD_URL';
+export const REMOVE_URL = 'REMOVE_URL';
+export const EDIT_URL = 'EDIT_URL';
 
 // weather
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';
