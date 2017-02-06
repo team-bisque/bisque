@@ -12,16 +12,18 @@ export default function Weather (props) {
   // Forecast IDs pair with a corresponding glyphicon
   // See https://erikflowers.github.io/weather-icons/api-list.html
 
-  const daynight = 'night';
+  let hr = (new Date()).getHours(),
+      daynight = 'day';
+  if(hr<6 && hr>18) daynight = 'night';
 
   return weather
     ? (
-        <div id="weather">
-          <div id="icon">
+        <div id="weather" className="icon top-right bg-check">
+          <div>
             <i className={`wi wi-owm-${daynight}-${weather.weather[0].id}`}></i>
-            <span>{` ${Math.round((weather.main.temp - 273.15) * 1.8 + 32)}°`}</span>
+            <span className="temperature">{` ${Math.round((weather.main.temp - 273.15) * 1.8 + 32)}°`}</span>
           </div>
-          <span id="city">{weather.name}</span>
+          <div><span className="city">{weather.name}</span></div>
         </div>
       )
     : (<div id="weather"></div>);

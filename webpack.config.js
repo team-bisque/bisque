@@ -26,8 +26,13 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "babel" },
-      { test: /\.css$/, loaders: ["style", "css"] },
-      { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file?name=[name].[ext]' }
+      { test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/, loader: 'file?name=[name].[ext]' },      
+      {
+        test: /\.scss$/,
+        exclude: /(node_modules|bower_components)/,
+        loaders: ['style', 'css', 'sass']
+      },
+      { test: /\.css$/, loaders: ['style', 'css'] },      
     ]
   },
   resolve: {

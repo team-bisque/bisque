@@ -1,16 +1,63 @@
 'use strict';
 
 import React from 'react';
-import Login from './Login';
+// import Login from './Login';
+import {tabAuthenticate} from '../action-creators/auth';
+import {connect} from 'react-redux';
 
-export default function User (props) {
-  const {user, db} = props;
+export class User extends React.Component {
+  constructor(props) {
+    super(props);    
+  }
 
-  return (
-    <div id="user">
-      {user
-        ? <h3>{user.displayName}</h3>
-        : <span><Login /></span>}
-    </div>
-  );
+  athenticate() {
+    this.props.tabAuthenticate();
+  }
+
+  render () {
+
+    const { auth, weather } = this.props;
+
+    var curHr = new Date().getHours();
+    var message;
+
+    if (curHr < 12) {
+      message = (
+        <div>
+          <h3>{ 'Good morning!' }</h3>
+          <h3>{ `${auth.displayName}` }</h3>
+        </div>
+        );
+    } else if (curHr < 18) {
+      message = (
+        <div>
+          <h3>{ 'Good afternoon!' }</h3>
+          <h3>{ `${auth.displayName}` }</h3>
+        </div>
+        );
+    } else {
+      message = (
+        <div>
+          <h3>{ 'Good night!' }</h3>
+          <h3>{ `${auth.displayName}` }</h3>
+        </div>
+        );
+    }
+
+    console.log('User', auth, weather);
+
+    let user = null;
+    return  (
+      <div id="user" className="icon top-left bg-check">
+        { user ? message : null }
+      </div>
+    );
+  }
 }
+
+
+const mapState = null;
+const mapDispatch = {tabAuthenticate};
+
+export default connect(mapState, mapDispatch)(User);
+

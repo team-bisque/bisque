@@ -5,7 +5,8 @@ const rootReducer = combineReducers({
 	db: require('./db').default,
 	status: require('./status').default,
   settings: require('./settings').default,
-  weather: require('./weather').default
+  weather: require('./weather').default,
+  route: require('./route').default
 });
 
 export default rootReducer;
