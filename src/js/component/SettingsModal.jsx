@@ -29,38 +29,47 @@ import Greylist from '../controllers/Greylist';
 const firebase = require('../controllers/firebase');
 
 
-
-
 class SettingsModal extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      workMinutes: 0,
+      breakMinutes: 0,
+      lunchMinutes: 0,
+      urlList: [],
+      currentUrl: '',
+      modalShowing: false
+    };
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.newUrlHandleChange = this.newUrlHandleChange.bind(this);
+    this.editUrlHandleChange = this.editUrlHandleChange.bind(this);
+    this.saveNewUrl = this.saveNewUrl.bind(this);
+    this.removeUrl = this.removeUrl.bind(this);
+    this.workMinutesHandleChange = this.workMinutesHandleChange.bind(this);
+    this.breakMinutesHandleChange = this.breakMinutesHandleChange.bind(this);
+    this.lunchMinutesHandleChange = this.lunchMinutesHandleChange.bind(this);
+  }
+
+  componentDidMount() {
     const {
       workDuration,
       breakDuration,
       lunchDuration,
       urlList
-    } = props.settings;
+    } = this.props.settings;
     const workMinutes = convertMillisecondsToMinutes(workDuration);
     const breakMinutes = convertMillisecondsToMinutes(breakDuration);
     const lunchMinutes = convertMillisecondsToMinutes(lunchDuration);
-    this.state = {
+    this.setState({
       workMinutes,
       breakMinutes,
       lunchMinutes,
       urlList,
       currentUrl: '',
       modalShowing: false
-    };
-    this.removeUrl = this.removeUrl.bind(this);
-    this.saveNewUrl = this.saveNewUrl.bind(this);
-    this.showModal = this.showModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.newUrlHandleChange = this.newUrlHandleChange.bind(this);
-    this.editUrlHandleChange = this.editUrlHandleChange.bind(this);
-    this.workMinutesHandleChange = this.workMinutesHandleChange.bind(this);
-    this.breakMinutesHandleChange = this.breakMinutesHandleChange.bind(this);
-    this.lunchMinutesHandleChange = this.lunchMinutesHandleChange.bind(this);
+    });
   }
 
   showModal () {
@@ -84,18 +93,8 @@ class SettingsModal extends Component {
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
     store.dispatch(saveSettings({
-      workMinutes, breakMinutes, lunchMinutes, urlList
+      workDuration, breakDuration, lunchDuration, urlList
     }));
-  }
-
-  updateDuration(actionCreator, timeCategory, duration) {
-    const userId = store.getState().auth;
-
-    // firebase.database().ref('users/' + userId).set({
-    //   [timeCategory]: duration
-    // })
-
-    store.dispatch(actionCreator(duration));
   }
 
   editUrlHandleChange(event, indexToChange) {
@@ -117,7 +116,6 @@ class SettingsModal extends Component {
   }
 
   removeUrl(event, indexToRemove) {
-    console.log(indexToRemove);
     const urlList = this.state.urlList.filter((url, index) =>
       index !== indexToRemove
     );

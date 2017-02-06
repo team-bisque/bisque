@@ -35,7 +35,7 @@ const SettingsGreylistTab = (props) => {
                 <Button onClick={saveNewUrl}><span className="glyphicon glyphicon-plus"></span></Button>
                 </FormGroup>
               </Row>
-            {urlList.map((url, index) => {
+            {urlList && urlList.map((url, index) => {
               return (
                 <Row key={index}>
                   <FormGroup>
@@ -57,10 +57,3 @@ const SettingsGreylistTab = (props) => {
 }
 
 export default SettingsGreylistTab;
-
-
-/*
-
-
-
-*/

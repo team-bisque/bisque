@@ -35,7 +35,7 @@ export function Main (props) {
         <Weather weather={weather} />
       </div>
       <Status status={status} />
-      <SettingsModal />
+      <SettingsModal settings={settings}/>
       <LineGraph db={db} width={960} height={500} yAxis={'Words Per Minute'}/>
     </div>
   );

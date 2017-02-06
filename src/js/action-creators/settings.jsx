@@ -1,14 +1,9 @@
 'use strict';
 
 import {
-  SAVE_SETTINGS,
-  SET_START_TIME
+  SAVE_SETTINGS
 } from '../constants';
 
 export const saveSettings = (settings) => ({
   type: SAVE_SETTINGS, settings
-});
-
-export const setStartTime = startTime => ({
-  type: SET_START_TIME, startTime
 });
