@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import Login from './Login';
-import { tabAuthenticate, signout } from '../action-creators/auth';
+import { tabAuthenticate } from '../action-creators/auth';
 import { connect } from 'react-redux';
 
 export class User extends React.Component {
@@ -13,10 +13,7 @@ export class User extends React.Component {
   athenticate() {
     this.props.tabAuthenticate();
   }
-  signout(){
-    this.props.signout();
-  }
-
+  
   render () {
 
     const { auth, weather } = this.props;
@@ -28,22 +25,21 @@ export class User extends React.Component {
       message = (
         <div>
           <h3>{ 'Good morning!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
-          <button onClick={this.signout.bind(this)}>Sign out</button>
+          <h3>{ `${auth && auth.displayName}` }</h3>          
         </div>
         );
     } else if (curHr < 18) {
       message = (
         <div>
           <h3>{ 'Good afternoon!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
+          <h3>{ `${auth && auth.displayName}` }</h3>          
         </div>
         );
     } else {
       message = (
         <div>
           <h3>{ 'Good night!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
+          <h3>{ `${auth && auth.displayName}` }</h3>          
         </div>
         );
     }
@@ -61,7 +57,8 @@ export class User extends React.Component {
 
 
 const mapState = null;
-const mapDispatch = {tabAuthenticate, signout};
+const mapDispatch = {tabAuthenticate};
+// const mapDispatch = {tabAuthenticate, signout:};
 
 export default connect(mapState, mapDispatch)(User);
 
