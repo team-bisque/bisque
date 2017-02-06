@@ -7,6 +7,11 @@ import { timeParse } from 'd3-time-format';
 import { axisLeft, axisBottom } from 'd3-axis';
 
 export class Line extends Component {
+  constructor(props) {
+    super(props);
+    // this.handleMouseMove = this.handleMouseMove.bind(this);
+    // this.handleMouseOver = this.handleMouseOver.bind(this);
+  }
 
   componentDidMount() {
     // Setting conventional margins
@@ -26,7 +31,7 @@ export class Line extends Component {
     const x = d3.scaleTime().range([0, width]); // Left to right
     const y = d3.scaleLinear().range([height, 0]); // Top to bottom
 
-    // define the line
+    // define the svg path for the line
     const line = d3.line()
         .x(d => x(d.date))
         .y(d => y(d.close));
@@ -43,6 +48,7 @@ export class Line extends Component {
 
     // D3 works from the top left and expands outwards
     // so first we must affix the y axis to the top left corner
+    // We pass translate the margins so they are respected
     const g = d3.select('svg')
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`)
@@ -51,25 +57,58 @@ export class Line extends Component {
     g.append('g')
       .call(d3.axisBottom(x)) // create the X axis
       .attr('transform', `translate(0,${height})`) // place it below the graph
-      .attr('class', 'axis'); // Provide CSS
+      .attr('class', 'axis') // Provide CSS
 
     // create the y-axis and add a label
     g.append('g')
-      .call(d3.axisLeft(y)) // create the Y axis
-      .attr('class', 'axis') // Provide CSS
+      .call(d3.axisLeft(y))
+      .attr('class', 'axis')
     .append('text') // Adding a text label to the Y axis
       .attr('transform', 'rotate(-90)') // orientation
       .attr('y', 6) // position
-      .attr('dy', '0.7em') // distance from the y axis (larger em = further to the right)
-      .attr('text-anchor', 'end') // Anchors the text by the last character
-      .text(this.props.label); // The text
+      .attr('dy', '0.7em') // distance from the y axis
+      .attr('text-anchor', 'end')
+      .attr('font-size', '1.2em')
+      .text(this.props.label);
 
-    // interpolate data into lines
+    // append the svg line to the graph
     // for styles, see http://www.d3noob.org/2014/02/styles-in-d3js.html
-    g.append('path') // We are using SVGs so we use path
+    const l = g.append('path')
       .datum(formattedData)
       .attr('class', 'line') // Provide CSS
-      .attr('d', line); // draw the line
+      .attr('d', line); // provide the svg path for drawing
+
+    // Defining the vertical line style
+    d3.select('svg').append('path')
+        .attr('class', 'remove') // wipe old styles
+      .style('position', 'absolute')
+      .style('z-index', '4')
+      .style('width', '1px')
+      .style('height', '480px')
+      .style('top', '10px')
+      .style('bottom', '30px')
+      .style('left', '0px')
+      .style('background', '#fff');
+
+    // Mouseover events for vertical line
+    d3.select('svg')
+      .on('mousemove', this.handleMouseMove)
+      .on('mouseover', this.handleMouseOver)
+  }
+
+  handleMouseMove() {
+    let mousex = d3.mouse(this)
+    mousex = mousex[0] + 5;
+    console.log(mousex);
+    d3.select('guide')
+      .style('left', mousex + 'px')
+  }
+
+  handleMouseOver() {
+    let mousex = d3.mouse(this)
+    mousex = mousex[0] + 5;
+    d3.select('guide')
+      .style('left', mousex + 'px')
   }
 
   render() {
