@@ -4,7 +4,7 @@ import {
   TAB_ALIAS_LOGIN
 } from '../constants';
 
-const Auth = require('../controllers/auth')
+const Auth = require('../controllers/Auth')
 const auth = new Auth();
 
 export const tabAuthenticate = () => ({

@@ -1,5 +1,9 @@
 'use strict';
 
+//CSS
+require('../../css/settings-modal.css');
+
+//Libraries
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {
@@ -8,118 +12,77 @@ import {
   Grid,
   Row,
   Col,
-  Form,
   Tabs,
   Tab
 } from 'react-bootstrap';
 
-require('../../css/survey-modal.css');
-
-import DurationInputGroup from './DurationInputGroup';
+//Local
 import store from '../store';
-import {convertMillisecondsToHM, convertHMToMilliseconds} from '../utils';
+import SettingsDurationTab from './SettingsDurationTab';
+import SettingsGreylistTab from './SettingsGreylistTab';
+import {
+  convertMillisecondsToMinutes,
+  convertMinutesToMilliseconds
+} from '../utils';
 import {
   setWorkDuration,
   setBreakDuration,
   setLunchDuration,
-  setShiftDuration,
   setStartTime
 } from '../action-creators/settings';
-
+import Greylist from '../controllers/Greylist';
 const firebase = require('../controllers/firebase');
 
-class Settings extends Component {
+
+
+
+class SettingsModal extends Component {
   constructor(props) {
     super(props);
     const {
       workDuration,
       breakDuration,
       lunchDuration,
-      shiftDuration
+      shiftDuration,
+      urlList
     } = props.settings;
-    const workTimeObject = convertMillisecondsToHM(workDuration);
-    const workHours = workTimeObject.hours;
-    const workMinutes = workTimeObject.minutes;
-    const breakTimeObject = convertMillisecondsToHM(breakDuration);
-    const breakHours = breakTimeObject.hours;
-    const breakMinutes = breakTimeObject.minutes;
-    const lunchTimeObject = convertMillisecondsToHM(lunchDuration);
-    const lunchHours = lunchTimeObject.hours;
-    const lunchMinutes = lunchTimeObject.minutes;
-    const shiftTimeObject = convertMillisecondsToHM(shiftDuration);
-    const shiftHours = shiftTimeObject.hours;
-    const shiftMinutes = shiftTimeObject.minutes;
+    const workMinutes = convertMillisecondsToMinutes(workDuration);
+    const breakMinutes = convertMillisecondsToMinutes(breakDuration);
+    const lunchMinutes = convertMillisecondsToMinutes(lunchDuration);
     this.state = {
-      workHours,
       workMinutes,
-      breakHours,
       breakMinutes,
-      lunchHours,
       lunchMinutes,
-      shiftHours,
-      shiftMinutes,
-      modalShowing: true,
-      notNumberWarning: false,
-      tabKey: 1
+      urlList,
+      currentUrl: '',
+      modalShowing: false,
+      notNumberWarning: false
     };
+    this.removeUrl = this.removeUrl.bind(this);
+    this.saveNewUrl = this.saveNewUrl.bind(this);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.workHoursHandleChange = this.workHoursHandleChange.bind(this);
+    this.newUrlHandleChange = this.newUrlHandleChange.bind(this);
+    this.editUrlHandleChange = this.editUrlHandleChange.bind(this);
     this.workMinutesHandleChange = this.workMinutesHandleChange.bind(this);
-    this.breakHoursHandleChange = this.breakHoursHandleChange.bind(this);
     this.breakMinutesHandleChange = this.breakMinutesHandleChange.bind(this);
-    this.lunchHoursHandleChange = this.lunchHoursHandleChange.bind(this);
     this.lunchMinutesHandleChange = this.lunchMinutesHandleChange.bind(this);
-    this.shiftHoursHandleChange = this.shiftHoursHandleChange.bind(this);
-    this.shiftMinutesHandleChange = this.shiftMinutesHandleChange.bind(this);
   }
 
   componentDidMount() {
-    this.showModal();
     const {
-      workHours,
       workMinutes,
-      breakHours,
       breakMinutes,
-      lunchHours,
       lunchMinutes,
-      shiftHours,
-      shiftMinutes
+      urlList
     } = this.state;
-    const workDuration = convertHMToMilliseconds(workHours, workMinutes);
-    const breakDuration = convertHMToMilliseconds(breakHours, breakMinutes);
-    const lunchDuration = convertHMToMilliseconds(lunchHours, lunchMinutes);
-    const shiftDuration = convertHMToMilliseconds(shiftHours, shiftMinutes);
-    chrome.storage.sync.get({workDuration, breakDuration, lunchDuration, shiftDuration}, (storage) => {
-      const {workDuration, breakDuration, lunchDuration, shiftDuration} = storage;
-      store.dispatch(setWorkDuration(workDuration));
-      store.dispatch(setBreakDuration(breakDuration));
-      store.dispatch(setLunchDuration(lunchDuration));
-      store.dispatch(setShiftDuration(shiftDuration));
-      const workTimeObject = convertMillisecondsToHM(workDuration);
-      const workHours = workTimeObject.hours;
-      const workMinutes = workTimeObject.minutes;
-      const breakTimeObject = convertMillisecondsToHM(breakDuration);
-      const breakHours = breakTimeObject.hours;
-      const breakMinutes = breakTimeObject.minutes;
-      const lunchTimeObject = convertMillisecondsToHM(lunchDuration);
-      const lunchHours = lunchTimeObject.hours;
-      const lunchMinutes = lunchTimeObject.minutes;
-      const shiftTimeObject = convertMillisecondsToHM(shiftDuration);
-      const shiftHours = shiftTimeObject.hours;
-      const shiftMinutes = shiftTimeObject.minutes;
-      this.setState({
-        workHours,
-        workMinutes,
-        breakHours,
-        breakMinutes,
-        lunchHours,
-        lunchMinutes,
-        shiftHours,
-        shiftMinutes
-      });
-    });
+    const workDuration = convertMinutesToMilliseconds(workMinutes);
+    const breakDuration = convertMinutesToMilliseconds(breakMinutes);
+    const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
+    this.updateDuration(setWorkDuration, 'work', workDuration);
+    this.updateDuration(setBreakDuration, 'break', breakDuration);
+    this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
   }
 
   showModal () {
@@ -130,47 +93,55 @@ class Settings extends Component {
     this.setState({modalShowing: false});
   }
 
-  handleSelect(tabKey) {
-    this.setState({tabKey});
-  }
-
   handleSubmit(event) {
     event.preventDefault();
     this.hideModal();
     const {
-      workHours,
       workMinutes,
-      breakHours,
       breakMinutes,
-      lunchHours,
       lunchMinutes,
+      urlList
     } = this.state;
-    const workDuration = convertHMToMilliseconds(workHours, workMinutes);
-    const breakDuration = convertHMToMilliseconds(breakHours, breakMinutes);
-    const lunchDuration = convertHMToMilliseconds(lunchHours, lunchMinutes);
-    this.updateDuration(setWorkDuration(workDuration))
-    this.updateDuration(setBreakDuration(breakDuration))
-    this.updateDuration(setLunchDuration(lunchDuration))
-    store.dispatch(setWorkDuration(workDuration));
-    store.dispatch(setBreakDuration(breakDuration));
-    store.dispatch(setLunchDuration(lunchDuration));
+    const workDuration = convertMinutesToMilliseconds(workMinutes);
+    const breakDuration = convertMinutesToMilliseconds(breakMinutes);
+    const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
+
   }
 
-  updateDuration(dispatcher, setting, time) {
-    const userId = store.getState().auth.uid;
+  updateDuration(actionCreator, timeCategory, duration) {
+    const userId = store.getState().auth;
 
-    firebase.database().ref('users/' + userId).set({
-      [setting]: time
-    })
+    // firebase.database().ref('users/' + userId).set({
+    //   [timeCategory]: duration
+    // })
 
-    store.dispatch(dispatcher(setting));
+    store.dispatch(actionCreator(duration));
   }
 
-  workHoursHandleChange(event) {
-    let workHours = +event.target.value;
-    const notNumberWarning = isNaN(workHours);
-    if (notNumberWarning) workHours = this.state.workHours;
-    this.setState({workHours, notNumberWarning});
+  editUrlHandleChange(event, indexToChange) {
+    const {value} = event.target;
+    const urlList = this.state.urlList.map((url, index) =>
+      (index === indexToChange) ? value : url
+    );
+    this.setState({urlList});
+  }
+
+  newUrlHandleChange(event) {
+    this.setState({currentUrl: event.target.value});
+  }
+
+  saveNewUrl() {
+    const {urlList, currentUrl} = this.state;
+    urlList.push(currentUrl);
+    this.setState({urlList, currentUrl: ''});
+  }
+
+  removeUrl(event, indexToRemove) {
+    console.log(indexToRemove);
+    const urlList = this.state.urlList.filter((url, index) =>
+      index !== indexToRemove
+    );
+    this.setState({urlList});
   }
 
   workMinutesHandleChange(event) {
@@ -180,25 +151,11 @@ class Settings extends Component {
     this.setState({workMinutes, notNumberWarning});
   }
 
-  breakHoursHandleChange(event) {
-    let breakHours = +event.target.value;
-    const notNumberWarning = isNaN(breakHours);
-    if (notNumberWarning) breakHours = this.state.breakHours;
-    this.setState({breakHours, notNumberWarning});
-  }
-
   breakMinutesHandleChange(event) {
     let breakMinutes = +event.target.value;
     const notNumberWarning = isNaN(breakMinutes);
     if (notNumberWarning) breakMinutes = this.state.breakMinutes;
     this.setState({breakMinutes, notNumberWarning});
-  }
-
-  lunchHoursHandleChange(event) {
-    let lunchHours = +event.target.value;
-    const notNumberWarning = isNaN(lunchHours);
-    if (notNumberWarning) lunchHours = this.state.lunchHours;
-    this.setState({lunchHours, notNumberWarning});
   }
 
   lunchMinutesHandleChange(event) {
@@ -208,117 +165,84 @@ class Settings extends Component {
     this.setState({lunchMinutes, notNumberWarning});
   }
 
-  shiftHoursHandleChange(event) {
-    let shiftHours = +event.target.value;
-    const notNumberWarning = isNaN(shiftHours);
-    if (notNumberWarning) shiftHours = this.state.shiftHours;
-    this.setState({shiftHours, notNumberWarning});
-  }
-
-  shiftMinutesHandleChange(event) {
-    let shiftMinutes = +event.target.value;
-    const notNumberWarning = isNaN(shiftMinutes);
-    if (notNumberWarning) shiftMinutes = this.state.shiftMinutes;
-    this.setState({shiftMinutes, notNumberWarning});
-  }
-
   render() {
     const {
-      workHours,
       workMinutes,
-      breakHours,
       breakMinutes,
-      lunchHours,
       lunchMinutes,
-      shiftHours,
-      shiftMinutes,
+      urlList,
+      currentUrl,
       modalShowing,
       notNumberWarning
     } = this.state;
 
     const {
+      showModal,
       hideModal,
       handleSubmit,
-      workHoursHandleChange,
       workMinutesHandleChange,
-      breakHoursHandleChange,
       breakMinutesHandleChange,
-      lunchHoursHandleChange,
       lunchMinutesHandleChange,
-      shiftHoursHandleChange,
-      shiftMinutesHandleChange
+      newUrlHandleChange,
+      editUrlHandleChange,
+      saveNewUrl,
+      removeUrl
     } = this;
 
     return (
-      <div className="modal-container">
-        <Modal
-          className="survey"
-          show={modalShowing}
-          onHide={hideModal}
-          container={this}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Settings</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Tabs defaultActiveKey={2}>
-              <Tab eventKey={1} title="Duration">
-                <Grid fluid={true} className="survey-wrapper">
-                  <Row className="statistics">
-                    <Form inline>
-                      <Col xs={12} md={6}>
-                        <DurationInputGroup
-                          hours={workHours}
-                          minutes={workMinutes}
-                          hoursHandleChange={workHoursHandleChange}
-                          minutesHandleChange={workMinutesHandleChange}
-                          category={'Work'}
-                        />
-                      </Col>
-                      <Col xs={12} md={6}>
-                        <DurationInputGroup
-                          hours={breakHours}
-                          minutes={breakMinutes}
-                          hoursHandleChange={breakHoursHandleChange}
-                          minutesHandleChange={breakMinutesHandleChange}
-                          category={'Break'}
-                        />
-                      </Col>
-                      <Col xs={12} md={6}>
-                        <DurationInputGroup
-                          hours={lunchHours}
-                          minutes={lunchMinutes}
-                          hoursHandleChange={lunchHoursHandleChange}
-                          minutesHandleChange={lunchMinutesHandleChange}
-                          category={'Lunch'}
-                        />
-                      </Col>
-                      <Col xs={12} md={6}>
-                        <DurationInputGroup
-                          hours={shiftHours}
-                          minutes={shiftMinutes}
-                          hoursHandleChange={shiftHoursHandleChange}
-                          minutesHandleChange={shiftMinutesHandleChange}
-                          category={'Shift'}
-                        />
-                      </Col>
-                    </Form>
-                  </Row>
-                </Grid>
-              </Tab>
-              <Tab eventKey={2} title="Greylist">Greylist Tab Content Goes Here</Tab>
-            </Tabs>
-          </Modal.Body>
-          <Modal.Footer>
-            <center><Button onClick={handleSubmit}>Change Settings</Button></center>
-          </Modal.Footer>
-        </Modal>
+      <div>
+        <div>
+          <center>
+            <Button onClick={showModal}>
+              <span className="glyphicon glyphicon-cog settings-icon"></span>
+            </Button>
+          </center>
+        </div>
+        <div className="modal-container">
+          <Modal
+            className="survey"
+            show={modalShowing}
+            onHide={hideModal}
+            container={this}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Settings</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Tabs defaultActiveKey={1} id="settings-tabs">
+                <Tab eventKey={1} title="Duration">
+                  <SettingsDurationTab
+                    workMinutes={workMinutes}
+                    breakMinutes={breakMinutes}
+                    lunchMinutes={lunchMinutes}
+                    workMinutesHandleChange={workMinutesHandleChange}
+                    breakMinutesHandleChange={breakMinutesHandleChange}
+                    lunchMinutesHandleChange={lunchMinutesHandleChange}
+                  />
+                </Tab>
+                <Tab eventKey={2} title="Greylist">
+                  <SettingsGreylistTab
+                    urlList={urlList}
+                    currentUrl={currentUrl}
+                    saveNewUrl={saveNewUrl}
+                    removeUrl={removeUrl}
+                    newUrlHandleChange={newUrlHandleChange}
+                    editUrlHandleChange={editUrlHandleChange}
+                  />
+                </Tab>
+              </Tabs>
+            </Modal.Body>
+            <Modal.Footer>
+              <center><Button onClick={handleSubmit}>Change Settings</Button></center>
+            </Modal.Footer>
+          </Modal>
+        </div>
       </div>
     );
   }
 }
 
-const mapState = ({time}) => ({time});
+const mapState = ({settings}) => ({settings});
 const mapDispatch = null;
 
-export default connect(mapState, mapDispatch)(Settings);
+export default connect(mapState, mapDispatch)(SettingsModal);

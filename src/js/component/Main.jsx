@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import Status from './Status';
 import User from './User';
 import Weather from './Weather';
-import SurveyModal from './SurveyModal';
 import SettingsModal from './SettingsModal';
 import LineGraph from './graphs/Line'
 
@@ -36,7 +35,7 @@ export function Main (props) {
         <Weather weather={weather} />
       </div>
       <Status status={status} />
-      <SettingsModal settings={settings} />
+      <SettingsModal />
       <LineGraph db={db} width={960} height={500} yAxis={'Words Per Minute'}/>
     </div>
   );

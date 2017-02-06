@@ -28,21 +28,21 @@ class Auth {
 		})
 	}
 
-	authenticate(interactive) {
+	authenticate(interactive){
 		chrome.identity.getAuthToken({
 			interactive: !!interactive,
 			scopes: ['profile', 'email']
-		}, token => {			
+		}, token => {
 			if (chrome.runtime.lastError && !interactive) {
       	console.log('It was not possible to get a token programmatically.');
     	} else if (chrome.runtime.lastError) {
 				throw new Error(chrome.runtime.lastError);
 	    } else if (token) {
-	      // Authrorize Firebase with the OAuth Access Token.				
+	      // Authrorize Firebase with the OAuth Access Token.
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
 	      firebase.auth().signInWithCredential(credential)
 	      .catch(error => {
-	        // The OAuth token might have been invalidated. Lets' remove it from cache.
+	        // The OAuth token might have been invalidated. Let's remove it from cache.
 	        if (error.code === 'auth/invalid-credential') {
 	          chrome.identity.removeCachedAuthToken({token: token}, function() {
 	            startAuth(interactive);
