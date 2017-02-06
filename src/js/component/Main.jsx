@@ -17,6 +17,9 @@ import SettingsModal from './SettingsModal';
 
 import { setRoute } from '../reducers/route';
 
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+
+
 var classNames = require('classnames');
 
 let backgrounds = [
@@ -61,6 +64,10 @@ class Main extends React.Component{
         // Do stuff here
         BackgroundCheck.refresh(el);
     });
+    
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
   }
 
   handleMouseMove(e) {        
@@ -106,6 +113,12 @@ class Main extends React.Component{
       child = (<Graph {...this.props}/>);
     }
 
+    const tooltip = {
+      settings: (<Tooltip id="settings-tooltip">Settings</Tooltip>),
+      graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>)      
+    }
+
+    console.log('MAIN RENDER', this.props)
     return (
       <div id="main" 
         className="fullsizeBg" 
@@ -114,18 +127,29 @@ class Main extends React.Component{
           backgroundPosition: `${this.state.bgPositionX}px ${this.state.bgPositionY}px`
         }}
         onMouseMove={this.handleMouseMove}>
-        <img src={this.state.src} onLoad={this.onImageLoad.bind(this)} style={{display: 'none'}}/>
+        <img src={this.state.src} onLoad={this.onImageLoad.bind(this)} style={{display: 'none'}} />
 
-        <User {...this.props} />
-        <Weather weather={weather} />
+        { 
+          auth ? (
+            <div>
+              <User {...this.props} />
+              <Weather weather={weather} />
 
-        <div id="settings" className="icon bottom-left bg-check">
-          <i className="fa fa-cog" onClick={(e)=>{this.props.setRoute('settings')}}></i>
-        </div>
+              <div id="settings" className="icon bottom-left bg-check">
+                <OverlayTrigger placement="top" overlay={tooltip.settings}>
+                  <i className="fa fa-cog" onClick={(e)=>{this.props.setRoute('settings')}}></i>
+                </OverlayTrigger>
+              </div>
 
-        <div id="chart" className="icon bottom-right bg-check">
-          <i className="fa fa-bar-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
-        </div>        
+              <div id="chart" className="icon bottom-right bg-check">
+                <OverlayTrigger placement="top" overlay={tooltip.graph}>
+                  <i className="fa fa-bar-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
+                </OverlayTrigger>
+              </div> 
+            </div>           
+            ) : null
+        }
+        
 
         <div className="flex-center">
           <div id="wrapper" className={this.props.route ? this.props.route : null}>

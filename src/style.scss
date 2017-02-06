@@ -32,6 +32,37 @@ body {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
 }
 
+.icon {
+  z-index: 1000;
+  i {
+    font-size: 2em;
+    cursor: pointer;
+    text-shadow: $text-shadow;
+
+    -ms-transform: scale(1, 1); /* IE 9 */
+    -webkit-transform: scale(1, 1); /* Safari */
+    transform: scale(1, 1);
+    -webkit-transition: all 200ms ease-in;    
+    -ms-transition: all 200ms ease-in;    
+    -moz-transition: all 200ms ease-in;    
+    transition: all 200ms ease-in;        
+    &:hover {
+      -ms-transform: scale(1.5, 1.5); /* IE 9 */
+      -webkit-transform: scale(1.5, 1.5); /* Safari */
+      transform: scale(1.5, 1.5);
+      -webkit-transition: all 200ms ease-in;    
+      -ms-transition: all 200ms ease-in;    
+      -moz-transition: all 200ms ease-in;    
+      transition: all 200ms ease-in;        
+    }
+  }
+  .city {
+    font-size: 1.2em;
+  }
+}
+
+
+
 // Grid structure
 #main {
     width: 100vw;
@@ -108,34 +139,23 @@ body {
     transition: all 200ms ease-in;        
   }
 
+  &.signin {
+    display: flex;
+    text-align: center;
+    align-items: center;
+  }
 }
 
 #weather, #settings, #chart, #user {
   position: absolute;
 }
 
-#signin{
-
-}
-
-.icon {
-  z-index: 1000;
+#signin.icon {
   i {
-    font-size: 2em;
-
-    text-shadow: $text-shadow;
-
-    -ms-transform: scale(1, 1); /* IE 9 */
-    -webkit-transform: scale(1, 1); /* Safari */
-    transform: scale(1, 1);
-    &:hover {
-      -ms-transform: scale(1.5, 1.5); /* IE 9 */
-      -webkit-transform: scale(1.5, 1.5); /* Safari */
-      transform: scale(1.5, 1.5);
-    }
+    font-size: 4em;
   }
-  .city {
-    font-size: 1.2em;
+  >div {
+    margin-top: 10px;
   }
 }
 

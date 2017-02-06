@@ -15,4 +15,8 @@ export const login = () => dispatch => {
   auth.authenticate(true)
 }
 
+export const signout = () => dispatch => {
+  auth.signout()
+}
+
 export const authenticate = user => ({ type: AUTHENTICATE, user });

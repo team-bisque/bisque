@@ -15,7 +15,7 @@ export class Login extends Component {
     return (
       <div id="signin" className="icon">
         <i className="fa fa-google" onClick={this.athenticate.bind(this)} ></i>
-        <span>signin with google account</span>
+        <div>signin with google account</div>
       </div>
     );
   }
