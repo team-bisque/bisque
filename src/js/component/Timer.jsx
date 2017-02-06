@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { addFiveMinutes, togglePause, toggleWork } from '../action-creators/status';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import Donut from './graphs/Donut';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -46,6 +47,7 @@ class Timer extends React.Component {
 
     return (
       <div className="timer-wrapper">
+
         
         <div className="timer-message">
           <span>{ message }</span>
@@ -83,6 +85,8 @@ class Timer extends React.Component {
             </OverlayTrigger> :
             null }  
         </div>
+
+        <Donut status={status} diameter={250} center={10}/>
         
       </div>
     );

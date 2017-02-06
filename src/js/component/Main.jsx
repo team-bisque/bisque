@@ -10,6 +10,7 @@ import Login from './Login';
 import Settings from './Settings';
 import Graph from './Graph';
 
+
 import Weather from './Weather';
 import SettingsModal from './SettingsModal';
 
@@ -23,12 +24,14 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 var classNames = require('classnames');
 
 let backgrounds = [
-'http://yourshot.nationalgeographic.com/u/fQYSUbVfts-T7odkrFJckdiFeHvab0GWOfzhj7tYdC0uglagsDtpPU-Jo2Nvl9lVaS4j0qRQ82q5kL1Roa-4bsHYwtvmBf1TaLvoL-guKdPSILAsJJWk3CGENHMSEAmQKsbDwxmRn98bBK8cNnD7NKEuhc9W_BCQ-1NG7YzNqpoTqOAbnGEH3AfDuO199qqfgEdjhSpER1wk03C_WGGB3OQo3x2eYdc/',
-'http://yourshot.nationalgeographic.com/u/fQYSUbVfts-T7odkrFJckdiFeHvab0GWOfzhj7tYdC0uglagsDq4xaPjRt6MhR-QZuor0ljnOd8-x3bTl2nqqGNDUEKccW0Mj_bGwul5-8amW1Hc84hSDmkX6GS9jQnFz-FKoSKLK04bdo4Kle0QFDl_ZiEfvxcHimtJRjLmS1NMTLlDs2vm8uxhc54eTSyneZQ2l5LeesJgxTPHI95v5X8/',
-'http://yourshot.nationalgeographic.com/u/fQYSUbVfts-T7odkrFJckdiFeHvab0GWOfzhj7tYdC0uglagsDtq6oibmAGcieRzf2aITr2KNy8yRYdxH9_dmAsSvs-7M7oWQ83Q_IZsi5qTy2bZ5P0QqlGBcAQ9KZ5qjASvHlg8vByHPhlDKiVjnBOi1KkAQqT-LidRqVVHiKROBwO1RIHGj7AA0Wt39ljXrw1bzUkGG9AU8LeDZenZXhibu6jR/',
-'http://yourshot.nationalgeographic.com/u/fQYSUbVfts-T7odkrFJckdiFeHvab0GWOfzhj7tYdC0uglagsDtrDlaSXc-WuXMVJ1Ayd9kY1GqfjO_BEx8J4z7-cTCBxVqMg_d_4VmznHpEGuMBDklnEcTSxmhe3vPjJVhpDN6O6J4Ge9RTU9ZSmZGX7p_OdOZxu5IYsbQtcVRPZmVfTM1tLPUawfkTxvDeRwKa6fV8ncmUcXuenZpMWK-AqnCy/',
-'http://yourshot.nationalgeographic.com/u/fQYSUbVfts-T7odkrFJckdiFeHvab0GWOfzhj7tYdC0uglagsDq1TcjiOTaVEh4l4Pvu3jnZruwXSzI1_m9rvHSZ51-s8TbmpLkgP66luWLm7tXVO7BwPC0Q8C4nzIbDe9EaJ9As1lKRdLWhC2xAYVynU9rFkfSwziskcp1Z_UtLnUBlO-iRM_aBU6BInpecUGksTIIojY-wmYj_e4VmR-cFATCS9F8/',
-'http://yourshot.nationalgeographic.com/u/fQYSUbVfts-T7odkrFJckdiFeHvab0GWOfzhj7tYdC0uglagsDUeiYPqvbGMYZmP0y_a5Mcd4FgZJ5xseOvM5xkIQNGPLX_BZjTmQIhiG6VOR2LJ99mjPIvjgRJbJg5XyGUdvR5lNw_8NiL9hk2tExDO9wGQEaZ0Tnw2i9TbxV40KosECu1q_9Z4eFcjOhgqXQFNjK2bkcQXUSze9tPut8u8QQ/'
+'http://i.imgur.com/cAkrTyU.jpg',
+'http://i.imgur.com/kvhSMjC.jpg',
+'http://i.imgur.com/KBWmaas.jpg',
+'http://i.imgur.com/976n77H.jpg',
+'http://i.imgur.com/H1Lb2Xv.jpg',
+'http://i.imgur.com/CA9gCNx.jpg',
+'http://i.imgur.com/aVcP3fF.jpg',
+'http://i.imgur.com/Jnh77yl.jpg'
 ]
 const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
 
@@ -67,7 +70,7 @@ class Main extends React.Component{
     
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
+    console.log('componentWillReceiveProps', nextProps)
   }
 
   handleMouseMove(e) {        

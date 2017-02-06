@@ -34,11 +34,11 @@ class Auth {
 			}
 		})
 	}
-	signout(){
-		// firebase.auth().signOut()
-		// 	.then(console.log)
-		// 	.catch(console.error);
-	}
+	// signout(){
+	// 	firebase.auth().signOut()
+	// 		.then(console.log)
+	// 		.catch(console.error);
+	// }
 
 	authenticate(interactive){
 		chrome.identity.getAuthToken({
