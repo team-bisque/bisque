@@ -25,31 +25,31 @@ export class User extends React.Component {
       message = (
         <div>
           <h3>{ 'Good morning!' }</h3>
-          <h3>{ `${auth.displayName}` }</h3>
+          <h3>{ `${auth && auth.displayName}` }</h3>
         </div>
         );
     } else if (curHr < 18) {
       message = (
         <div>
           <h3>{ 'Good afternoon!' }</h3>
-          <h3>{ `${auth.displayName}` }</h3>
+          <h3>{ `${auth && auth.displayName}` }</h3>
         </div>
         );
     } else {
       message = (
         <div>
           <h3>{ 'Good night!' }</h3>
-          <h3>{ `${auth.displayName}` }</h3>
+          <h3>{ `${auth && auth.displayName}` }</h3>
         </div>
         );
     }
 
     console.log('User', auth, weather);
 
-    let user = null;
+    // let auth = null;
     return  (
       <div id="user" className="icon top-left bg-check">
-        { user ? message : null }
+        { auth ? message : null }
       </div>
     );
   }
