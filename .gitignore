@@ -23,6 +23,12 @@ coverage
 # nyc test coverage
 .nyc_output
 
+# DS.Store
+.DS_Store
+
+# build folder
+build
+
 # api keys
 apiKeys.js
 

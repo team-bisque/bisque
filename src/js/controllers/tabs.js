@@ -1,36 +1,51 @@
 'use strict';
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
+const firebase = require('./firebase');
+
+import { wrapStore } from 'react-chrome-redux';
+import store from '../store';
+wrapStore(store, {portName: '1337'});
 
 class Tabs {
     // https://developer.chrome.com/extensions/tabs
-    constructor(store, logger={}) {
-        this.logger = logger;
-        this.store = store;
-        this.onCompleteState        = this.onCompleteState.bind(this);
+    constructor () {
+        this.onCompleteState  = this.onCompleteState.bind(this);
     }
 
-    // Tab functions
-    setLockedTab (tab) {
-        this.lockedTab = tab;
+    _init(){
+        chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+            this.onCompleteState(tabId, changeInfo, tab);
+        });
     }
 
-    remove(tabId){
-        return chromep.tabs.remove(tabId);
-    }
+    onCompleteState(tabId, changeInfo, tab) {
+        chrome.runtime.onConnect.addListener(port => {
+            port.onMessage.addListener(msg => {
+                if (store.getState().auth) {
+                    const userId = store.getState().auth.uid;
 
-    init(){
-        this.addEvent('onUpdated', this.onCompleteState)
-    }
+                    // Next two lines ignore events triggered before keylogging begins.
+                    const timeObject = msg.time ? new Date(msg.time) : null;
+                    if (timeObject === null) return;
 
-    onCompleteState(tabId, changeInfo){
-        if (changeInfo.status === 'complete') {
+                    // Set firebase path.
+                    const date = timeObject.getMonth() + 1 + '-' + timeObject.getDate() + '-' + timeObject.getFullYear();
+                    const hour = timeObject.getHours().toString();
+                    const path = ('user_history/' + userId + '/' + date + '/' + hour + '/' + tabId).toString();
+
+                    firebase.database().ref(path).set({
+                        cpm: msg.cpm, wpm: msg.wpm, url: msg.url
+                    })
+                }
+            })
+        })
+
+        if (tab.url.indexOf('chrome://') === -1 && changeInfo.status === 'complete') {
             chrome.tabs.executeScript(tabId, {
                 // code: "document.body.style.backgroundColor='red'",
                 file: "keyLogger.js",
                 runAt: 'document_idle'
-            }, (result) => {
-                console.log('executeScript result', result)
             })
         }
     }
@@ -39,15 +54,6 @@ class Tabs {
         return chromep.tabs.create({})
             .then(()=>chromep.tabs.query({ active: true }))
             .then(res=>res[0])
-    }
-
-    // Event Emitter
-    addEvent(eventType, callback){
-        chrome.tabs[eventType].addListener(callback);
-    }
-
-    removeEvent(eventType, callback){
-        chrome.tabs[eventType].removeListener(callback);
     }
 }
 

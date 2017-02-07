@@ -192,13 +192,13 @@ class SettingsModal extends Component {
     const DurationIcon = (
       <div id="duration-tab">
         <i className="fa fa-clock-o"></i>
-        <div>duration</div>
+        <span>duration</span>
       </div>
     )
     const GreylistIcon = (
       <div id="greylist-tab">
         <i className="fa fa-chain-broken"></i>
-        <div>greylist</div>
+        <span>greylist</span>
       </div>
     )
 

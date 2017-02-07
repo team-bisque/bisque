@@ -68,15 +68,12 @@ class Main extends React.Component{
         BackgroundCheck.refresh(el);
     });    
   }
-  // // componentWillReceiveProps(nextProps) {
-  //   console.log('componentWillReceiveProps', nextProps)
-  //   const { timeRemaining, isPaused, isWorking } = nextProps.status;
-  //   if(timeRemaining === 0) this.props.setRoute('alarm');
-    
-  //   // else if(timeRemaining <= -12000 || 
-  //   //         isPaused !== this.props.status.isPaused || 
-  //   //         isWorking !== this.props.status.isWorking) this.props.setRoute(null);
-  // }
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps', nextProps);
+    if(nextProps.auth){
+      if(nextProps.route !== this.props.route) this.props.setRoute(nextProps.route)
+    }
+  }
 
   handleMouseMove(e) {        
     let mouseStrength = 25,

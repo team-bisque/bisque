@@ -17,8 +17,9 @@ export default class Settings extends React.Component {
   render() {  
     // console.log('setting',this.props)
     return (
-      <div id="setting-modal">
+      <div id="setting-modal" className="content">
         <div className="modal-bar">
+          <div className="modal-title">Settings</div>
           <div>
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
