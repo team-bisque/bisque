@@ -22,7 +22,7 @@ const SettingsGreylistTab = (props) => {
   return (
     <div>
       <p>
-        Add greylists site you want to be away from during your work time. e.g) buzzfeed.com
+        Add greylists site you want to be away from during your work time. (e.g buzzfeed.com)
       </p>
       <div className="addNew">
         <FormControl
@@ -31,24 +31,24 @@ const SettingsGreylistTab = (props) => {
           value={currentUrl}
           onChange={newUrlHandleChange}
           className="inline"
-            />  
+            />
         <div className="icon"><i className="fa fa-plus pull-right" onClick={saveNewUrl}></i></div>
       </div>
       <ul className="greylistURLs">
         {greylist ? greylist.map((url, index) => {
           return (
             <li key={index}>
-              
-              <div>              
+
+              <div>
                 <FormControl
                   type="text"
                   value={url}
                   onChange={editUrlHandleChange}
                   className="inline"
                 />
-                <div className="icon"><i className="fa fa-times pull-right" onClick={(event) => removeUrl(event, index)}></i></div>                
+                <div className="icon"><i className="fa fa-times pull-right" onClick={(event) => removeUrl(event, index)}></i></div>
                 </div>
-              
+
             </li>
           )
         }).reverse() : null}
@@ -60,7 +60,7 @@ const SettingsGreylistTab = (props) => {
 export default SettingsGreylistTab;
 
 
- // <Grid fluid={true}>      
+ // <Grid fluid={true}>
  //      <Row>
  //        <Col xs={12} md={10} mdOffset={1}>
  //          <Form inline>
@@ -70,7 +70,7 @@ export default SettingsGreylistTab;
  //                type="text"
  //                value={currentUrl}
  //                onChange={newUrlHandleChange}
- //              />            
+ //              />
  //            </FormGroup>
  //            <Button onClick={saveNewUrl}><span className="glyphicon glyphicon-plus"></span></Button>
  //          </Form>

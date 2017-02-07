@@ -86,7 +86,6 @@ class Notifications {
 	}
 
 	warningHandler(noteId, buttonIndex) {
-		console.log(buttonIndex);
 		if (buttonIndex === 1) store.dispatch(addFiveMinutes());
 		chrome.notifications.clear(noteId);
 		chrome.notifications.onButtonClicked.removeListener(this.warningHandler);
@@ -127,7 +126,7 @@ class Notifications {
 			message: `Tell Bisque what to do`,
 			buttons: [
 				{ title: `Let’s get back to work!`},
-				{ title: `I’m clocking out early`}
+				{ title: `I’m still here, but want to start my break again.`}
 			],
 			requireInteraction: true
 		}).then(() => {
@@ -136,15 +135,24 @@ class Notifications {
 	}
 
 	whereAreYouHandler(noteId, buttonIndex) {
-		if (buttonIndex === 0) {
-			store.dispatch(toggleWork());
-			if (!store.getState().status.isWorking) {
-				store.dispatch(toggleWork());
-			}
+		// store.dispatch(togglePause());
+		const isWorking = store.getState().status.isWorking;
+		if (buttonIndex === 0 && !isWorking) {
+			toggleWork();
+		} else if (buttonIndex === 1 && isWorking) {
+			toggleWork();
+			togglePause();
 		}
-		if (buttonIndex === 1 && !store.getState().status.isPaused) store.dispatch(togglePause());
-		chrome.notifications.clear(noteId);
-		chrome.notifications.onButtonClicked.removeListener(this.whereAreYouHandler);
+
+		// if (buttonIndex === 0) {
+		// 	store.dispatch(toggleWork());
+		// 	if (!store.getState().status.isWorking) {
+		// 		store.dispatch(toggleWork());
+		// 	}
+		// }
+		// if (buttonIndex === 1 && !store.getState().status.isPaused) store.dispatch(togglePause());
+		// chrome.notifications.clear(noteId);
+		// chrome.notifications.onButtonClicked.removeListener(this.whereAreYouHandler);
 	}
 }
 module.exports = Notifications;
