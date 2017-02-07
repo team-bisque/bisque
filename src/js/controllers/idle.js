@@ -12,7 +12,7 @@ const chromep = new ChromePromise();
 class Idle {
   constructor(store){
     this.store = store;
-    this.DetectionInterval = 15;    
+    this.DetectionInterval = 15;
   }
 
   _init(){
