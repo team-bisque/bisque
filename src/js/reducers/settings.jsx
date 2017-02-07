@@ -33,7 +33,8 @@ export default (state = initialState, action) => {
       newState.lunchDuration = action.lunchDuration;
       break;
     case UPDATE_URL_LIST:
-      newState.urlList = action.urlList;
+      const {urlList} = action;
+      newState.urlList = urlList;
       break;
 		default:
 			break;
