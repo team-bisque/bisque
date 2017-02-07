@@ -20,7 +20,6 @@ class KeyLogger {
 		this.log 				= this.log.bind(this);
 		this.save 				= this.save.bind(this);
 		this.onKeypress 		= this.onKeypress.bind(this);
-		this.onBeforeUnload 	= this.onBeforeUnload.bind(this);
 	}
 
 	init(){
@@ -30,7 +29,6 @@ class KeyLogger {
 		if (!document.title) document.title = document.URL;
 
 		this.port = chrome.runtime.connect();
-		this.port.postMessage('Port established');
 
 		// document listens to user keypress and invokes this.onKeypress, callback function
 		// document.addEventListener('keypress', this.onKeypress);
@@ -67,7 +65,6 @@ class KeyLogger {
 
 		let data = {
 			time: this.time,
-			duration: this.duration,
 			cpm: this.cpm,
 			wpm: this.wpm,
 			url
@@ -76,12 +73,7 @@ class KeyLogger {
 		this.port.postMessage(data);
 	}
 
-	onBeforeUnload(e) {
-		e.preventDefault();
-		alert('on before window unload', this.save())
-	}
-
-	needPrivacy(domElement){
+	needPrivacy (domElement) {
 		// should be a secret when typed domElement has type "password"
 		if (domElement && domElement.type === "password") return true;
 		return false;

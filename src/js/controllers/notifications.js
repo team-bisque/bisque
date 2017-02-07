@@ -5,13 +5,16 @@ import {
 	togglePause
 } from '../action-creators/status';
 
+import { wrapStore } from 'react-chrome-redux';
+import store from '../store';
+wrapStore(store, {portName: '1337'});
+
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
 class Notifications {
 	// https://developer.chrome.com/apps/notifications
-	constructor(store) {
-		this.store = store;
+	constructor() {
 		this.loginHandler = this.loginHandler.bind(this);
 		this.welcomeHandler = this.welcomeHandler.bind(this);
 		this.warningHandler = this.warningHandler.bind(this);

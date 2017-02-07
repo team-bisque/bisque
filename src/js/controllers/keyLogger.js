@@ -20,7 +20,6 @@ class KeyLogger {
 		this.log 				= this.log.bind(this);
 		this.save 				= this.save.bind(this);
 		this.onKeypress 		= this.onKeypress.bind(this);
-		this.onBeforeUnload 	= this.onBeforeUnload.bind(this);
 	}
 
 	init(){

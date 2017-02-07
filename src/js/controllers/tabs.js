@@ -3,14 +3,17 @@ const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 const firebase = require('./firebase');
 
+import { wrapStore } from 'react-chrome-redux';
+import store from '../store';
+wrapStore(store, {portName: '1337'});
+
 class Tabs {
     // https://developer.chrome.com/extensions/tabs
-    constructor(store) {
-        this.store            = store;
+    constructor () {
         this.onCompleteState  = this.onCompleteState.bind(this);
     }
 
-    init(){
+    _init(){
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             this.onCompleteState(tabId, changeInfo, tab);
         });
@@ -19,8 +22,8 @@ class Tabs {
     onCompleteState(tabId, changeInfo, tab) {
         chrome.runtime.onConnect.addListener(port => {
             port.onMessage.addListener(msg => {
-                if (this.store.getState().auth) {
-                    const userId = this.store.getState().auth.uid;
+                if (store.getState().auth) {
+                    const userId = store.getState().auth.uid;
 
                     // Next two lines ignore events triggered before keylogging begins.
                     const timeObject = msg.time ? new Date(msg.time) : null;
