@@ -70,7 +70,6 @@ class Main extends React.Component{
 
   }
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps)
   }
 
   handleMouseMove(e) {
@@ -98,8 +97,6 @@ class Main extends React.Component{
       height:height
     })
   }
-
-
 
   render(){
     const { status, settings, weather, auth, route, db } = this.props;

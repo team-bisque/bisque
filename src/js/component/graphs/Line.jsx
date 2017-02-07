@@ -99,7 +99,6 @@ export class Line extends Component {
   handleMouseMove() {
     let mousex = d3.mouse(this)
     mousex = mousex[0] + 5;
-    console.log(mousex);
     d3.select('guide')
       .style('left', mousex + 'px')
   }

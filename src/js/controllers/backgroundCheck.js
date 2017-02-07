@@ -104,7 +104,7 @@
   function log(msg) {
 
     if (get('debug')) {
-      console.log(msg);
+      console.error(msg);
     }
   }
 
@@ -240,12 +240,12 @@
    */
   function kill(start) {
     var duration = new Date().getTime() - start;
-    
+
     log('Duration: ' + duration + 'ms');
 
     if (duration > get('maxDuration')) {
       // Log a message even when debug is false
-      console.log('BackgroundCheck - Killed');
+      console.error('BackgroundCheck - Killed');
       removeClasses();
       destroy();
     }
@@ -539,7 +539,7 @@
     for (var t = 0; t < targets.length; t++) {
       target = targets[t];
       target = get('changeParent') ? target.parentNode : target;
-      
+
       classList(target, get('classes').light, 'remove');
       classList(target, get('classes').dark, 'remove');
       classList(target, get('classes').complex, 'remove');
@@ -548,7 +548,7 @@
 
 
   /*
-   * Calculate average pixel brightness of a region 
+   * Calculate average pixel brightness of a region
    * and add 'light' or 'dark' accordingly
    */
   function calculatePixelBrightness(target) {
