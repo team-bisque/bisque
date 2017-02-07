@@ -83,7 +83,6 @@ class Notifications {
 	}
 
 	warningHandler(noteId, buttonIndex) {
-		console.log(buttonIndex);
 		if (buttonIndex === 1) this.store.dispatch(addFiveMinutes());
 		chrome.notifications.clear(noteId);
 	}
@@ -106,7 +105,6 @@ class Notifications {
 	}
 
 	statusHandler(noteId, buttonIndex) {
-		console.log(noteId);
 		if (buttonIndex === 0) { // User is ready
 			this.store.dispatch(toggleWork());
 			chrome.tabs.create({});

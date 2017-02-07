@@ -34,7 +34,6 @@ class Auth {
 			scopes: ['profile', 'email']
 		}, token => {
 			if (chrome.runtime.lastError && !interactive) {
-      	console.log('It was not possible to get a token programmatically.');
     	} else if (chrome.runtime.lastError) {
 				throw new Error(chrome.runtime.lastError);
 	    } else if (token) {

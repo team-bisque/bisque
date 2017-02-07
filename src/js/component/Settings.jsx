@@ -1,21 +1,18 @@
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
-// import SettingsModal from './SettingsModal';
+import SettingsModal from './SettingsModal';
 import store from '../store';
 
-// import { setRouteAlias } from '../action-creators/aliases';
-
-export default class Settings extends React.Component {
+class Settings extends React.Component {
   constructor(props) {
-    super(props);    
+    super(props);
   }
 
   onClickClose(e){
     this.props.setRoute(null)
   }
-  render() {  
-    console.log('setting',this.props)
+  render() {
     return (
       <div id="setting-modal">
         <div className="modal-bar">
@@ -23,9 +20,14 @@ export default class Settings extends React.Component {
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        {/*<SettingsModal {...this.props}/>*/}
+        <SettingsModal settings={this.props.settings}/>
       </div>
-    );   
+    );
   }
 }
 
+const mapState = ({settings}) => ({settings});
+
+const mapDispatch = null;
+
+export default connect(mapState, mapDispatch)(Settings);

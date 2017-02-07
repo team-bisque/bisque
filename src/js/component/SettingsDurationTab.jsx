@@ -4,7 +4,8 @@
 require('../../css/settings-modal.css');
 
 //Libraries
-import React from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {
   Button,
   Grid,
@@ -15,46 +16,70 @@ import {
   ControlLabel,
 } from 'react-bootstrap';
 
-const SettingsDurationTab = (props) => {
-  const {
-    workMinutes,
-    breakMinutes,
-    lunchMinutes,
-    workMinutesHandleChange,
-    breakMinutesHandleChange,
-    lunchMinutesHandleChange
-  } = props;
+//Local
+import {setDuration} from '../action-creators/settings';
+import {convertMillisecondsToMinutes} from '../utils';
+import store from '../store';
 
-  return (
-    <div>
-      <Grid fluid={true} className="survey-wrapper">
-        <Row className="statistics">
-          <Form inline>
-            <center>
+
+class SettingsDurationTab extends Component {
+  constructor(props) {
+    super(props);
+    this.minuteOnChange = this.minuteOnChange.bind(this);
+  }
+
+  minuteOnChange(event) {
+    const {name} = event.target;
+    const milliseconds = event.target.value * 60000;
+    store.dispatch(setDuration(name, milliseconds));
+  }
+
+  render() {
+    const {
+      workDuration,
+      breakDuration,
+      lunchDuration
+    } = this.props;
+    const {minuteOnChange} = this;
+
+    return (
+      <Grid fluid={true}>
+        <Row>
+          <center>
             <Row>
-            <FormGroup controlId="work-minutes">
-              <ControlLabel className="settings-text">Work Minutes</ControlLabel>
-              <FormControl type="number" value={workMinutes || 0} onChange={workMinutesHandleChange} />
-            </FormGroup>
+              <label className="settings-text">Work Minutes</label>
+              <input
+                type="number"
+                name="workMinutes"
+                value={convertMillisecondsToMinutes(workDuration) || 0}
+                onChange={minuteOnChange}
+              />
             </Row>
             <Row>
-            <FormGroup controlId="break-minutes">
-              <ControlLabel className="settings-text">Break Minutes</ControlLabel>
-              <FormControl type="number" value={breakMinutes || 0} onChange={breakMinutesHandleChange} />
-            </FormGroup>
+              <label className="settings-text">Break Minutes</label>
+              <input
+                type="number"
+                name="breakMinutes"
+                value={convertMillisecondsToMinutes(breakDuration) || 0}
+                onChange={minuteOnChange} />
             </Row>
             <Row>
-            <FormGroup controlId="lunch-minutes">
-              <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
-              <FormControl type="number" value={lunchMinutes || 0} onChange={lunchMinutesHandleChange} />
-            </FormGroup>
+              <label className="settings-text">Lunch Minutes</label>
+              <input
+              type="number"
+              name="lunchMinutes"
+              value={convertMillisecondsToMinutes(lunchDuration) || 0}
+              onChange={minuteOnChange} />
             </Row>
-            </center>
-          </Form>
+          </center>
         </Row>
       </Grid>
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default SettingsDurationTab;
+const mapState = ({settings}) => ({settings});
+
+const mapDispatch = null;
+
+export default connect(mapState, mapDispatch)(SettingsDurationTab);

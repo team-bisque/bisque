@@ -14,6 +14,10 @@ export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
 
 // settings
 export const SAVE_SETTINGS = 'SAVE_SETTINGS';
+export const SET_WORK_DURATION = 'SET_WORK_DURATION';
+export const SET_BREAK_DURATION = 'SET_BREAK_DURATION';
+export const SET_LUNCH_DURATION = 'SET_LUNCH_DURATION';
+export const UPDATE_URL_LIST = 'UPDATE_URL_LIST';
 
 // weather
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';

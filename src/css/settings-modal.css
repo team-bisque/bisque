@@ -82,3 +82,7 @@ li {
     border: none;
     font-size: 3em;
 }
+
+.greylist-url {
+    color: black;
+}

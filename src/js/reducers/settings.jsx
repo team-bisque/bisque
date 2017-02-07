@@ -1,7 +1,10 @@
 'use strict';
 
 import {
-	SAVE_SETTINGS,
+  SET_WORK_DURATION,
+  SET_BREAK_DURATION,
+  SET_LUNCH_DURATION,
+  UPDATE_URL_LIST
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
@@ -11,16 +14,27 @@ const initialState = {
   breakDuration: 6 * minute,
   lunchDuration: 5 * minute,
   urlList: [
+    '',
     'youtube.com',
     'buzzfeed.com'
   ]
 };
 
 export default (state = initialState, action) => {
-	let newState = Object.assign({}, state);
+	const newState = Object.assign({}, state);
 	switch (action.type) {
-		case SAVE_SETTINGS:
-      return action.settings;
+    case SET_WORK_DURATION:
+      newState.workDuration = action.workDuration;
+      break;
+    case SET_BREAK_DURATION:
+      newState.breakDuration = action.breakDuration;
+      break;
+    case SET_LUNCH_DURATION:
+      newState.lunchDuration = action.lunchDuration;
+      break;
+    case UPDATE_URL_LIST:
+      newState.urlList = action.urlList;
+      break;
 		default:
 			break;
 	}

@@ -80,7 +80,6 @@ class Main extends React.Component{
   }
 
   onImageLoad(e){
-    console.log('onImageLoad', e.target.naturalWidth, e.target.naturalHeight)
     let width = e.target.naturalWidth,
         height = e.target.naturalHeight;
 
@@ -94,8 +93,6 @@ class Main extends React.Component{
 
   render(){
     const { status, settings, weather, auth, route, db } = this.props;
-    // alert(meta.width, meta.height)
-    // console.log('render with state', this.state)
     // let user = null; // for test
     let child;
     if (!this.props.route){

@@ -8,15 +8,15 @@ $complex: #bfbfbf;
 $margin: 2em;
 
 body {
-  color: white;  
+  color: white;
   text-shadow: $text-shadow;
 }
 
 .background--light {
-  color: $dark;  
+  color: $dark;
   text-shadow: 2px 2px 4px rgba(173, 173, 173, 0.63);
   .bisque-btn {
-    border-color: $dark;  
+    border-color: $dark;
   }
 }
 
@@ -24,11 +24,11 @@ body {
   color: $light;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
   .bisque-btn {
-    border-color: $light;  
+    border-color: $light;
   }
 }
 
-.background--complex {  
+.background--complex {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
 }
 
@@ -36,7 +36,7 @@ body {
 #main {
     width: 100vw;
     height: 100vh;
-    
+
     .top-right {
       top: 0;
       right: 0;
@@ -78,34 +78,34 @@ body {
   width: 250px;
   height: 250px;
   padding: 50px;
-  -webkit-transform: scale(1); 
+  -webkit-transform: scale(1);
   -ms-transition: all 200ms ease-in;
-  -ms-transform: scale(1); 
+  -ms-transform: scale(1);
   -moz-transition: all 200ms ease-in;
   -moz-transform: scale(1);
   transition: all 200ms ease-in;
-  transform: scale(1); 
+  transform: scale(1);
 
-  &.settings {    
+  &.settings {
     width: 500px;
     height: 500px;
     border-radius: 10px;
     padding: 50px 10px 10px 10px;
-    -webkit-transition: all 200ms ease-in;    
-    -ms-transition: all 200ms ease-in;    
-    -moz-transition: all 200ms ease-in;    
-    transition: all 200ms ease-in;        
+    -webkit-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
   }
 
-  &.chart {    
+  &.chart {
     width: 75vw;
     height: 75vh;
     border-radius: 10px;
     padding: 50px 10px 10px 10px;
-    -webkit-transition: all 200ms ease-in;    
-    -ms-transition: all 200ms ease-in;    
-    -moz-transition: all 200ms ease-in;    
-    transition: all 200ms ease-in;        
+    -webkit-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
   }
 
 }
@@ -152,7 +152,7 @@ body {
 }
 
 .timer-wrapper {
-  .controller, .timer {    
+  .controller, .timer {
     display: flex;
     justify-content: space-around;
   }
@@ -183,14 +183,14 @@ body {
 
 
 .fullsizeBg {
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
     //background-size: cover;
     background-size: calc(100vw + 200px) !important;
     @media screen and (orientation: portrait) {
       background-size: auto calc(100vh + 200px) !important;
     }
 
-    
+
 }
 
 
@@ -204,7 +204,7 @@ body {
   width: 100%;
   background: rgba(60, 60, 60, 0.63);
   border-top-left-radius: 10px;
-  border-top-right-radius: 10px;  
+  border-top-right-radius: 10px;
   >div{
     margin-right: 5px;
   }
@@ -212,4 +212,20 @@ body {
 
 #setting-form {
   width: 100%;
+}
+#settings-tabs{
+
+  .nav-tabs>li>a {
+    color: black;
+    text-shadow: none;
+    background-color: rgba(222, 222, 222, 0.86);
+  }
+  .nav-tabs>li.active>a{
+    background-color: white;
+  }
+  .tab-content{
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
 }

@@ -24,27 +24,22 @@ export class User extends React.Component {
     if (curHr < 12) {
       message = (
         <div>
-          <h3>{ 'Good morning!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
+          <h3>{ `Good morning, ${auth && auth.displayName}!` }</h3>
         </div>
         );
     } else if (curHr < 18) {
       message = (
         <div>
-          <h3>{ 'Good afternoon!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
+          <h3>{ `Good afternoon, ${auth && auth.displayName}!` }</h3>
         </div>
         );
     } else {
       message = (
         <div>
-          <h3>{ 'Good night!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
+          <h3>{ `Good evening, ${auth && auth.displayName}!` }</h3>
         </div>
         );
     }
-
-    console.log('User', auth, weather);
 
     // let user = null;
     return  (
