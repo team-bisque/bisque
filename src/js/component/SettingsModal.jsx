@@ -188,31 +188,43 @@ class SettingsModal extends Component {
       removeUrl
     } = this;
 
-    return (
-      <div>
+    const DurationIcon = (
+      <div id="duration-tab">
+        <i className="fa fa-clock-o"></i>
+        <span>duration</span>
+      </div>
+    )
+    const GreylistIcon = (
+      <div id="greylist-tab">
+        <i className="fa fa-chain-broken"></i>
+        <span>greylist</span>
+      </div>
+    )
 
-              <Tabs defaultActiveKey={1} id="settings-tabs">
-                <Tab eventKey={1} title="Duration">
-                  <SettingsDurationTab
-                    workMinutes={workMinutes}
-                    breakMinutes={breakMinutes}
-                    lunchMinutes={lunchMinutes}
-                    workMinutesHandleChange={workMinutesHandleChange}
-                    breakMinutesHandleChange={breakMinutesHandleChange}
-                    lunchMinutesHandleChange={lunchMinutesHandleChange}
-                  />
-                </Tab>
-                <Tab eventKey={2} title="Greylist">
-                  <SettingsGreylistTab
-                    urlList={urlList}
-                    currentUrl={currentUrl}
-                    saveNewUrl={saveNewUrl}
-                    removeUrl={removeUrl}
-                    newUrlHandleChange={newUrlHandleChange}
-                    editUrlHandleChange={editUrlHandleChange}
-                  />
-                </Tab>
-              </Tabs>
+    return (
+      <div>       
+        <Tabs defaultActiveKey={1} id="settings-tabs">
+          <Tab eventKey={1} title={DurationIcon}>
+            <SettingsDurationTab
+              workMinutes={workMinutes}
+              breakMinutes={breakMinutes}
+              lunchMinutes={lunchMinutes}
+              workMinutesHandleChange={workMinutesHandleChange}
+              breakMinutesHandleChange={breakMinutesHandleChange}
+              lunchMinutesHandleChange={lunchMinutesHandleChange}
+            />
+          </Tab>
+          <Tab eventKey={2} title={GreylistIcon}>
+            <SettingsGreylistTab
+              urlList={urlList}
+              currentUrl={currentUrl}
+              saveNewUrl={saveNewUrl}
+              removeUrl={removeUrl}
+              newUrlHandleChange={newUrlHandleChange}
+              editUrlHandleChange={editUrlHandleChange}
+            />
+          </Tab>
+        </Tabs>
        </div>
     );
   }

@@ -66,10 +66,13 @@ class Main extends React.Component{
     Array.prototype.forEach.call(elements, (el) => {
         // Do stuff here
         BackgroundCheck.refresh(el);
-    });
-
+    });    
   }
   componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps', nextProps);
+    if(nextProps.auth){
+      if(nextProps.route !== this.props.route) this.props.setRoute(nextProps.route)
+    }
   }
 
   handleMouseMove(e) {
@@ -89,6 +92,7 @@ class Main extends React.Component{
   }
 
   onImageLoad(e){
+
     let width = e.target.naturalWidth,
         height = e.target.naturalHeight;
 
@@ -98,13 +102,11 @@ class Main extends React.Component{
     })
   }
 
-
-
   render(){
     const { status, settings, weather, auth, route, db } = this.props;
     // let user = null; // for test
     let child;
-    if (!this.props.route){
+    if (!this.props.route || this.props.route.includes("alarm")){
       child = (<Timer status={status} />);
     } else if (this.props.route === "settings"){
       child = (<Settings {...this.props}/>);
@@ -155,7 +157,7 @@ class Main extends React.Component{
             !auth ?
             // !user ? // for test
             <Login /> : child
-          }
+          }        
           </div>
         </div>
       </div>

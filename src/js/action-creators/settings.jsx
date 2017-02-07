@@ -7,8 +7,13 @@ import {
   SET_START_TIME,
   ADD_URL,
   REMOVE_URL,
-  EDIT_URL
+  EDIT_URL,
+  RECEIVE_SETTINGS
 } from '../constants';
+
+export const receiveSettings = settings => ({ 
+  type: RECEIVE_SETTINGS, settings 
+});
 
 export const setWorkDuration = workDuration => ({
   type: SET_WORK_DURATION, workDuration

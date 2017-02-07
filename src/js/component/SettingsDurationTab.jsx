@@ -9,6 +9,7 @@ import {
   Button,
   Grid,
   Row,
+  Col,
   Form,
   FormGroup,
   FormControl,
@@ -25,34 +26,23 @@ const SettingsDurationTab = (props) => {
     lunchMinutesHandleChange
   } = props;
 
-  return (
-    <div>
-      <Grid fluid={true} className="survey-wrapper">
-        <Row className="statistics">
-          <Form inline>
-            <center>
-            <Row>
-            <FormGroup controlId="work-minutes">
-              <ControlLabel className="settings-text">Work Minutes</ControlLabel>
-              <FormControl type="number" value={workMinutes || 0} onChange={workMinutesHandleChange} />
-            </FormGroup>
-            </Row>
-            <Row>
-            <FormGroup controlId="break-minutes">
-              <ControlLabel className="settings-text">Break Minutes</ControlLabel>
-              <FormControl type="number" value={breakMinutes || 0} onChange={breakMinutesHandleChange} />
-            </FormGroup>
-            </Row>
-            <Row>
-            <FormGroup controlId="lunch-minutes">
-              <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
-              <FormControl type="number" value={lunchMinutes || 0} onChange={lunchMinutesHandleChange} />
-            </FormGroup>
-            </Row>
-            </center>
-          </Form>
-        </Row>
-      </Grid>
+  return (    
+    <div>    
+      <FormGroup controlId="work-minutes">
+        <ControlLabel className="settings-text">Work Minutes</ControlLabel>
+        <FormControl type="number" value={workMinutes || 0} onChange={workMinutesHandleChange} />
+      </FormGroup>          
+      <FormGroup controlId="break-minutes">
+        <ControlLabel className="settings-text">Break Minutes</ControlLabel>
+        <FormControl type="number" value={breakMinutes || 0} onChange={breakMinutesHandleChange} />
+      </FormGroup>          
+      <FormGroup controlId="lunch-minutes">
+        <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
+        <FormControl type="number" value={lunchMinutes || 0} onChange={lunchMinutesHandleChange} />
+      </FormGroup>
+      <p>
+        Set duration of your work / break / lunch time in minute unit
+      </p>
     </div>
   );
 };

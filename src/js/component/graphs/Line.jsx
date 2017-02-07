@@ -110,7 +110,8 @@ export class Line extends Component {
       .style('left', mousex + 'px')
   }
 
-  render() {
+  render() {  
+    console.log('Line Data', this.props.data)
     return (<svg width={this.props.width} height={this.props.height} />);
   }
 }

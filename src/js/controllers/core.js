@@ -4,6 +4,7 @@ import { fetchWeather } from '../action-creators/weather';
 import { wrapStore } from 'react-chrome-redux';
 
 import store from '../store';
+import firebase from './firebase';
 wrapStore(store, {portName: '1337'});
 
 const 	Tabs 			= require('./Tabs'),
@@ -29,6 +30,7 @@ class Core {
 		this.tabs._init(); // <-- for keylogger;
 		this.idle._init(); // <-- detects whether user is idle
 
+		
 		this.auth.onAuthStateChanged();
 
 		dispatch(fetchWeather());
