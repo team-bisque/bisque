@@ -1,4 +1,5 @@
 @import './css/weather-icons.css';
+@import './animations.scss';
 
 $text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.31);
 $dark: #232323;
@@ -61,7 +62,24 @@ body {
   }
 }
 
+//overwrite bootstrap
+.nav-tabs {
+  border-bottom: none;
+}
 
+.nav-tabs>li.active>a, 
+  .nav-tabs>li.active>a:focus, 
+  .nav-tabs>li.active>a:hover {
+      background: white;      
+  }
+  .nav-tabs>li>a {
+      background: rgba(255, 255, 255, 0.6);
+      color: black;
+      border: none;
+      &:hover{
+         background: rgba(255, 255, 255, 0.8);
+      }
+  }
 
 // Grid structure
 #main {
@@ -108,17 +126,49 @@ body {
   border-radius: 50%;
   width: 250px;
   height: 250px;
-  padding: 50px;
-  -webkit-transform: scale(1); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  /* -webkit-transform: rotateX(-5deg) rotateY(-30deg);
+  -moz-transform: rotateX(-5deg) rotateY(-30deg);
+    transform: rotateX(-5deg) rotateY(-30deg); */
+  -webkit-transition: -webkit-transform 2s;
+  -moz-transition: -moz-transform 2s;
+     transition: transform 2s;
+
+  
   -ms-transition: all 200ms ease-in;
   -ms-transform: scale(1); 
   -moz-transition: all 200ms ease-in;
   -moz-transform: scale(1);
   transition: all 200ms ease-in;
-  transform: scale(1); 
+  
+  &.alarm {
+    -webkit-animation-name: shake;
+    -ms-animation-name: shake;
+    animation-name: shake;
+    -webkit-animation-duration: 100ms;
+    -ms-animation-duration: 100ms;
+    animation-duration: 100ms;
+    -webkit-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease-in-out;
+    -ms-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-delay: 0s;
+    -ms-animation-delay: 0s;
+    animation-delay: 0s;
+    -webkit-animation-play-state: running;
+    -ms-animation-play-state: running;
+    animation-play-state: running;
+  }
 
   &.settings {    
-    width: 500px;
+    width: 300px;
     height: 500px;
     border-radius: 10px;
     padding: 50px 10px 10px 10px;
@@ -238,3 +288,34 @@ body {
 #setting-form {
   width: 100%;
 }
+
+#settings-tabs {
+  text-shadow: none;
+
+  
+
+  .tab-content {
+    padding: 20px 0;
+  }
+  form label{
+    color: white;
+  }
+}
+
+input {
+    color: #FFFFFF !important;
+    -webkit-appearance: none !important;
+    background: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    border-style: none !important;
+    box-shadow: none !important;
+    border-bottom: 2px solid #FFFFFF !important;
+    &:focus{
+      border-color: #FFFFFF !important;
+      outline: none !important;
+    }
+}
+
+
+

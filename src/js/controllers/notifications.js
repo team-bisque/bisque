@@ -24,7 +24,7 @@ class Notifications {
 		// but we're not getting fancy yet
 		// So it's easier to set defaults like this
 		if (!options.type) options.type = 'basic';
-		if (!options.iconUrl) options.iconUrl = './images/logo.png';
+		if (!options.iconUrl) options.iconUrl = './images/favicon-128.png';
 		return chromep.notifications.create(noteId, options);
 	}
 

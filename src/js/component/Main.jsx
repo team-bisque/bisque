@@ -66,12 +66,17 @@ class Main extends React.Component{
     Array.prototype.forEach.call(elements, (el) => {
         // Do stuff here
         BackgroundCheck.refresh(el);
-    });
+    });    
+  }
+  // // componentWillReceiveProps(nextProps) {
+  //   console.log('componentWillReceiveProps', nextProps)
+  //   const { timeRemaining, isPaused, isWorking } = nextProps.status;
+  //   if(timeRemaining === 0) this.props.setRoute('alarm');
     
-  }
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps)
-  }
+  //   // else if(timeRemaining <= -12000 || 
+  //   //         isPaused !== this.props.status.isPaused || 
+  //   //         isWorking !== this.props.status.isWorking) this.props.setRoute(null);
+  // }
 
   handleMouseMove(e) {        
     let mouseStrength = 25,
@@ -90,7 +95,7 @@ class Main extends React.Component{
   }
 
   onImageLoad(e){    
-    console.log('onImageLoad', e.target.naturalWidth, e.target.naturalHeight)
+    // console.log('onImageLoad', e.target.naturalWidth, e.target.naturalHeight)
     let width = e.target.naturalWidth,
         height = e.target.naturalHeight;
 
@@ -100,15 +105,13 @@ class Main extends React.Component{
     })
   }
 
-
-
   render(){
     const { status, settings, weather, auth, route, db } = this.props;    
     // alert(meta.width, meta.height)
     // console.log('render with state', this.state)
     // let user = null; // for test
     let child;
-    if (!this.props.route){
+    if (!this.props.route || this.props.route.includes("alarm")){
       child = (<Timer status={status} />);
     } else if (this.props.route === "settings"){
       child = (<Settings {...this.props}/>);
@@ -121,7 +124,7 @@ class Main extends React.Component{
       graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>)      
     }
 
-    console.log('MAIN RENDER', this.props)
+    // console.log('MAIN RENDER', this.props)
     return (
       <div id="main" 
         className="fullsizeBg" 
@@ -160,7 +163,7 @@ class Main extends React.Component{
             !auth ? 
             // !user ? // for test
             <Login /> : child
-          }
+          }        
           </div>
         </div>
       </div>

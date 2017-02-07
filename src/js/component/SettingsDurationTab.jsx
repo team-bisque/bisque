@@ -9,6 +9,7 @@ import {
   Button,
   Grid,
   Row,
+  Col,
   Form,
   FormGroup,
   FormControl,
@@ -25,35 +26,28 @@ const SettingsDurationTab = (props) => {
     lunchMinutesHandleChange
   } = props;
 
-  return (
-    <div>
-      <Grid fluid={true} className="survey-wrapper">
-        <Row className="statistics">
-          <Form inline>
-            <center>
-            <Row>
+  return (    
+    <Grid fluid={true}>
+      <Row>
+        <Col xs={12} md={10} mdOffset={1}>
+          <Form>
             <FormGroup controlId="work-minutes">
               <ControlLabel className="settings-text">Work Minutes</ControlLabel>
               <FormControl type="number" value={workMinutes || 0} onChange={workMinutesHandleChange} />
-            </FormGroup>
-            </Row>
-            <Row>
+            </FormGroup>          
             <FormGroup controlId="break-minutes">
               <ControlLabel className="settings-text">Break Minutes</ControlLabel>
               <FormControl type="number" value={breakMinutes || 0} onChange={breakMinutesHandleChange} />
-            </FormGroup>
-            </Row>
-            <Row>
+            </FormGroup>          
             <FormGroup controlId="lunch-minutes">
               <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
               <FormControl type="number" value={lunchMinutes || 0} onChange={lunchMinutesHandleChange} />
             </FormGroup>
-            </Row>
-            </center>
           </Form>
-        </Row>
-      </Grid>
-    </div>
+        </Col>
+        
+      </Row>
+    </Grid>
   );
 };
 
