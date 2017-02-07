@@ -1,0 +1,240 @@
+@import './css/weather-icons.css';
+
+$text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.31);
+$dark: #232323;
+$light: #FFFFFF;
+$complex: #bfbfbf;
+
+$margin: 2em;
+
+body {
+  color: white;  
+  text-shadow: $text-shadow;
+}
+
+.background--light {
+  color: $dark;  
+  text-shadow: 2px 2px 4px rgba(173, 173, 173, 0.63);
+  .bisque-btn {
+    border-color: $dark;  
+  }
+}
+
+.background--dark {
+  color: $light;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+  .bisque-btn {
+    border-color: $light;  
+  }
+}
+
+.background--complex {  
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+}
+
+.icon {
+  z-index: 1000;
+  i {
+    font-size: 2em;
+    cursor: pointer;
+    text-shadow: $text-shadow;
+
+    -ms-transform: scale(1, 1); /* IE 9 */
+    -webkit-transform: scale(1, 1); /* Safari */
+    transform: scale(1, 1);
+    -webkit-transition: all 200ms ease-in;    
+    -ms-transition: all 200ms ease-in;    
+    -moz-transition: all 200ms ease-in;    
+    transition: all 200ms ease-in;        
+    &:hover {
+      -ms-transform: scale(1.5, 1.5); /* IE 9 */
+      -webkit-transform: scale(1.5, 1.5); /* Safari */
+      transform: scale(1.5, 1.5);
+      -webkit-transition: all 200ms ease-in;    
+      -ms-transition: all 200ms ease-in;    
+      -moz-transition: all 200ms ease-in;    
+      transition: all 200ms ease-in;        
+    }
+  }
+  .city {
+    font-size: 1.2em;
+  }
+}
+
+
+
+// Grid structure
+#main {
+    width: 100vw;
+    height: 100vh;
+    
+    .top-right {
+      top: 0;
+      right: 0;
+      margin-top: $margin;
+      margin-right: $margin;
+    }
+    .top-left {
+      top: 0;
+      left: 0;
+      margin-top: $margin;
+      margin-left: $margin;
+    }
+    .bottom-left {
+      bottom: 0;
+      left: 0;
+      margin-bottom: $margin;
+      margin-left: $margin;
+    }
+    .bottom-right {
+      bottom: 0;
+      right: 0;
+      margin-bottom: $margin;
+      margin-right: $margin;
+    }
+
+    .flex-center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+}
+
+#wrapper {
+  background: rgba(14, 14, 14, 0.27);
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  padding: 50px;
+  -webkit-transform: scale(1); 
+  -ms-transition: all 200ms ease-in;
+  -ms-transform: scale(1); 
+  -moz-transition: all 200ms ease-in;
+  -moz-transform: scale(1);
+  transition: all 200ms ease-in;
+  transform: scale(1); 
+
+  &.settings {    
+    width: 500px;
+    height: 500px;
+    border-radius: 10px;
+    padding: 50px 10px 10px 10px;
+    -webkit-transition: all 200ms ease-in;    
+    -ms-transition: all 200ms ease-in;    
+    -moz-transition: all 200ms ease-in;    
+    transition: all 200ms ease-in;        
+  }
+
+  &.chart {    
+    width: 75vw;
+    height: 75vh;
+    border-radius: 10px;
+    padding: 50px 10px 10px 10px;
+    -webkit-transition: all 200ms ease-in;    
+    -ms-transition: all 200ms ease-in;    
+    -moz-transition: all 200ms ease-in;    
+    transition: all 200ms ease-in;        
+  }
+
+  &.signin {
+    display: flex;
+    text-align: center;
+    align-items: center;
+  }
+}
+
+#weather, #settings, #chart, #user {
+  position: absolute;
+}
+
+#signin.icon {
+  i {
+    font-size: 4em;
+  }
+  >div {
+    margin-top: 10px;
+  }
+}
+
+
+.bisque-btn {
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: solid 3px white;
+  font-size: 1.2em;
+  &:focus {
+    outline: none;
+  }
+}
+
+.timer-wrapper {
+  .controller, .timer {    
+    display: flex;
+    justify-content: space-around;
+  }
+  .controller{
+    margin-top: 20px;
+    font-size: 1.5em;
+  }
+  .timer {
+    text-align: center;
+    flex-direction: column;
+
+    .time{
+      font-size: 4em;
+    }
+  }
+
+  .timer-message {
+    font-size: 1em;
+    text-align: center;
+  }
+}
+
+// Icons
+// weather
+// setting
+// graph
+// todo(? possibly later)
+
+
+.fullsizeBg {
+    background-repeat: no-repeat;    
+    //background-size: cover;
+    background-size: calc(100vw + 200px) !important;
+    @media screen and (orientation: portrait) {
+      background-size: auto calc(100vh + 200px) !important;
+    }
+
+    
+}
+.donut-timer{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -100;
+}
+
+// Setting modal
+.modal-bar {
+  display: flex;
+  justify-content:flex-end;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(60, 60, 60, 0.63);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;  
+  >div{
+    margin-right: 5px;
+  }
+}
+
+#setting-form {
+  width: 100%;
+}

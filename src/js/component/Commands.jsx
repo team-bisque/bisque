@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 
 import {addFiveMinutes, togglePause, toggleWork} from '../action-creators/status';
 
+import {Tooltip, OverlayTrigger} from 'react-bootstrap';
+
 class Commands extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,13 @@ class Commands extends Component {
     }
   }
 
+  
+
   render () {
+    const tooltip = () => (
+      <Tooltip id="tooltip">pause</Tooltip>
+    );
+
     return (
       <div>
         <div>

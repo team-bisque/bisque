@@ -2,12 +2,12 @@
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
 
-const Tabs = require('./tabs'),
-			Auth = require('./auth'),
-			WebRequest 	= require('./webRequest'),
-			Notifications = require('./notifications'),
-			Idle = require('./idle'),
-			Greylist = require('./greylist')
+const Tabs 					= require('./Tabs'),
+			WebRequest 		= require('./WebRequest'),
+			Notifications = require('./Notifications'),
+			Idle 					= require('./Idle'),
+			Greylist 			= require('./Greylist'),
+			Auth 					= require('./Auth');
 
 class Core {
 	constructor(store) {

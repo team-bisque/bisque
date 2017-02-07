@@ -1,0 +1,84 @@
+.modal-container {
+    color: black;
+}
+
+p, h4 {
+    text-align: center;
+}
+
+h4 {
+    margin-bottom: 30px;
+}
+
+li {
+    font-weight: bold;
+    color: black;
+}
+
+.modal-container {
+    color: black;
+}
+
+.quick-survey-question {
+    font-style: italic;
+    padding: 20px;
+}
+
+.survey .btn-group {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    width: inherit;
+}
+
+.survey .quality-indicators {
+    display: flex;
+    justify-content: space-between;
+}
+.survey .quality-buttons {
+    float: none;
+    margin-left:10px;
+}
+
+.quick-survey-quality-indicator {
+    display: inline-block;
+}
+
+.time-begun, .time-completed, .words-written, .wpm, .progress-to-goal_title, .settings-text {
+    font-weight: bold;
+    color: black;
+}
+
+.survey-wrapper .checkin .btn-group {
+    width: 100%;
+}
+
+.survey-wrapper .checkin .btn-group button {
+    float: none;
+    width: 20%;
+}
+
+.survey-wrapper .label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.survey-wrapper .label-wrapper > div {
+    margin-left: 15px;
+    font-weight: bold;
+}
+.survey-wrapper .label-wrapper > span {
+    margin-right: 15px
+}
+
+.quick-survey-quality-indicator {
+    font-size: .75em;
+    font-style: italic;
+}
+
+.settings-icon {
+    background: none;
+    border: none;
+    font-size: 3em;
+}

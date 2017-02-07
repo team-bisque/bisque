@@ -14,6 +14,7 @@ fileSystem.copySync(path.join(__dirname, "../src/images"), path.join(__dirname, 
 fileSystem.copySync(path.join(__dirname, "../src/js/controllers/keyLogger.js"), path.join(__dirname, "../build/keyLogger.js"))
 fileSystem.copySync(path.join(__dirname, "../node_modules/d3/build/d3.min.js"), path.join(__dirname, "../build/d3.min.js"))
 
+
 /*
  * =================
  * Generate manifest
