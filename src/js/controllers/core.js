@@ -7,8 +7,7 @@ const Tabs = require('./tabs'),
 			WebRequest 	= require('./webRequest'),
 			Notifications = require('./notifications'),
 			Idle = require('./idle'),
-			Greylist = require('./greylist'),
-			firebase = require('./firebase');
+			Greylist = require('./greylist')
 
 class Core {
 	constructor(store) {
