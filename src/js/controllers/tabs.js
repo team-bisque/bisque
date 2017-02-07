@@ -37,9 +37,6 @@ class Tabs {
                     firebase.database().ref(path).set({
                         cpm: msg.cpm, wpm: msg.wpm, url: msg.url
                     })
-
-                    console.log(path);
-                    console.log(msg);
                 }
             })
         })
