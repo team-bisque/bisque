@@ -54,10 +54,3 @@ const SettingsGreylistTab = (props) => {
 }
 
 export default SettingsGreylistTab;
-
-
-/*
-
-
-
-*/
