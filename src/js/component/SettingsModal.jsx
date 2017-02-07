@@ -44,7 +44,7 @@ class SettingsModal extends Component {
       breakDuration,
       lunchDuration,
       shiftDuration,
-      urlList
+      greylist
     } = props.settings;
     const workMinutes = convertMillisecondsToMinutes(workDuration);
     const breakMinutes = convertMillisecondsToMinutes(breakDuration);
@@ -53,7 +53,7 @@ class SettingsModal extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      urlList,
+      greylist,
       currentUrl: '',
       modalShowing: false,
       notNumberWarning: false
@@ -75,7 +75,7 @@ class SettingsModal extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      urlList
+      greylist
     } = this.state;
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
@@ -120,10 +120,10 @@ class SettingsModal extends Component {
 
   editUrlHandleChange(event, indexToChange) {
     const {value} = event.target;
-    const urlList = this.state.urlList.map((url, index) =>
+    const greylist = this.state.greylist.map((url, index) =>
       (index === indexToChange) ? value : url
     );
-    this.setState({urlList});
+    this.setState({greylist});
   }
 
   newUrlHandleChange(event) {
@@ -131,16 +131,16 @@ class SettingsModal extends Component {
   }
 
   saveNewUrl() {
-    const {urlList, currentUrl} = this.state;
-    urlList.push(currentUrl);
-    this.setState({urlList, currentUrl: ''});
+    const {greylist, currentUrl} = this.state;
+    greylist.push(currentUrl);
+    this.setState({greylist, currentUrl: ''});
   }
 
   removeUrl(event, indexToRemove) {
-    const urlList = this.state.urlList.filter((url, index) =>
+    const greylist = this.state.greylist.filter((url, index) =>
       index !== indexToRemove
     );
-    this.setState({urlList});
+    this.setState({greylist});
   }
 
   workMinutesHandleChange(event) {
@@ -169,7 +169,7 @@ class SettingsModal extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      urlList,
+      greylist,
       currentUrl,
       modalShowing,
       notNumberWarning
@@ -216,7 +216,7 @@ class SettingsModal extends Component {
           </Tab>
           <Tab eventKey={2} title={GreylistIcon}>
             <SettingsGreylistTab
-              urlList={urlList}
+              greylist={greylist}
               currentUrl={currentUrl}
               saveNewUrl={saveNewUrl}
               removeUrl={removeUrl}

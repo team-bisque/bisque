@@ -12,7 +12,7 @@ import {
 
 const SettingsGreylistTab = (props) => {
   const {
-    urlList,
+    greylist,
     newUrlHandleChange,
     editUrlHandleChange,
     saveNewUrl,
@@ -35,7 +35,7 @@ const SettingsGreylistTab = (props) => {
         <div className="icon"><i className="fa fa-plus pull-right" onClick={saveNewUrl}></i></div>
       </div>
       <ul className="greylistURLs">
-        {urlList.map((url, index) => {
+        {greylist ? greylist.map((url, index) => {
           return (
             <li key={index}>
               
@@ -51,7 +51,7 @@ const SettingsGreylistTab = (props) => {
               
             </li>
           )
-        }).reverse()}
+        }).reverse() : null}
       </ul>
     </div>
    )
