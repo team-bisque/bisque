@@ -7,13 +7,13 @@ export class Login extends Component {
     super(props);
   }
 
-  athenticate() {
+  authenticate() {
     this.props.tabAuthenticate();
   }
 
   render () {
     return (
-      <div id="signin" className="icon" onClick={this.athenticate.bind(this)}>
+      <div id="signin" className="icon" onClick={this.authenticate.bind(this)}>
         <i className="fa fa-google"></i>
         <div>signin with google account</div>
       </div>
