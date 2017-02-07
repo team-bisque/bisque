@@ -5,7 +5,6 @@ import {
 	togglePause
 } from '../action-creators/status';
 
-import { wrapStore } from 'react-chrome-redux';
 import store from '../store';
 
 const ChromePromise = require('chrome-promise');

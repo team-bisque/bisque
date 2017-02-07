@@ -54,7 +54,7 @@ class KeyLogger {
 			this.wpm = this.words/(durationMinutes === 0 ? 1 : durationMinutes);
 		}
 
-		this.shouldSave = true;    
+		this.shouldSave = true;
 		this.lastLog = now;
 	}
 
@@ -63,12 +63,8 @@ class KeyLogger {
 
 		const url = document.URL.slice(document.URL.indexOf('//') + 2).replace(/[\.]/g, '-').replace(/[\/]/g, '');
 
-		let data = {
-			time: this.time,
-			cpm: this.cpm,
-			wpm: this.wpm,
-			url
-		}
+		const {time, cpm, wpm} = this;
+		const data = {time, cpm, wpm, url};
 
 		this.port.postMessage(data);
 	}
@@ -84,12 +80,12 @@ class KeyLogger {
 
 		let charCode = typeof e.which == "number" ? e.which : e.keyCode;
 
-		if (e.target && !this.needPrivacy(e.target) && charCode){			
+		if (e.target && !this.needPrivacy(e.target) && charCode){
 			// when user hits backspace multiple times until it removed last space
 			if (this.lastspace && this.backspace && this.lastspace === this.backspace) {
-				// set lastspace back to zero and decrease word count, because word is incomplete				
+				// set lastspace back to zero and decrease word count, because word is incomplete
 				this.lastspace = 0;
-				// word can only decrease until there are no characters				
+				// word can only decrease until there are no characters
 				if (this.characters > 0) this.words--;
 			}
 
@@ -97,27 +93,27 @@ class KeyLogger {
 			if (this.lastspace && !this.backspace) this.lastspace ++;
 
 			// Increse number of backspace and
-			// Decrese number of characters 
+			// Decrese number of characters
 			// when backspace is pressed
 			if (charCode === 8) {
 				this.backspace++;
 				if (this.characters > 0) this.characters --;
-			} 
+			}
 
 			// Increse lastspace index number
 			// when space is pressed
 			// need treat whitespace as character.
-			else if (charCode === 32 ) { 
+			else if (charCode === 32 ) {
 				this.lastspace++;
 				this.characters++;
-				// this prevent from increasing word 
+				// this prevent from increasing word
 				// when user hits space as first character or multiple times
 				// e.g) ' aaa' or '  ' = should not be consider as two words
 				if (this.lastCharacterCode && this.lastCharacterCode !== charCode) this.words ++;
 			}
 
 			else {
-				// Set number of backspace to 0 
+				// Set number of backspace to 0
 				// when last character was backspace but current is not
 				if (this.lastCharacterCode === 8) this.backspace = 0;
 				this.characters++;
