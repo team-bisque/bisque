@@ -33,11 +33,11 @@ class Core {
 
 		dispatch(fetchWeather());
 
-		if (!store.getState().auth) {
-			this.notifications.login();
-		} else {
+		// if (!store.getState().auth) {
+		// 	this.notifications.login();
+		// } else {
 			this.notifications.welcome();
-		}
+		// }
 
 		this.watchMinute();
 	}
@@ -51,7 +51,7 @@ class Core {
 				// Deprecate time remaining by 1 minute and dispatch to store
 				const time = getState().status.timeRemaining - minute;
 				dispatch(setTimeRemaining(time));
-
+				console.log(time)
 				if (time === 5 * minute) { // 5 Minutes
 					console.log(time);
 					this.notifications.warning();
@@ -61,7 +61,7 @@ class Core {
 					this.notifications.statusChange();
 				}
 				else if (time === -5 * minute) {
-					console.log(time);
+					console.log("where are you: ", time);
 					this.notifications.whereAreYou();
 					dispatch(togglePause());
 				}
