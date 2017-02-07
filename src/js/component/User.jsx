@@ -2,16 +2,11 @@
 
 import React from 'react';
 // import Login from './Login';
-import { tabAuthenticate } from '../action-creators/auth';
 import { connect } from 'react-redux';
 
-export class User extends React.Component {
+export default class User extends React.Component {
   constructor(props) {
     super(props);
-  }
-
-  athenticate() {
-    this.props.tabAuthenticate();
   }
 
   render () {
@@ -52,11 +47,4 @@ export class User extends React.Component {
     );
   }
 }
-
-
-const mapState = null;
-const mapDispatch = {tabAuthenticate};
-// const mapDispatch = {tabAuthenticate, signout:};
-
-export default connect(mapState, mapDispatch)(User);
 

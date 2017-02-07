@@ -5,9 +5,7 @@ import {
 	togglePause
 } from '../action-creators/status';
 
-import { wrapStore } from 'react-chrome-redux';
 import store from '../store';
-wrapStore(store, {portName: '1337'});
 
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -48,6 +46,7 @@ class Notifications {
 		if (buttonIndex === 0) chrome.tabs.create({});
 		if (buttonIndex === 1) console.log('about page');
 		chrome.notifications.clear(noteId);
+		chrome.notifications.onButtonClicked.removeListener(this.loginHandler);
 	}
 
 	welcome(){
@@ -65,13 +64,14 @@ class Notifications {
 	}
 
 	welcomeHandler(noteId, buttonIndex) {
-		if (buttonIndex === 0) this.store.dispatch(toggleWork());
+		if (buttonIndex === 0) store.dispatch(toggleWork());
 		else console.log('User isn’t ready');
 		chrome.notifications.clear(noteId);
+		chrome.notifications.onButtonClicked.removeListener(this.welcomeHandler);
 	}
 
 	warning(){
-		const message = this.store.getState().status.isWorking ? 'work' : 'break';
+		const message = store.getState().status.isWorking ? 'work' : 'break';
 
 		this.create('warning', {
 			title: `Are you almost ready?`,
@@ -87,12 +87,13 @@ class Notifications {
 
 	warningHandler(noteId, buttonIndex) {
 		console.log(buttonIndex);
-		if (buttonIndex === 1) this.store.dispatch(addFiveMinutes());
+		if (buttonIndex === 1) store.dispatch(addFiveMinutes());
 		chrome.notifications.clear(noteId);
+		chrome.notifications.onButtonClicked.removeListener(this.warningHandler);
 	}
 
 	statusChange(){
-		const message = this.store.getState().status.isWorking
+		const message = store.getState().status.isWorking
 			? 'take a break'
 			: 'get back to work';
 
@@ -111,17 +112,17 @@ class Notifications {
 	statusHandler(noteId, buttonIndex) {
 		console.log(noteId);
 		if (buttonIndex === 0) { // User is ready
-			this.store.dispatch(toggleWork());
-			chrome.tabs.create({});
+			store.dispatch(toggleWork());
 		}
 		if (buttonIndex === 1) {
-			this.store.dispatch(addFiveMinutes());
+			store.dispatch(addFiveMinutes());
 		}
 		chrome.notifications.clear(noteId);
+		chrome.notifications.onButtonClicked.removeListener(this.statusHandler);
 	}
 
 	whereAreYou(){
-		chrome.notifications.create('whereAreYou', {
+		this.create('whereAreYou', {
 			title: `Where’ve you gone?`,
 			message: `Tell Bisque what to do`,
 			buttons: [
@@ -136,54 +137,14 @@ class Notifications {
 
 	whereAreYouHandler(noteId, buttonIndex) {
 		if (buttonIndex === 0) {
-			this.store.dispatch(toggleWork());
-			if (this.store.getState().status.isWorking) {
-				this.store.dispatch(toggleWork());
+			store.dispatch(toggleWork());
+			if (!store.getState().status.isWorking) {
+				store.dispatch(toggleWork());
 			}
 		}
-		if (buttonIndex === 1) this.store.dispatch(togglePause());
+		if (buttonIndex === 1 && !store.getState().status.isPaused) store.dispatch(togglePause());
 		chrome.notifications.clear(noteId);
+		chrome.notifications.onButtonClicked.removeListener(this.whereAreYouHandler);
 	}
-
-	// clickHandler(noteId, buttonIndex){
-	// 	const { dispatch } = this.store;
-	// 	console.log(noteId);
-	//
-	// 	switch (noteId) {
-	// 		case 'login':
-	// 			if (!buttonIndex) chrome.tabs.create({});
-	// 			else console.log('Show user intro');
-	// 			break;
-	//
-	// 		case 'welcome':
-	// 			// User is ready
-	// 			if (!buttonIndex) dispatch(toggleWork());
-	// 			break;
-	//
-	// 		case 'warning':
-	// 			// User wants 5 more minutes
-	// 			if  (buttonIndex) dispatch(addFiveMinutes());
-	// 			break;
-	//
-	// 		case 'statusChange':
-	// 			if (!buttonIndex) { // User is ready
-	// 				dispatch(toggleWork());
-	// 				chrome.tabs.create({});
-	// 			}
-	// 			if (buttonIndex) {
-	// 				dispatch(addFiveMinutes());
-	// 			}
-	// 			break;
-	//
-	// 		case 'whereAreYou':
-	// 			if (!buttonIndex) dispatch(toggleWork());
-	// 			if (buttonIndex) dispatch(togglePause());
-	// 			break;
-	//
-	// 		default:
-	// 			break;
-	// 	}
-	// 	chrome.notifications.clear(noteId);
-	// }
 }
 module.exports = Notifications;
