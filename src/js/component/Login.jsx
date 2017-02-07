@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 export class Login extends Component {
   constructor(props) {
-    super(props);    
+    super(props);
   }
 
   athenticate() {
@@ -13,8 +13,8 @@ export class Login extends Component {
 
   render () {
     return (
-      <div id="signin" className="icon">
-        <i className="fa fa-google" onClick={this.athenticate.bind(this)} ></i>
+      <div id="signin" className="icon" onClick={this.athenticate.bind(this)}>
+        <i className="fa fa-google"></i>
         <div>signin with google account</div>
       </div>
     );
