@@ -7,24 +7,24 @@ import LineGraph from './graphs/Line'
 
 export default class Graph extends React.Component {
   constructor(props) {
-    super(props);    
+    super(props);
   }
 
   onClickClose(e){
     this.props.setRoute(null)
   }
-  render() {  
-    console.log('graph',this.props)
+  render() {
     return (
       <div id="graph-modal">
         <div className="modal-bar">
+          <div className="modal-title">Graph</div>
           <div>
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <LineGraph db={this.props.db} width={960} height={500} yAxis={'Words Per Minute'}/>
+        <LineGraph data={this.props.db} width={960} height={500} yAxis={'Words Per Minute'}/>
       </div>
-    );   
+    );
   }
 }
 

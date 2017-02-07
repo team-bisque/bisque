@@ -55,7 +55,7 @@ class Main extends React.Component{
   }
 
   componentWillMount() {
-    this.setBackground(backgrounds[random]);    
+    this.setBackground(backgrounds[random]);
   }
   componentDidMount() {
     BackgroundCheck.init({
@@ -75,24 +75,24 @@ class Main extends React.Component{
     }
   }
 
-  handleMouseMove(e) {        
+  handleMouseMove(e) {
     let mouseStrength = 25,
         viewportHeight = document.documentElement.clientHeight,
         viewportWidth = document.documentElement.clientWidth,
         pageX = e.pageX - (window.innerWidth / 2),
-        pageY = e.pageY - (window.innerHeight / 2);  
+        pageY = e.pageY - (window.innerHeight / 2);
     this.setState({
       bgPositionX: (mouseStrength / viewportWidth) * pageX * -1 - 25,
       bgPositionY: (mouseStrength / viewportHeight) * pageY * -1 - 50,
-    })    
-  }  
+    })
+  }
 
-  setBackground(url){      
+  setBackground(url){
     this.setState({ src: url });
   }
 
-  onImageLoad(e){    
-    // console.log('onImageLoad', e.target.naturalWidth, e.target.naturalHeight)
+  onImageLoad(e){
+
     let width = e.target.naturalWidth,
         height = e.target.naturalHeight;
 
@@ -103,9 +103,7 @@ class Main extends React.Component{
   }
 
   render(){
-    const { status, settings, weather, auth, route, db } = this.props;    
-    // alert(meta.width, meta.height)
-    // console.log('render with state', this.state)
+    const { status, settings, weather, auth, route, db } = this.props;
     // let user = null; // for test
     let child;
     if (!this.props.route || this.props.route.includes("alarm")){
@@ -118,13 +116,12 @@ class Main extends React.Component{
 
     const tooltip = {
       settings: (<Tooltip id="settings-tooltip">Settings</Tooltip>),
-      graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>)      
+      graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>)
     }
 
-    // console.log('MAIN RENDER', this.props)
     return (
-      <div id="main" 
-        className="fullsizeBg" 
+      <div id="main"
+        className="fullsizeBg"
         style={{
           background: `url("${this.state.src}")`,
           backgroundPosition: `${this.state.bgPositionX}px ${this.state.bgPositionY}px`
@@ -132,7 +129,7 @@ class Main extends React.Component{
         onMouseMove={this.handleMouseMove}>
         <img src={this.state.src} onLoad={this.onImageLoad.bind(this)} style={{display: 'none'}} />
 
-        { 
+        {
           auth ? (
             <div>
               <User {...this.props} />
@@ -148,16 +145,16 @@ class Main extends React.Component{
                 <OverlayTrigger placement="top" overlay={tooltip.graph}>
                   <i className="fa fa-bar-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
                 </OverlayTrigger>
-              </div> 
-            </div>           
+              </div>
+            </div>
             ) : null
         }
-        
+
 
         <div className="flex-center">
           <div id="wrapper" className={this.props.route ? this.props.route : null}>
-          { 
-            !auth ? 
+          {
+            !auth ?
             // !user ? // for test
             <Login /> : child
           }        

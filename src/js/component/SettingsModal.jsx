@@ -137,7 +137,6 @@ class SettingsModal extends Component {
   }
 
   removeUrl(event, indexToRemove) {
-    console.log(indexToRemove);
     const urlList = this.state.urlList.filter((url, index) =>
       index !== indexToRemove
     );

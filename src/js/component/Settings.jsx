@@ -8,14 +8,14 @@ import store from '../store';
 
 export default class Settings extends React.Component {
   constructor(props) {
-    super(props);    
+    super(props);
   }
 
   onClickClose(e){
     this.props.setRoute(null)
   }
-  render() {  
-    // console.log('setting',this.props)
+
+  render() {
     return (
       <div id="setting-modal" className="content">
         <div className="modal-bar">
@@ -26,7 +26,7 @@ export default class Settings extends React.Component {
         </div>
         <SettingsModal {...this.props}/>
       </div>
-    );   
+    );
   }
 }
 

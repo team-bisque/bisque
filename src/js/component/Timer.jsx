@@ -7,8 +7,8 @@ import Donut from './graphs/Donut';
 
 class Timer extends React.Component {
   constructor(props) {
-    super(props);    
-  }  
+    super(props);
+  }
 
   onClickTogglePause(e){
     this.props.togglePause();
@@ -23,8 +23,7 @@ class Timer extends React.Component {
   }
 
   render(){
-    console.log('Timer',this.props)
-    const { status } = this.props;  
+    const { status } = this.props;
     const min = status.timeRemaining / 60000;
 
     // function getMinitue(millisec) {
@@ -35,7 +34,7 @@ class Timer extends React.Component {
     if (status && status.isPaused) message = 'Timer is paused';
     if (status && !status.isPaused && status.isWorking) message = "You're on work";
     if (status && !status.isPaused && !status.isWorking) message = "You're on break";
-  
+
 
     const tooltip = {
       fivemore: (<Tooltip id="fivemore-tooltip">Add <strong>5 more</strong> minutes!</Tooltip>),
@@ -48,7 +47,7 @@ class Timer extends React.Component {
     return (
       <div className="timer-wrapper">
 
-        
+
         <div className="timer-message">
           <span>{ message }</span>
         </div>
@@ -56,13 +55,13 @@ class Timer extends React.Component {
         <div className="timer">
           <div className="time">{ Math.abs(min) }</div>
           <span>{min > 0 ? 'minutes left' : 'minutes passed'}</span>
-        </div>          
-        
+        </div>
+
         <div className="controller">
           { status && !status.isPaused ?
             <OverlayTrigger placement="bottom" overlay={tooltip.fivemore}>
               <i className="fa fa-history" onClick={this.onClickAddFive.bind(this)}></i>
-            </OverlayTrigger> : 
+            </OverlayTrigger> :
             null }
           { status && status.isPaused ?
             <OverlayTrigger placement="bottom" overlay={tooltip.play}>
@@ -73,7 +72,7 @@ class Timer extends React.Component {
             <OverlayTrigger placement="bottom" overlay={tooltip.pause}>
               <i className="fa fa-pause" onClick={this.onClickTogglePause.bind(this)}></i>
             </OverlayTrigger> :
-            null }          
+            null }
           { status && !status.isPaused && !status.isWorking ?
             <OverlayTrigger placement="bottom" overlay={tooltip.work}>
               <i className="fa fa-suitcase" onClick={this.onClickToggleWork.bind(this)}></i>
@@ -83,11 +82,11 @@ class Timer extends React.Component {
             <OverlayTrigger placement="bottom" overlay={tooltip.break}>
               <i className="fa fa-beer" onClick={this.onClickToggleWork.bind(this)}></i>
             </OverlayTrigger> :
-            null }  
+            null }
         </div>
 
         <Donut status={status} diameter={250} center={10}/>
-        
+
       </div>
     );
   }
