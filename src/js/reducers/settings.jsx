@@ -7,7 +7,8 @@ import {
 	SET_START_TIME,
 	ADD_URL,
 	REMOVE_URL,
-	EDIT_URL
+	EDIT_URL,
+	RECEIVE_SETTINGS
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
@@ -17,7 +18,7 @@ const initialState = {
   breakDuration: 6 * minute,
   lunchDuration: 5 * minute,
   startTime: 0,
-  urlList: [
+  greylist: [
     'youtube.com',
     'buzzfeed.com'
   ]
@@ -46,6 +47,13 @@ export default (state = initialState, action) => {
 	    break;
     case EDIT_URL:
     	newState.urlList = newState.urlList.map((e, i) => i === action.index ? action.url : e);
+    	break;
+    case RECEIVE_SETTINGS:
+    	newState.workDuration = action.settings.workDuration || newState.workDuration;
+    	newState.breakDuration = action.settings.breakDuration || newState.workDuration;
+    	newState.lunchDuration = action.settings.lunchDuration || newState.workDuration;
+
+    	newState.greylist = action.settings.greylist || newState.greylist;
     	break;
 		default:
 			break;
