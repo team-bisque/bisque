@@ -5,7 +5,6 @@ export const callBackground = (method, ...args) => {
       method: method,
       args: args
     }, function(res) {
-    	console.log('callBackground result', res)
       if (res.error !== undefined) {
         reject(res.error);
       } else {

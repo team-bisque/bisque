@@ -137,7 +137,6 @@ class SettingsModal extends Component {
   }
 
   removeUrl(event, indexToRemove) {
-    console.log(indexToRemove);
     const urlList = this.state.urlList.filter((url, index) =>
       index !== indexToRemove
     );
@@ -191,7 +190,7 @@ class SettingsModal extends Component {
 
     return (
       <div>
-       
+
               <Tabs defaultActiveKey={1} id="settings-tabs">
                 <Tab eventKey={1} title="Duration">
                   <SettingsDurationTab
