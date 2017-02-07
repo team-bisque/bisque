@@ -1,36 +1,39 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
+import { wrapStore } from 'react-chrome-redux';
 
-const Tabs 					= require('./Tabs'),
-			WebRequest 		= require('./WebRequest'),
-			Notifications = require('./Notifications'),
-			Idle 					= require('./Idle'),
-			Greylist 			= require('./Greylist'),
-			Auth 					= require('./Auth');
+import store from '../store';
+wrapStore(store, {portName: '1337'});
+
+const 	Tabs 			= require('./Tabs'),
+		WebRequest 		= require('./WebRequest'),
+		Notifications 	= require('./Notifications'),
+		Idle 			= require('./Idle'),
+		Greylist 		= require('./Greylist'),
+		Auth 			= require('./Auth');
 
 class Core {
-	constructor(store) {
-		this.tabs = new Tabs(store);
+	constructor() {
+		this.tabs = new Tabs();
 		this.webRequest = new WebRequest();
 		this.auth = new Auth();
-		this.notifications = new Notifications(store);
+		this.notifications = new Notifications();
 		this.idle = new Idle();
 		this.greylist = new Greylist();
-		this.store = store;
 	}
 
 	init(){
-		const { dispatch, getState } = this.store;
+		const { dispatch } = store;
 
-		this.tabs.init(); // <-- for keylogger;
-		this.idle._init();
+		this.tabs._init(); // <-- for keylogger;
+		this.idle._init(); // <-- detects whether user is idle
 
 		this.auth.onAuthStateChanged();
 
 		dispatch(fetchWeather());
 
-		if (!this.store.getState().auth) {
+		if (!store.getState().auth) {
 			this.notifications.login();
 		} else {
 			this.notifications.welcome();
@@ -40,12 +43,12 @@ class Core {
 	}
 
 	watchMinute(){
-		const { dispatch, getState } = this.store
+		const { dispatch, getState } = store
 		const minute = 60000; // 5 seconds for testing
 
 		setInterval(() => {
 			if (!getState().status.isPaused) {
-				// Deprecate time remaining by 1 minute and dispatch to storee
+				// Deprecate time remaining by 1 minute and dispatch to store
 				const time = getState().status.timeRemaining - minute;
 				dispatch(setTimeRemaining(time));
 
@@ -68,42 +71,6 @@ class Core {
 			}
 		}, 5000); // 5 seconds for testing
 	}
-
-	// setStatus(){
-		// let { dispatch, getState } = this.store;
-		//
-		// dispatch(toggleWork());
-		// const isWorking = getState().status.isWorking;
-		// console.log('setStatus', isWorking);
-		// if (isWorking){
-		// 	dispatch(setTimeRemaining(getState().time.workDuration));
-		// 	this.workStarts();
-		// } else {
-		// 	dispatch(setTimeRemaining(getState().time.breakDuration));
-		// 	this.breakStarts();
-		// }
-	// }
-
-	// breakStarts(){
-		// console.log('breakStarts', this)
-		// let tabs 				= this.tabs,
-		// 		webRequest 	= this.webRequest;
-		//
-		// tabs.createAndLock()
-    //   .then(() => {
-		// 		webRequest.addOnBeforeRequestEvent();
-		// 	}).catch(console.error);
-	// }
-
-	// workStarts(){
-	// 	console.log('workStarts', this)
-	// 	let tabs 				= this.tabs,
-	// 			webRequest 	= this.webRequest;
-	//
-	// 	tabs.remove(tabs.lockedTab.id)
-	// 			.then(() => webRequest.removeOnBeforeRequestEvent())
-	// 			.catch(console.error);
-	// }
 }
 
 module.exports = Core;
