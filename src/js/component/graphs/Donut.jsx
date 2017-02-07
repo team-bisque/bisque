@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ReactTransitionGroup from 'react-addons-transition-group';
 
 import Slice from './Slice';
 
 import * as d3 from 'd3';
-import { select, getAttribute, selectAll } from 'd3-selection';
 import { arc, pie } from 'd3-shape';
 
 export class Donut extends Component {
   renderSlice(value, i) {
-    console.log('PIE', value);
     const {data, radius, center} = this.props;
     let colorOptions = ['#fff', 'rgba(255, 255, 255, 0.3)'];
     // Less than 5 minutes triggers pink color
