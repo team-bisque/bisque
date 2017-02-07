@@ -16,13 +16,7 @@ export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
 export const SET_WORK_DURATION = 'SET_WORK_DURATION';
 export const SET_BREAK_DURATION = 'SET_BREAK_DURATION';
 export const SET_LUNCH_DURATION = 'SET_LUNCH_DURATION';
-export const SET_SHIFT_DURATION = 'SET_SHIFT_DURATION';
-export const SET_START_TIME = 'SET_START_TIME';
-
-// greylist
-export const ADD_URL = 'ADD_URL';
-export const REMOVE_URL = 'REMOVE_URL';
-export const EDIT_URL = 'EDIT_URL';
+export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 
 // weather
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';

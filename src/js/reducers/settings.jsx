@@ -4,10 +4,7 @@ import {
 	SET_WORK_DURATION,
 	SET_BREAK_DURATION,
 	SET_LUNCH_DURATION,
-	SET_START_TIME,
-	ADD_URL,
-	REMOVE_URL,
-	EDIT_URL
+	SAVE_SETTINGS
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
@@ -16,7 +13,6 @@ const initialState = {
   workDuration: 8 * minute,
   breakDuration: 6 * minute,
   lunchDuration: 5 * minute,
-  startTime: 0,
   urlList: [
     'youtube.com',
     'buzzfeed.com'
@@ -25,6 +21,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	let newState = Object.assign({}, state);
+  console.log("got to reducer tho");
 	switch (action.type) {
 		case SET_WORK_DURATION:
 			newState.workDuration = action.workDuration;
@@ -35,17 +32,8 @@ export default (state = initialState, action) => {
 		case SET_LUNCH_DURATION:
 			newState.lunchDuration = action.lunchDuration;
 			break;
-		case SET_START_TIME:
-			newState.startTime = action.startTime;
-			break;
-	  case ADD_URL:
-	    newState.urlList.push(action.url);
-	    break;
-	  case REMOVE_URL:
-	    newState.urlList = newState.urlList.filter((e, i) => i !== action.index);
-	    break;
-    case EDIT_URL:
-    	newState.urlList = newState.urlList.map((e, i) => i === action.index ? action.url : e);
+		case SAVE_SETTINGS:
+      newState.urlList = [...action.urlList];
     	break;
 		default:
 			break;

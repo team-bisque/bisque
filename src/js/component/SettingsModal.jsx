@@ -25,10 +25,10 @@ import {
   convertMinutesToMilliseconds
 } from '../utils';
 import {
-  setWorkDuration,
-  setBreakDuration,
-  setLunchDuration,
-  setStartTime
+  setWorkDurationInDb,
+  setBreakDurationInDb,
+  setLunchDurationInDb,
+  saveSettingsInDb
 } from '../action-creators/settings';
 import Greylist from '../controllers/Greylist';
 const firebase = require('../controllers/firebase');
@@ -43,26 +43,21 @@ class SettingsModal extends Component {
       workDuration,
       breakDuration,
       lunchDuration,
-      shiftDuration,
       urlList
     } = props.settings;
     const workMinutes = convertMillisecondsToMinutes(workDuration);
     const breakMinutes = convertMillisecondsToMinutes(breakDuration);
     const lunchMinutes = convertMillisecondsToMinutes(lunchDuration);
+    urlList.push('');
     this.state = {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      urlList,
-      currentUrl: '',
-      modalShowing: false,
-      notNumberWarning: false
+      urlList
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.removeUrl = this.removeUrl.bind(this);
     this.saveNewUrl = this.saveNewUrl.bind(this);
-    this.showModal = this.showModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.newUrlHandleChange = this.newUrlHandleChange.bind(this);
     this.editUrlHandleChange = this.editUrlHandleChange.bind(this);
     this.workMinutesHandleChange = this.workMinutesHandleChange.bind(this);
@@ -80,22 +75,14 @@ class SettingsModal extends Component {
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-    this.updateDuration(setWorkDuration, 'work', workDuration);
-    this.updateDuration(setBreakDuration, 'break', breakDuration);
-    this.updateDuration(setLunchDuration, 'lunch', lunchDuration);
-  }
-
-  showModal () {
-    this.setState({modalShowing: true});
-  }
-
-  hideModal () {
-    this.setState({modalShowing: false});
+    store.dispatch(setWorkDurationInDb(workDuration));
+    store.dispatch(setBreakDurationInDb(breakDuration));
+    store.dispatch(setLunchDurationInDb(lunchDuration));
+    store.dispatch(saveSettingsInDb(urlList));
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.hideModal();
     const {
       workMinutes,
       breakMinutes,
@@ -105,17 +92,10 @@ class SettingsModal extends Component {
     const workDuration = convertMinutesToMilliseconds(workMinutes);
     const breakDuration = convertMinutesToMilliseconds(breakMinutes);
     const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
-
-  }
-
-  updateDuration(actionCreator, timeCategory, duration) {
-    const userId = store.getState().auth;
-
-    // firebase.database().ref('users/' + userId).set({
-    //   [timeCategory]: duration
-    // })
-
-    store.dispatch(actionCreator(duration));
+    store.dispatch(setWorkDurationInDb(workDuration));
+    store.dispatch(setBreakDurationInDb(breakDuration));
+    store.dispatch(setLunchDurationInDb(lunchDuration));
+    store.dispatch(saveSettingsInDb(urlList));
   }
 
   editUrlHandleChange(event, indexToChange) {
@@ -124,44 +104,53 @@ class SettingsModal extends Component {
       (index === indexToChange) ? value : url
     );
     this.setState({urlList});
+    store.dispatch(saveSettingsInDb(urlList));
   }
 
   newUrlHandleChange(event) {
-    this.setState({currentUrl: event.target.value});
+    const {urlList} = this.state;
+    const currentUrl = event.target.value;
+    urlList[urlList.length-1] = currentUrl;
+    this.setState({urlList});
+    store.dispatch(saveSettingsInDb(urlList));
   }
 
   saveNewUrl() {
-    const {urlList, currentUrl} = this.state;
-    urlList.push(currentUrl);
-    this.setState({urlList, currentUrl: ''});
+    const {urlList} = this.state;
+    urlList.push('');
+    this.setState({urlList});
+    console.log('URLLIST IN SAVENEWURL', urlList)
+    store.dispatch(saveSettingsInDb(urlList));
   }
 
   removeUrl(event, indexToRemove) {
+    console.log(indexToRemove);
     const urlList = this.state.urlList.filter((url, index) =>
       index !== indexToRemove
     );
     this.setState({urlList});
+    store.dispatch(saveSettingsInDb(urlList));
   }
 
   workMinutesHandleChange(event) {
-    let workMinutes = +event.target.value;
-    const notNumberWarning = isNaN(workMinutes);
-    if (notNumberWarning) workMinutes = this.state.workMinutes;
-    this.setState({workMinutes, notNumberWarning});
+    const workMinutes = +event.target.value;
+    this.setState({workMinutes});
+    const workDuration = convertMinutesToMilliseconds(workMinutes);
+    store.dispatch(setWorkDurationInDb(workDuration));
   }
 
   breakMinutesHandleChange(event) {
-    let breakMinutes = +event.target.value;
-    const notNumberWarning = isNaN(breakMinutes);
-    if (notNumberWarning) breakMinutes = this.state.breakMinutes;
-    this.setState({breakMinutes, notNumberWarning});
+    const breakMinutes = +event.target.value;
+    this.setState({breakMinutes});
+    const breakDuration = convertMinutesToMilliseconds(breakMinutes);
+    store.dispatch(setWorkDurationInDb(breakDuration));
   }
 
   lunchMinutesHandleChange(event) {
-    let lunchMinutes = +event.target.value;
-    const notNumberWarning = isNaN(lunchMinutes);
-    if (notNumberWarning) lunchMinutes = this.state.lunchMinutes;
-    this.setState({lunchMinutes, notNumberWarning});
+    const lunchMinutes = +event.target.value;
+    this.setState({lunchMinutes});
+    const lunchDuration = convertMinutesToMilliseconds(lunchMinutes);
+    store.dispatch(setWorkDurationInDb(lunchDuration));
   }
 
   render() {
@@ -169,15 +158,10 @@ class SettingsModal extends Component {
       workMinutes,
       breakMinutes,
       lunchMinutes,
-      urlList,
-      currentUrl,
-      modalShowing,
-      notNumberWarning
+      urlList
     } = this.state;
 
     const {
-      showModal,
-      hideModal,
       handleSubmit,
       workMinutesHandleChange,
       breakMinutesHandleChange,
@@ -190,8 +174,8 @@ class SettingsModal extends Component {
 
     return (
       <div>
-
-              <Tabs defaultActiveKey={1} id="settings-tabs">
+        <div className="modal-container">
+          <Tabs defaultActiveKey={1} id="settings-tabs">
                 <Tab eventKey={1} title="Duration">
                   <SettingsDurationTab
                     workMinutes={workMinutes}
@@ -205,7 +189,6 @@ class SettingsModal extends Component {
                 <Tab eventKey={2} title="Greylist">
                   <SettingsGreylistTab
                     urlList={urlList}
-                    currentUrl={currentUrl}
                     saveNewUrl={saveNewUrl}
                     removeUrl={removeUrl}
                     newUrlHandleChange={newUrlHandleChange}
@@ -213,7 +196,9 @@ class SettingsModal extends Component {
                   />
                 </Tab>
               </Tabs>
-       </div>
+              <center><Button onClick={handleSubmit}>Change Settings</Button></center>
+        </div>
+      </div>
     );
   }
 }
@@ -222,55 +207,3 @@ const mapState = ({settings}) => ({settings});
 const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(SettingsModal);
-
-
-// return (
-//       <div>
-//         <div>
-//           <center>
-//             <Button onClick={showModal}>
-//               <span className="glyphicon glyphicon-cog settings-icon"></span>
-//             </Button>
-//           </center>
-//         </div>
-//         <div className="modal-container">
-//           <Modal
-//             className="survey"
-//             show={modalShowing}
-//             onHide={hideModal}
-//             container={this}
-//           >
-//             <Modal.Header closeButton>
-//               <Modal.Title>Settings</Modal.Title>
-//             </Modal.Header>
-//             <Modal.Body>
-//               <Tabs defaultActiveKey={1} id="settings-tabs">
-//                 <Tab eventKey={1} title="Duration">
-//                   <SettingsDurationTab
-//                     workMinutes={workMinutes}
-//                     breakMinutes={breakMinutes}
-//                     lunchMinutes={lunchMinutes}
-//                     workMinutesHandleChange={workMinutesHandleChange}
-//                     breakMinutesHandleChange={breakMinutesHandleChange}
-//                     lunchMinutesHandleChange={lunchMinutesHandleChange}
-//                   />
-//                 </Tab>
-//                 <Tab eventKey={2} title="Greylist">
-//                   <SettingsGreylistTab
-//                     urlList={urlList}
-//                     currentUrl={currentUrl}
-//                     saveNewUrl={saveNewUrl}
-//                     removeUrl={removeUrl}
-//                     newUrlHandleChange={newUrlHandleChange}
-//                     editUrlHandleChange={editUrlHandleChange}
-//                   />
-//                 </Tab>
-//               </Tabs>
-//             </Modal.Body>
-//             <Modal.Footer>
-//               <center><Button onClick={handleSubmit}>Change Settings</Button></center>
-//             </Modal.Footer>
-//           </Modal>
-//         </div>
-//       </div>
-//     );

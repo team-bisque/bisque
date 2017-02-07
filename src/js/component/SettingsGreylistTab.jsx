@@ -14,8 +14,7 @@ const SettingsGreylistTab = (props) => {
     newUrlHandleChange,
     editUrlHandleChange,
     saveNewUrl,
-    removeUrl,
-    currentUrl
+    removeUrl
   } = props;
   return (
     <div>
@@ -27,20 +26,21 @@ const SettingsGreylistTab = (props) => {
                 <FormControl
                   key={'add'}
                   type="text"
-                  value={currentUrl}
+                  value={urlList[urlList.length-1]}
                   onChange={newUrlHandleChange}
                 />
               <Button onClick={saveNewUrl}><span className="glyphicon glyphicon-plus"></span></Button>
               </FormGroup>
               </Row>
-          {urlList.map((url, index) => {
+          {urlList.slice(1, urlList.length).map((url, index) => {
+            const sliceAdjustedIndex = index + 1;
             return (
-              <Row key={index}>
+              <Row key={sliceAdjustedIndex}>
                 <FormGroup>
                   <FormControl
                     type="text"
                     value={url}
-                    onChange={(event) => editUrlHandleChange(event, index)}
+                    onChange={(event) => editUrlHandleChange(event, sliceAdjustedIndex)}
                   />
                 </FormGroup>
                 <Button onClick={(event) => removeUrl(event, index)}><span className="glyphicon glyphicon-minus"></span></Button>
