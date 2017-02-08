@@ -8,11 +8,11 @@ import store from '../store';
 import firebase from './firebase';
 // wrapStore(store, {portName: '1337'});
 
-const 	Tabs 			= require('./Tabs'),
-		WebRequest 		= require('./WebRequest'),
-		Notifications 	= require('./Notifications'),
-		Idle 			= require('./Idle'),
-		Auth 			= require('./Auth');
+const 	Tabs 			= require('./tabs'),
+		WebRequest 		= require('./webRequest'),
+		Notifications 	= require('./notifications'),
+		Idle 			= require('./idle'),
+		Auth 			= require('./auth');
 
 class Core {
 	constructor() {

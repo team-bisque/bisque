@@ -2,10 +2,7 @@
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 const firebase = require('./firebase');
-
-import { wrapStore } from 'react-chrome-redux';
 import store from '../store';
-// wrapStore(store, {portName: '1337'});
 
 class Tabs {
 

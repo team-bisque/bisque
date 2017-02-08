@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { addUrl, removeUrl, editUrl } from '../action-creators/settings';
+import { addUrl, removeUrl, editUrl, addGreylist } from '../action-creators/settings';
 
 
 class SettingsGreylistTab extends React.Component {
@@ -17,13 +17,13 @@ class SettingsGreylistTab extends React.Component {
   onKeypressEnter(e){
     console.log(e.key)
     if (e.key == 'Enter'){
-      this.props.addUrl(this.url)
+      this.props.addGreylist(this.url)
     }
   }
 
   addNew(e) {
     e.preventDefault();
-    this.props.addUrl(this.url)
+    this.props.addGreylist(this.url)
     document.getElementById('addNew-input').value = '';
   }
 
@@ -50,7 +50,8 @@ class SettingsGreylistTab extends React.Component {
           <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>
         </div>
         <ul className="greylistURLs">
-          {settings.greylist.length ? settings.greylist.map((url, index) => {
+          { //greylist should be an object
+            settings.greylist && settings.greylist.length ? settings.greylist.map((url, index) => {
             return (
               <li key={index}>
                 

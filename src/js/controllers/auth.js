@@ -1,12 +1,11 @@
 'use strict';
 import { authenticate }  from '../action-creators/auth';
 import store         		 from '../store';
-import { receiveHistory } from '../action-creators/history';
 
-import { receiveSettings } from '../action-creators/settings';
 import { setRoute } from '../reducers/route';
 
 const firebase = require('./firebase');
+const User = require('./user');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
@@ -19,16 +18,16 @@ const Auth = {
 
 				store.dispatch(authenticate(user));
 
-				firebase.database().ref('user_history/' + userId).once('value', (snapshot) => {
-					store.dispatch(receiveHistory(snapshot.val()));
-				});
+				User.history.getById(userId)
+					.then(() => User.settings.getById(userId))
+					.then(() => store.dispatch(setRoute(null)))
+				// firebase.database().ref('user_history/' + userId).once('value', (snapshot) => {
+				// 	store.dispatch(receiveHistory(snapshot.val()));
+				// });
 
-				firebase.database().ref('users/' + userId).once('value', (snapshot) => {
-					store.dispatch(receiveSettings(snapshot.val()));
-				});
-
-				store.dispatch(setRoute(null))
-
+				// firebase.database().ref('users/' + userId).once('value', (snapshot) => {
+				// 	store.dispatch(receiveSettings(snapshot.val()));
+				// });			
 			} else {
 				store.dispatch(authenticate(null))
 				store.dispatch(setRoute('signin'))
@@ -76,9 +75,7 @@ const Auth = {
 	      console.error('The OAuth Token was null');
 	    }
 		})
-	},
-	setUserSettings: (userId, data) => firebase.database().ref('users/' + userId).set(data),
-	setAllHistory: (userId, data) => firebase.database().ref('user_history/' + userId).set(data)
+	}
 }
 
 module.exports = Auth;

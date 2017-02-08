@@ -23,6 +23,7 @@ export const SET_START_TIME = 'SET_START_TIME';
 export const ADD_URL = 'ADD_URL';
 export const REMOVE_URL = 'REMOVE_URL';
 export const EDIT_URL = 'EDIT_URL';
+export const RECEIVE_GREYLIST = 'RECEIVE_GREYLIST';
 
 // weather
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';

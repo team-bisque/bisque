@@ -17,22 +17,16 @@ export default class Graph extends React.Component {
   }    
 
   componentDidMount() {
-    // const elem = findDOMNode(this);
     window.addEventListener("resize", this.updateDimensions);    
   }
 
   componentWillUnmount() {
-    // const elem = findDOMNode(this);
     window.removeEventListener("resize", this.updateDimensions);
   }
 
-  // componentWillUpdate(props, state) {
-  //   console.log('NEW WIDTH:', state.width, 'OLD WIDTH:', this.state.width);
-  //   if (state.width !== this.state.width) this.updateDimensions();
-  // }
-
   updateDimensions() {
-    const elem = document.getElementById('graph-modal');
+    const elem = findDOMNode(this);
+    // const elem = document.getElementById('graph-modal');
     console.log('updateDimensions', elem.offsetWidth, elem.offsetHeight)
     this.setState({
       width: elem.offsetWidth - 50,
