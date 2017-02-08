@@ -10,7 +10,6 @@ export class Donut extends Component {
     const {data, radius, center} = this.props;
     let colorOptions = ['#fff', 'rgba(255, 255, 255, 0.3)'];
     // Less than 5 minutes triggers pink color
-    console.log(data.count);
     if (data[0] < 6) {
       colorOptions = ['#ffb794', 'rgba(255, 183, 148, 0.3)'];
     }
