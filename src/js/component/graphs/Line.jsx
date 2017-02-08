@@ -20,13 +20,12 @@ import json from '../../controllers/dummyData.json';
 export class Line extends Component {
   constructor(props) {
     super(props);
-    this.state = {tooltip: {}};
+    this.state = {tooltip: { data: {}, pos: {}}};
     this.showTooltip = this.showTooltip.bind(this);
     this.hideTooltip = this.hideTooltip.bind(this);
   }
   showTooltip(e) {
-    console.log(e.target);
-    e.target.setAttribute('fill', '#FFFFFF');
+    e.target.setAttribute('fill', '#fff');
 
     this.setState({
       tooltip: {
@@ -43,7 +42,7 @@ export class Line extends Component {
    });
   }
   hideTooltip(e) {
-    e.target.setAttribute('fill', '#7dc7f4');
+    e.target.setAttribute('fill', '#fff');
     this.setState({
       tooltip: {
         display: false,
@@ -81,6 +80,7 @@ export class Line extends Component {
           <Dots data={data} x={xCoords} y={yCoords} showTooltip={this.showTooltip} hideTooltip={this.hideTooltip} />
           <Axis height={height - heightDiff} axis={yAxisEquation} axisType="y" />
           <Axis height={height - heightDiff} axis={xAxisEquation} axisType="x" />
+          <Tooltip tooltip={this.state.tooltip} />
         </g>
       </svg>
     );

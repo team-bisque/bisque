@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import { timeParse } from 'd3-time-format';
-const parseTime = timeParse('%d-%b-%y');
+import moment from 'moment';
 
 export default class Dot extends Component {
   render() {
@@ -9,7 +8,6 @@ export default class Dot extends Component {
 
     return (
       <g>{
-          // Remove first and last data point
           points.map((d, i) => {
             return (
               <circle
@@ -18,8 +16,8 @@ export default class Dot extends Component {
                 r="1.5"
                 cx={x(d.date)}
                 cy={y(d.close)}
-                data-key={parseTime(d.date)}
-                data-value={d.count}
+                data-key={moment(d.date).format('MMMM Do YYYY')}
+                data-value={Math.floor(d.close)}
                 onMouseOver={showTooltip}
                 onMouseOut={hideTooltip}
               />

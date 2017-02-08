@@ -32,15 +32,14 @@ export default class Tooltip extends Component {
   } else {
       visibility = 'hidden';
   }
-
   return (
       <g transform={transform}>
-        <rect is width={width} height={height} rx="5" ry="5" visibility={visibility} fill="#6391da" opacity=".9"/>
+        <rect is width={width} height={height} rx="5" ry="5" visibility={visibility} fill="#222" opacity=".9"/>
         <polygon is points="10,0  30,0  20,10" transform={transformArrow}
-                 fill="#6391da" opacity=".9" visibility={visibility}/>
+                 fill="#222" opacity=".9" visibility={visibility}/>
         <text is visibility={visibility} transform={transformText}>
-          <tspan is x="0" text-anchor="middle" font-size="15px" fill="#ffffff">{tooltip.data.key}</tspan>
-          <tspan is x="0" text-anchor="middle" dy="25" font-size="20px" fill="#a9f3ff">{`${tooltip.data.value} clicks`}</tspan>
+          <tspan is x="0" text-anchor="middle" font-size="15px" fill="#fff">{tooltip.data.key}</tspan>
+          <tspan is x="0" text-anchor="middle" dy="25" font-size="20px" fill="#fff">{`${tooltip.data.value} WPM`}</tspan>
         </text>
       </g>
     );
