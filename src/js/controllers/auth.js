@@ -21,13 +21,7 @@ const Auth = {
 				User.history.getById(userId)
 					.then(() => User.settings.getById(userId))
 					.then(() => store.dispatch(setRoute(null)))
-				// firebase.database().ref('user_history/' + userId).once('value', (snapshot) => {
-				// 	store.dispatch(receiveHistory(snapshot.val()));
-				// });
-
-				// firebase.database().ref('users/' + userId).once('value', (snapshot) => {
-				// 	store.dispatch(receiveSettings(snapshot.val()));
-				// });			
+					
 			} else {
 				store.dispatch(authenticate(null))
 				store.dispatch(setRoute('signin'))

@@ -36,5 +36,5 @@ export const tabSaveSettings = () => ({
   type: TAB_ALIAS_SAVE_SETTINGS  
 });
 export const setSettings = () => dispatch => {  
-  User.settings.set(store.getState().auth.uid, store.getState().settings);
+  User.settings.setData(store.getState().auth.uid, store.getState().settings);
 }

@@ -65,8 +65,9 @@ class KeyLogger {
 
 		const {time, cpm, wpm} = this;
 		const data = {time, cpm, wpm, url};
-		console.log('data', data)
-		if (data.cpm > 5 && data.wpm > 5) this.port.postMessage(data);
+
+		// console.log('Keylogger', data)
+		if (data.cpm > 5 || data.wpm > 5) this.port.postMessage(data);
 	}
 
 	needPrivacy (domElement) {

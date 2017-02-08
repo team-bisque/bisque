@@ -47,7 +47,7 @@ class Tabs {
         chrome.runtime.onConnect.addListener(port => {
             port.onMessage.addListener(msg => {
 
-                console.log('keyloggerSetup', msg)
+                // console.log('keyloggerSetup', msg)
                 // Next two lines ignore events triggered before keylogging begins.
                 const timeObject = msg ? this.findTime(msg) : null;
                 if (timeObject === null) return;
@@ -118,7 +118,7 @@ class Tabs {
     }
 
     onGreylist (request) {
-        if (!this.greylist.length) this.greylist = store.getState().settings.greylist;
+        // if (!this.greylist.length) this.greylist = store.getState().greylist;
 
         let filteredUrl;
         let numHyphens = (request.match(/\-/g) || [])
@@ -131,7 +131,7 @@ class Tabs {
             filteredUrl = request.slice(0, request.indexOf('-'));
         }
 
-        const result = this.greylist.filter(entry => entry.indexOf(filteredUrl) > -1).length > 0
+        const result = store.getState().greylist.filter(entry => entry.indexOf(filteredUrl) > -1).length > 0
 
         return result;
     }

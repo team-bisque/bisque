@@ -9,23 +9,15 @@ import {
 
 // greylist should be an object with key
 
-
-//imagine what data should look like
-let firebaseDB = {
-	0: "buzzfeed.com",
-	1: "youtube.com",
-	2: "facebook.com"
-}
-
 // ### reducer needs refactor
 export default (greylist = [], action) => {
-	let newState = Object.assign({}, greylist);
+	let newState = greylist;
 	switch (action.type) {		
 	  case ADD_URL:	  
-	  	newState.greylist.push(action.url);
+	  	newState.push(action.url);
 	    break;
 	  case REMOVE_URL:
-	    newState.greylist = newState.greylist.filter((e, i) => i !== action.index);
+	    newState = newState.filter((e, i) => i !== action.index);
 	    
 	    
 	    break;

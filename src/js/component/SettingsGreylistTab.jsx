@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { addUrl, removeUrl, editUrl, addGreylist } from '../action-creators/settings';
+import { addUrl, removeUrl, editUrl, tabAddGreylist } from '../action-creators/greylist';
 
 class SettingsGreylistTab extends React.Component {
   constructor(props) {
@@ -16,13 +16,13 @@ class SettingsGreylistTab extends React.Component {
   onKeypressEnter(e) {
     console.log(e.key)
     if (e.key == 'Enter'){
-      this.props.addGreylist(this.url)
+      this.props.tabAddGreylist(this.url)
     }
   }
 
   addNew(e) {
     e.preventDefault();
-    this.props.addGreylist(this.url)
+    this.props.tabAddGreylist(this.url)
     document.getElementById('addNew-input').value = '';
   }
 
@@ -78,7 +78,7 @@ class SettingsGreylistTab extends React.Component {
 
 const mapState = ({ settings }) => ({ settings });
 const mapDispatch = dispatch => ({
-  addUrl: url         => (dispatch(addUrl(url))),
+  addGreylist: url    => (dispatch(addGreylist(url))),
   editUrl: (url, id)  => (dispatch(editUrl(url, id))),
   removeUrl: id       => (dispatch(removeUrl(id)))
 });

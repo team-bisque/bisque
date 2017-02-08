@@ -9,7 +9,7 @@ import {
   REMOVE_URL,
   EDIT_URL,
   RECEIVE_GREYLIST,
-  TAB_ALIAS_SAVE_SETTINGS
+  TAB_ALIAS_ADD_GREYLIST
 } from '../constants';
 
 export const addUrl = url => ({
@@ -24,8 +24,8 @@ export const editUrl = (url, index) => ({
   type: EDIT_URL, url, index  
 });
 
-export const tabSaveSettings = () => ({
-  type: TAB_ALIAS_SAVE_SETTINGS  
+export const tabAddGreylist = () => ({
+  type: TAB_ALIAS_ADD_GREYLIST  
 });
 
 export const receiveGreylist = greylist => ({
@@ -40,7 +40,9 @@ export const addGreylist = url => dispatch => {
   // we will need to validate weather input url already exist;
   var maxKey = _.maxBy(store.getState().greylist, o => Object.keys(o));
   console.log('max key and new id', maxKey);
-  store.dispatch(addUrl({[maxKey+1]:url}));
+  // store.dispatch(addUrl({[maxKey+1]:url}));
+
+  User.greylist.set(store.getState().auth.uid, {[maxKey+1]:url});
 }
 
 

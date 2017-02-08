@@ -14,19 +14,19 @@ var User = {
 };
 
 // set functions (returns promise value)
-User.settings.set = (userId, data) => (
+User.settings.setData = (userId, data) => (
 	firebase.database().ref('users/'+userId).set(data)
 		.then((res)=>(console.log('USER SETTTING SET:', res)))
 		.catch(console.error)
 )
 
-User.greylist.set = (userId, data) => (
+User.greylist.setData = (userId, data) => (
 	firebase.database().ref(`users/${userId}/greylist`).set(data)
 		.then((res)=>(console.log('USER GREYLIST SET:', res)))
 		.catch(console.error)
 )
 
-User.history.set = (userId, data) => (
+User.history.setData = (userId, data) => (
 	firebase.database().ref('user_history/'+userId).set(data)
 		.then((res)=>(console.log('USER HISTORY SET:', res)))
 		.catch(console.error)

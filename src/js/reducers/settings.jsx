@@ -37,7 +37,6 @@ export default (state = initialState, action) => {
     	newState.workDuration = action.settings.workDuration || newState.workDuration;
     	newState.breakDuration = action.settings.breakDuration || newState.workDuration;
     	newState.lunchDuration = action.settings.lunchDuration || newState.workDuration;
-    	newState.greylist = action.settings.greylist || newState.greylist;
     	break;
 		default:
 			break;
