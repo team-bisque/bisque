@@ -29,5 +29,5 @@ export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';
 
 // aliases
 export const TAB_ALIAS_LOGIN = 'TAB_ALIAS_LOGIN';
-export const TAB_ALIAS_LOGOUT = 'TAB_ALIAS_LOGOUT';
+export const TAB_ALIAS_SAVE_SETTINGS = 'TAB_ALIAS_SAVE_SETTINGS';
 export const SET_ROUTE = 'SET_ROUTE';

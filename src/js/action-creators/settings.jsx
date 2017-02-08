@@ -1,5 +1,9 @@
 'use strict';
 
+const auth = require('../controllers/auth');
+// const auth = new Auth();
+
+import store from '../store';
 import {
   SET_WORK_DURATION,
   SET_LUNCH_DURATION,
@@ -8,7 +12,8 @@ import {
   ADD_URL,
   REMOVE_URL,
   EDIT_URL,
-  RECEIVE_SETTINGS
+  RECEIVE_SETTINGS,
+  TAB_ALIAS_SAVE_SETTINGS
 } from '../constants';
 
 export const receiveSettings = settings => ({ 
@@ -42,3 +47,11 @@ export const removeUrl = index => ({
 export const editUrl = (url, index) => ({  
   type: EDIT_URL, url, index  
 });
+
+export const tabSaveSettings = () => ({
+  type: TAB_ALIAS_SAVE_SETTINGS  
+});
+export const saveSettings = () => dispatch => {  
+
+  auth.setUserSettings(store.getState().auth.uid, store.getState().settings);
+}

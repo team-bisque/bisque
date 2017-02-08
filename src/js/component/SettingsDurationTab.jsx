@@ -3,7 +3,7 @@
 import React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { setWorkDuration, setBreakDuration, setLunchDuration } from '../action-creators/settings';
+import { setWorkDuration, setBreakDuration, setLunchDuration, tabSaveSettings } from '../action-creators/settings';
 
 class SettingsDurationTab extends React.Component{
   constructor(props) {
@@ -12,9 +12,16 @@ class SettingsDurationTab extends React.Component{
   }
   onChangeMinutes(e){
     const { name, value } = e.target;
+
     if(name === 'work') this.props.setWorkDuration(value * 60000);
     else if(name === 'break') this.props.setBreakDuration(value * 60000)
-    else if(name === 'lunch') this.props.setLunchDuration(value * 60000)
+    else if(name === 'lunch') this.props.setLunchDuration(value * 60000)    
+
+    let settings = this.props.settings;
+
+    settings[`${name}Duration`] = value * 60000;
+
+    this.props.tabSaveSettings(settings)
   }
   render(){
     const { workDuration, breakDuration, lunchDuration } = this.props.settings;
@@ -43,6 +50,7 @@ class SettingsDurationTab extends React.Component{
 
 const mapState = ({ settings }) => ({ settings });
 const mapDispatch = dispatch => ({
+  tabSaveSettings:  () => (dispatch(tabSaveSettings())),
   setWorkDuration:  duration => (dispatch(setWorkDuration(duration))),
   setBreakDuration: duration => (dispatch(setBreakDuration(duration))),
   setLunchDuration: duration => (dispatch(setLunchDuration(duration)))

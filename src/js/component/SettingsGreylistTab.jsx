@@ -24,6 +24,7 @@ class SettingsGreylistTab extends React.Component {
   addNew(e) {
     e.preventDefault();
     this.props.addUrl(this.url)
+    document.getElementById('addNew-input').value = '';
   }
 
   remove(e) {
@@ -39,6 +40,7 @@ class SettingsGreylistTab extends React.Component {
         </p>
         <div className="addNew">
           <FormControl
+            id="addNew-input"
             type="text"
             onChange={this.onChangeURL.bind(this)}
             onKeyPress={this.onKeypressEnter.bind(this)}
@@ -53,7 +55,7 @@ class SettingsGreylistTab extends React.Component {
               <li key={index}>
                 
                 <div>              
-                  <FormControl
+                  <FormControl                    
                     type="text"
                     value={url}
                     onChange={this.onChangeURL.bind(this)}

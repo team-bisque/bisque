@@ -10,9 +10,9 @@ const firebase = require('./firebase');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
-class Auth {
+const Auth = {
 
-	onAuthStateChanged(){
+	onAuthStateChanged: ()=>{
 		firebase.auth().onAuthStateChanged(user => {
 		  if (user) {
 				const userId = user.uid;
@@ -34,14 +34,14 @@ class Auth {
 				store.dispatch(setRoute('signin'))
 			}
 		})
-	}
+	},
 	// signout(){
 	// 	firebase.auth().signOut()
 	// 		.then(console.log)
 	// 		.catch(console.error);
 	// }
 
-	authenticate(interactive){
+	authenticate:(interactive)=>{
 		chrome.identity.getAuthToken({
 			interactive: !!interactive,
 			scopes: ['profile', 'email']
@@ -54,6 +54,19 @@ class Auth {
 	      // Authrorize Firebase with the OAuth Access Token.
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
 	      firebase.auth().signInWithCredential(credential)
+	      .then(user => {
+	      	console.log(user);
+	      	let defaultSettings = {
+	      		workDuration: 300000,
+	      		breakDuration: 300000,
+	      		lunchDuration: 300000,
+	      		greylist: {
+	      			0: 'facebook.com', 
+	      			1: 'youtube.com'
+	      		}
+	      	}
+	      	firebase.database().ref('users/' + user.uid).set(defaultSettings)
+	      })
 	      .catch(error => {
 	        // The OAuth token might have been invalidated. Let's remove it from cache.
 
@@ -68,7 +81,9 @@ class Auth {
 	      console.error('The OAuth Token was null');
 	    }
 		})
-	}
+	},
+	setUserSettings: (userId, data) => firebase.database().ref('users/' + userId).set(data),
+	setAllHistory: (userId, data) => firebase.database().ref('user_history/' + userId).set(data)
 }
 
 module.exports = Auth;

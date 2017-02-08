@@ -18,7 +18,7 @@ class Core {
 	constructor() {
 		this.tabs = new Tabs();
 		this.webRequest = new WebRequest();
-		this.auth = new Auth();
+		this.auth = Auth;
 		this.notifications = new Notifications();
 		this.idle = new Idle();
 		this.greylist = new Greylist();
