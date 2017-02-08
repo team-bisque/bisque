@@ -66,7 +66,7 @@ class Main extends React.Component{
     Array.prototype.forEach.call(elements, (el) => {
         // Do stuff here
         BackgroundCheck.refresh(el);
-    });    
+    });
   }
   // componentWillReceiveProps(nextProps) {
   //   // console.log('componentWillReceiveProps', nextProps);
@@ -157,7 +157,7 @@ class Main extends React.Component{
             !auth ?
             // !user ? // for test
             <Login /> : child
-          }        
+          }
           </div>
         </div>
       </div>

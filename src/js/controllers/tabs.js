@@ -46,6 +46,8 @@ class Tabs {
 
         chrome.runtime.onConnect.addListener(port => {
             port.onMessage.addListener(msg => {
+
+                console.log('keyloggerSetup', msg)
                 // Next two lines ignore events triggered before keylogging begins.
                 const timeObject = msg ? this.findTime(msg) : null;
                 if (timeObject === null) return;
@@ -182,6 +184,7 @@ class Tabs {
 
         const dbPath = ('user_history/' + userId + '/' + date + '/' + hour + '/').toString();
 
+        // console.log('setFirebasePath', dbPath)
         return dbPath;
     }
 

@@ -3,18 +3,17 @@ import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { addUrl, removeUrl, editUrl, addGreylist } from '../action-creators/settings';
 
-
 class SettingsGreylistTab extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.url = '';    
+    this.url = '';
   }
 
-  onChangeURL(e) {    
+  onChangeURL(e) {
     if(e.target.name === 'add-new') this.url = e.target.value;
     else this.props.editUrl(e.target.value, parseInt(e.target.getAttribute('data-id')));
   }
-  onKeypressEnter(e){
+  onKeypressEnter(e) {
     console.log(e.key)
     if (e.key == 'Enter'){
       this.props.addGreylist(this.url)
@@ -31,7 +30,7 @@ class SettingsGreylistTab extends React.Component {
     this.props.removeUrl(parseInt(e.target.getAttribute('data-id')));
   }
 
-  render(){
+  render() {
     const { settings } = this.props
     return (
       <div>
@@ -46,7 +45,7 @@ class SettingsGreylistTab extends React.Component {
             onKeyPress={this.onKeypressEnter.bind(this)}
             name="add-new"
             className="inline"
-              />  
+              />
           <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>
         </div>
         <ul className="greylistURLs">
@@ -54,9 +53,8 @@ class SettingsGreylistTab extends React.Component {
             settings.greylist && settings.greylist.length ? settings.greylist.map((url, index) => {
             return (
               <li key={index}>
-                
-                <div>              
-                  <FormControl                    
+                <div>
+                  <FormControl
                     type="text"
                     value={url}
                     onChange={this.onChangeURL.bind(this)}
@@ -66,9 +64,9 @@ class SettingsGreylistTab extends React.Component {
                   />
                   <div className="icon">
                     <i className="fa fa-times pull-right" data-id={index} onClick={this.remove.bind(this)}></i>
-                  </div>                
+                  </div>
                 </div>
-                
+
               </li>
             )
           }).reverse() : null}
@@ -76,7 +74,6 @@ class SettingsGreylistTab extends React.Component {
       </div>
      )
   }
-  
 }
 
 const mapState = ({ settings }) => ({ settings });
