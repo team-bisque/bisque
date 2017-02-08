@@ -12,7 +12,7 @@ import {
 } from '../constants';
 
 export const receiveSettings = settings => ({ 
-  type: RECEIVE_SETTINGS, settings 
+  type: RECEIVE_SETTINGS, settings
 });
 
 export const setWorkDuration = workDuration => ({
