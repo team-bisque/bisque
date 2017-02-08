@@ -68,12 +68,12 @@ class Main extends React.Component{
         BackgroundCheck.refresh(el);
     });    
   }
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
-    if(nextProps.auth){
-      if(nextProps.route !== this.props.route) this.props.setRoute(nextProps.route)
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   // console.log('componentWillReceiveProps', nextProps);
+  //   if(nextProps.auth){
+  //     if(nextProps.route !== this.props.route) this.props.setRoute(nextProps.route)
+  //   }
+  // }
 
   handleMouseMove(e) {
     let mouseStrength = 25,
