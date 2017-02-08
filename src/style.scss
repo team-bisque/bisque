@@ -8,15 +8,15 @@ $complex: #bfbfbf;
 $margin: 2em;
 
 body {
-  color: white;  
+  color: white;
   text-shadow: $text-shadow;
 }
 
 .background--light {
-  color: $dark;  
+  color: $dark;
   text-shadow: 2px 2px 4px rgba(173, 173, 173, 0.63);
   .bisque-btn {
-    border-color: $dark;  
+    border-color: $dark;
   }
 }
 
@@ -24,11 +24,11 @@ body {
   color: $light;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
   .bisque-btn {
-    border-color: $light;  
+    border-color: $light;
   }
 }
 
-.background--complex {  
+.background--complex {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
 }
 
@@ -42,18 +42,18 @@ body {
     -ms-transform: scale(1, 1); /* IE 9 */
     -webkit-transform: scale(1, 1); /* Safari */
     transform: scale(1, 1);
-    -webkit-transition: all 200ms ease-in;    
-    -ms-transition: all 200ms ease-in;    
-    -moz-transition: all 200ms ease-in;    
-    transition: all 200ms ease-in;        
+    -webkit-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
     &:hover {
       -ms-transform: scale(1.5, 1.5); /* IE 9 */
       -webkit-transform: scale(1.5, 1.5); /* Safari */
       transform: scale(1.5, 1.5);
-      -webkit-transition: all 200ms ease-in;    
-      -ms-transition: all 200ms ease-in;    
-      -moz-transition: all 200ms ease-in;    
-      transition: all 200ms ease-in;        
+      -webkit-transition: all 200ms ease-in;
+      -ms-transition: all 200ms ease-in;
+      -moz-transition: all 200ms ease-in;
+      transition: all 200ms ease-in;
     }
   }
   .city {
@@ -67,7 +67,7 @@ body {
 #main {
     width: 100vw;
     height: 100vh;
-    
+
     .top-right {
       top: 0;
       right: 0;
@@ -109,34 +109,34 @@ body {
   width: 250px;
   height: 250px;
   padding: 50px;
-  -webkit-transform: scale(1); 
+  -webkit-transform: scale(1);
   -ms-transition: all 200ms ease-in;
-  -ms-transform: scale(1); 
+  -ms-transform: scale(1);
   -moz-transition: all 200ms ease-in;
   -moz-transform: scale(1);
   transition: all 200ms ease-in;
-  transform: scale(1); 
+  transform: scale(1);
 
-  &.settings {    
+  &.settings {
     width: 500px;
     height: 500px;
     border-radius: 10px;
     padding: 50px 10px 10px 10px;
-    -webkit-transition: all 200ms ease-in;    
-    -ms-transition: all 200ms ease-in;    
-    -moz-transition: all 200ms ease-in;    
-    transition: all 200ms ease-in;        
+    -webkit-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
   }
 
-  &.chart {    
+  &.chart {
     width: 75vw;
     height: 75vh;
     border-radius: 10px;
     padding: 50px 10px 10px 10px;
-    -webkit-transition: all 200ms ease-in;    
-    -ms-transition: all 200ms ease-in;    
-    -moz-transition: all 200ms ease-in;    
-    transition: all 200ms ease-in;        
+    -webkit-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
   }
 
   &.signin {
@@ -172,7 +172,7 @@ body {
 }
 
 .timer-wrapper {
-  .controller, .timer {    
+  .controller, .timer {
     display: flex;
     justify-content: space-around;
   }
@@ -201,16 +201,37 @@ body {
 // graph
 // todo(? possibly later)
 
+.line {
+  fill: none;
+  stroke: white;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.axis line{
+  stroke: white;
+}
+
+.axis path {
+  stroke: white;
+}
+
+.axis text {
+  fill: white;
+  font-family: helvetica;
+}
+
 
 .fullsizeBg {
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
     //background-size: cover;
     background-size: calc(100vw + 200px) !important;
     @media screen and (orientation: portrait) {
       background-size: auto calc(100vh + 200px) !important;
     }
 
-    
+
 }
 .donut-timer{
   position: absolute;
@@ -229,7 +250,7 @@ body {
   width: 100%;
   background: rgba(60, 60, 60, 0.63);
   border-top-left-radius: 10px;
-  border-top-right-radius: 10px;  
+  border-top-right-radius: 10px;
   >div{
     margin-right: 5px;
   }
