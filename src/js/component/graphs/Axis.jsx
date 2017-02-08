@@ -3,11 +3,11 @@ import { findDOMNode } from 'react-dom';
 import {select} from 'd3-selection';
 
 export default class Axis extends Component {
-  componentDidUpdate() {
+  componentDidMount() {
     this.renderAxis();
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     this.renderAxis();
   }
 
@@ -15,6 +15,7 @@ export default class Axis extends Component {
     const node = findDOMNode(this);
     select(node).call(this.props.axis);
   }
+
   render() {
     const {axisType, height} = this.props;
 
