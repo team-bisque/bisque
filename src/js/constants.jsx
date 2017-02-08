@@ -9,6 +9,8 @@ export const RECEIVE_SETTINGS = 'RECEIVE_SETTINGS';
 export const TOGGLE_WORK = 'TOGGLE_WORK';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const TOGGLE_LUNCH = 'TOGGLE_LUNCH';
+export const START_WORK = 'START_WORK';
+export const START_BREAK = 'START_BREAK';
 export const SET_TIME_REMAINING = 'SET_TIME_REMAINING';
 export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
 

@@ -1,6 +1,8 @@
 'use strict';
 import React from 'react';
 import SettingsModal from './SettingsModal';
+import { connect } from 'react-redux';
+import store from '../store';
 
 export default function Settings (props) {
     return (

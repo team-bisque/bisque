@@ -11,7 +11,6 @@ const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
 class Auth {
-
 	onAuthStateChanged(){
 		firebase.auth().onAuthStateChanged(user => {
 		  if (user) {
@@ -35,11 +34,6 @@ class Auth {
 			}
 		})
 	}
-	// signout(){
-	// 	firebase.auth().signOut()
-	// 		.then(console.log)
-	// 		.catch(console.error);
-	// }
 
 	authenticate(interactive){
 		chrome.identity.getAuthToken({

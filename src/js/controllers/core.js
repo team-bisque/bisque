@@ -10,7 +10,6 @@ const 	Tabs 			= require('./Tabs'),
 		WebRequest 		= require('./WebRequest'),
 		Notifications 	= require('./Notifications'),
 		Idle 			= require('./Idle'),
-		Greylist 		= require('./Greylist'),
 		Auth 			= require('./Auth');
 
 class Core {
@@ -20,19 +19,16 @@ class Core {
 		this.auth = new Auth();
 		this.notifications = new Notifications();
 		this.idle = new Idle();
-		this.greylist = new Greylist();
 	}
 
-	init(){
+	_init(){
 		const { dispatch } = store;
+		dispatch(fetchWeather());
 
 		this.tabs._init(); // <-- for keylogger;
 		this.idle._init(); // <-- detects whether user is idle
 		this.auth.onAuthStateChanged();
 
-		dispatch(fetchWeather());
-
-			console.log("getting tasks");
 			this.notifications.welcome();
 			dispatch(fetchTasks());
 		// else {
@@ -67,7 +63,7 @@ class Core {
         // When paused, interval keeps running -- but does nothing
 				console.log('We are paused');
 			}
-		}, 5000); // Interval runs in hyperspeed for dev purposes
+		}, 2000); // Interval runs in hyperspeed for dev purposes
 	}
 }
 
