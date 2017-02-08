@@ -67,10 +67,10 @@ body {
   border-bottom: none;
 }
 
-.nav-tabs>li.active>a, 
-.nav-tabs>li.active>a:focus, 
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
 .nav-tabs>li.active>a:hover {
-    background: white;      
+    background: white;
 }
 .nav-tabs>li>a {
     background: rgba(255, 255, 255, 0.6);
@@ -148,7 +148,7 @@ body {
   -moz-transition: all 200ms ease-in;
   -moz-transform: scale(1);
   transition: all 200ms ease-in;
-  
+
   &.alarm {
     -webkit-animation-name: shake;
     -ms-animation-name: shake;
@@ -170,7 +170,7 @@ body {
     animation-play-state: running;
   }
 
-  &.settings {    
+  &.settings {
     width: 300px;
     height: 500px;
     border-radius: 10px;
@@ -254,25 +254,29 @@ body {
 // graph
 // todo(? possibly later)
 
+.dot {
+  fill: white;
+  stroke: white;
+  stroke-width: 2px
+}
+
 .line {
   fill: none;
   stroke: white;
-  stroke-width: 1.5px;
+  stroke-width: 3px;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
-
-.axis line{
-  stroke: white;
-}
-
-.axis path {
-  stroke: white;
-}
-
-.axis text {
-  fill: white;
-  font-family: helvetica;
+.axis {
+  line {
+    stroke-width: 2px;
+    stroke: white;
+  }
+  text {
+    fill: white;
+    font-family: helvetica;
+    font-size: 1.3em;
+  }
 }
 
 
@@ -318,7 +322,7 @@ body {
   text-shadow: none;
 
   .nav-tabs>li {
-    float: none;    
+    float: none;
     width: 50%;
     margin: 0;
     display: inline-block;
@@ -331,14 +335,14 @@ body {
       }
     }
 
-    &:first-child a { 
+    &:first-child a {
       border: 0;
       border-top-left-radius: 20px;
       border-bottom-left-radius: 20px;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-    &:last-child a { 
+    &:last-child a {
       border: 0;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
@@ -371,7 +375,7 @@ body {
 ul {
   list-style: none;
   margin: 0;
-  padding: 0;  
+  padding: 0;
 }
 label {
   color: #FFFFFF !important;

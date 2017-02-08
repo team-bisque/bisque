@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 
 import Dots from './Dots';
 import Axis from './Axis';
+// import Grid from './Grid';
 
-import { line } from 'd3-shape'
+import { line } from 'd3-shape';
 import { scaleTime, scaleLinear } from 'd3-scale';
 import { timeParse } from 'd3-time-format';
 import { axisLeft, axisBottom } from 'd3-axis';
@@ -14,7 +15,7 @@ import json from '../../controllers/dummyData.json';
 
 export class Line extends Component {
   render() {
-    const {data, width, height, margin} = this.props;
+    const {data, height, width, margin} = this.props;
 
     // D3's time parser
     const parseTime = timeParse('%d-%b-%y');
@@ -26,26 +27,29 @@ export class Line extends Component {
       };
     });
 
+    let widthDiff = margin.left + margin.right;
+    let heightDiff = margin.top + margin.bottom;
+
     // D3 goodness
     let x = scaleTime()
             .domain(extent(formattedData, d => d.date))
-            .rangeRound([0, width])
+            .rangeRound([0, (width - widthDiff)])
     let y = scaleLinear()
             .domain(extent(formattedData, d => d.close))
-            .range([height, 0])
+            .range([(height - heightDiff), 0])
     let lineEquation = line().x(d => x(d.date)).y(d => y(d.close))
     let xAxis = axisBottom(x);
     let yAxis = axisLeft(y);
 
-    let heightDiff = margin.right + margin.bottom;
 
     return (
-        <svg width={width} height={height - heightDiff}>
+        <svg width={width} height={height}>
           <g transform={`translate(${margin.left},${margin.top})`}>
-            <Axis height={height - heightDiff} axis={yAxis} axisType="y" />
-            <Axis height={height - heightDiff} axis={xAxis} axisType="x" />
+            {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
             <path className="line" d={lineEquation(formattedData)} />
             <Dots data={formattedData} x={x} y={y} />
+            <Axis height={height - heightDiff} axis={yAxis} axisType="y" />
+            <Axis height={height - heightDiff} axis={xAxis} axisType="x" />
           </g>
         </svg>
     );

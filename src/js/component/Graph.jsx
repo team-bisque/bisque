@@ -2,7 +2,6 @@
 import React from 'react';
 import LineGraph from './graphs/Line';
 import { findDOMNode } from 'react-dom';
-// import { setRouteAlias } from '../action-creators/aliases';
 
 const data = require('../controllers/dummyData.json')
 
@@ -13,18 +12,19 @@ export default class Graph extends React.Component {
       width: 500,
       height: 500
     };
+    this.updateDimensions = this.updateDimensions.bind(this);
   }
 
   componentDidMount() {
-    this.setSize();
+    this.updateDimensions(); // Initial resize
+    window.addEventListener('resize', this.updateDimensions);
   }
 
-  componentWillUpdate(props, state) {
-    console.log('NEW WIDTH:', state.width, 'OLD WIDTH:', this.state.width);
-    if (state.width !== this.state.width) this.setSize();
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
-  setSize() {
+  updateDimensions() {
     const elem = findDOMNode(this);
     this.setState({
       width: elem.offsetWidth,
@@ -33,7 +33,7 @@ export default class Graph extends React.Component {
   }
 
   onClickClose(e){
-    this.props.setRoute(null)
+    this.props.setRoute(null);
   }
 
   render() {

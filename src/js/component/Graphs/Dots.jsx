@@ -12,11 +12,9 @@ export default class Dot extends Component {
               <circle
                 key={i}
                 className="dot"
-                r=".5"
+                r="1.5"
                 cx={x(d.date)}
                 cy={y(d.close)}
-                strokeWidth="1px"
-                stroke="steelblue"
               />
           );
           }
