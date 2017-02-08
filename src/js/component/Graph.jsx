@@ -4,6 +4,7 @@ import LineGraph from './graphs/Line';
 import { findDOMNode } from 'react-dom';
 // import { setRouteAlias } from '../action-creators/aliases';
 
+const data = require('../controllers/dummyData.json')
 
 export default class Graph extends React.Component {
   constructor(props) {
@@ -38,13 +39,14 @@ export default class Graph extends React.Component {
   render() {
     const {width, height} = this.state;
     return (
-      <div id="graph-modal">
+      <div id="graph-modal" className="content">
         <div className="modal-bar">
+          <div className="modal-title">Graph</div>
           <div>
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <LineGraph db={this.props.db} width={width} height={height} label={'Words Per Minute'}/>
+        <LineGraph db={data} width={width} height={height} label={'Words Per Minute'}/>
       </div>
     );
   }

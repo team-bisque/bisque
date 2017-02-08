@@ -1,8 +1,9 @@
 'use strict';
 import { authenticate }  from '../action-creators/auth';
 import store         		 from '../store';
-import { receiveHistory, receiveSettings } from '../action-creators/db';
+import { receiveHistory } from '../action-creators/history';
 
+import { receiveSettings } from '../action-creators/settings';
 import { setRoute } from '../reducers/route';
 
 const firebase = require('./firebase');
