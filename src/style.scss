@@ -330,6 +330,10 @@ body {
     >a {
       margin: 0;
       text-align: center;
+      &:focus {
+        outline: none;
+      }
+
       i {
         margin-right: 5px;
       }

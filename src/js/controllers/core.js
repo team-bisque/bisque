@@ -6,17 +6,17 @@ import { fetchTasks } from '../action-creators/tasks';
 import store from '../store';
 import firebase from './firebase';
 
-const 	Tabs 			= require('./Tabs'),
-		WebRequest 		= require('./WebRequest'),
-		Notifications 	= require('./Notifications'),
-		Idle 			= require('./Idle'),
-		Auth 			= require('./Auth');
+const 	Tabs 			= require('./tabs'),
+		WebRequest 		= require('./webRequest'),
+		Notifications 	= require('./notifications'),
+		Idle 			= require('./idle'),
+		Auth 			= require('./auth');
 
 class Core {
 	constructor() {
 		this.tabs = new Tabs();
 		this.webRequest = new WebRequest();
-		this.auth = new Auth();
+		this.auth = Auth;
 		this.notifications = new Notifications();
 		this.idle = new Idle();
 	}

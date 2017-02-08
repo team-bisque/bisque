@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { addUrl, removeUrl, editUrl } from '../action-creators/settings';
+import { tabRemoveGreylist, tabEditGreylist, tabAddGreylist } from '../action-creators/greylist';
 
 class SettingsGreylistTab extends React.Component {
   constructor(props) {
@@ -11,26 +11,27 @@ class SettingsGreylistTab extends React.Component {
 
   onChangeURL(e) {
     if(e.target.name === 'add-new') this.url = e.target.value;
-    else this.props.editUrl(e.target.value, parseInt(e.target.getAttribute('data-id')));
+    else this.props.tabEditGreylist(e.target.value, parseInt(e.target.getAttribute('data-id')));
   }
   onKeypressEnter(e) {
     console.log(e.key)
-    if (e.key == 'Enter') {
-      this.props.addUrl(this.url)
+    if (e.key == 'Enter'){
+      this.props.tabAddGreylist(this.url)
     }
   }
 
   addNew(e) {
     e.preventDefault();
-    this.props.addUrl(this.url)
+    this.props.tabAddGreylist(this.url)
+    document.getElementById('addNew-input').value = '';
   }
 
   remove(e) {
-    this.props.removeUrl(parseInt(e.target.getAttribute('data-id')));
+    this.props.tabRemoveGreylist(parseInt(e.target.getAttribute('data-id')));
   }
 
   render() {
-    const { settings } = this.props
+    const { greylist } = this.props
     return (
       <div>
         <p>
@@ -38,6 +39,7 @@ class SettingsGreylistTab extends React.Component {
         </p>
         <div className="addNew">
           <FormControl
+            id="addNew-input"
             type="text"
             onChange={this.onChangeURL.bind(this)}
             onKeyPress={this.onKeypressEnter.bind(this)}
@@ -47,10 +49,10 @@ class SettingsGreylistTab extends React.Component {
           <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>
         </div>
         <ul className="greylistURLs">
-          {settings.greylist.length ? settings.greylist.map((url, index) => {
+          { //greylist should be an object
+            greylist && greylist.length ? greylist.map((url, index) => {
             return (
               <li key={index}>
-
                 <div>
                   <FormControl
                     type="text"
@@ -74,11 +76,11 @@ class SettingsGreylistTab extends React.Component {
   }
 }
 
-const mapState = ({ settings }) => ({ settings });
+const mapState = ({ greylist }) => ({ greylist });
 const mapDispatch = dispatch => ({
-  addUrl: url         => (dispatch(addUrl(url))),
-  editUrl: (url, id)  => (dispatch(editUrl(url, id))),
-  removeUrl: id       => (dispatch(removeUrl(id)))
+  tabAddGreylist: url        => (dispatch(tabAddGreylist(url))),
+  tabEditGreylist: (url, id) => (dispatch(tabEditGreylist(url, id))),
+  tabRemoveGreylist: id      => (dispatch(tabRemoveGreylist(id)))
 });
 
 export default connect(mapState, mapDispatch)(SettingsGreylistTab);

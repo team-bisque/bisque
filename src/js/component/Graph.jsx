@@ -13,8 +13,6 @@ export default class Graph extends React.Component {
       height: 500
     };
     this.updateDimensions = this.updateDimensions.bind(this);
-  }
-
   componentDidMount() {
     this.updateDimensions(); // Initial resize
     window.addEventListener('resize', this.updateDimensions);
@@ -26,9 +24,11 @@ export default class Graph extends React.Component {
 
   updateDimensions() {
     const elem = findDOMNode(this);
+    // const elem = document.getElementById('graph-modal');
+    console.log('updateDimensions', elem.offsetWidth, elem.offsetHeight)
     this.setState({
-      width: elem.offsetWidth,
-      height: elem.offsetHeight
+      width: elem.offsetWidth - 50,
+      height: elem.offsetHeight -25
     });
   }
 
@@ -46,7 +46,7 @@ export default class Graph extends React.Component {
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <LineGraph db={data} width={width} height={height} label={'Words Per Minute'}/>
+        <LineGraph data={data} width={width} height={height} label={'Words Per Minute'}/>
       </div>
     );
   }
