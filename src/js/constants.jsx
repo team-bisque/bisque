@@ -21,6 +21,9 @@ export const SET_LUNCH_DURATION = 'SET_LUNCH_DURATION';
 export const SET_SHIFT_DURATION = 'SET_SHIFT_DURATION';
 export const SET_START_TIME = 'SET_START_TIME';
 
+// tasks
+export const RECEIVE_TASKS = 'RECEIVE_TASKS';
+
 // greylist
 export const ADD_URL = 'ADD_URL';
 export const REMOVE_URL = 'REMOVE_URL';

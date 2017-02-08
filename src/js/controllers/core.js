@@ -1,12 +1,10 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-import { receiveSettings } from '../action-creators/settings';
-// import { wrapStore } from 'react-chrome-redux';
+import { fetchTasks } from '../action-creators/tasks';
 
 import store from '../store';
 import firebase from './firebase';
-// wrapStore(store, {portName: '1337'});
 
 const 	Tabs 			= require('./Tabs'),
 		WebRequest 		= require('./WebRequest'),
@@ -31,12 +29,10 @@ class Core {
 		this.idle._init(); // <-- detects whether user is idle
 		this.auth.onAuthStateChanged();
 
-
-
-		// if (!store.getState().auth) {
-		// 	this.notifications.login();
-		// } else {
 			this.notifications.welcome();
+			dispatch(fetchTasks());
+		// else {
+		// 	this.notifications.login();
 		// }
 
 		this.watchMinute();
