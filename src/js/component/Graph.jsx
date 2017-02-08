@@ -16,6 +16,7 @@ export default class Graph extends React.Component {
   }
 
   componentDidMount() {
+    this.updateDimensions(); // Initial resize
     window.addEventListener('resize', this.updateDimensions);
   }
 
@@ -25,7 +26,6 @@ export default class Graph extends React.Component {
 
   updateDimensions() {
     const elem = findDOMNode(this);
-    console.log(`updating dimensions: ${elem.offsetWidth} by ${elem.offsetHeight}`);
     this.setState({
       width: elem.offsetWidth,
       height: elem.offsetHeight
@@ -33,7 +33,7 @@ export default class Graph extends React.Component {
   }
 
   onClickClose(e){
-    this.props.setRoute(null)
+    this.props.setRoute(null);
   }
 
   render() {

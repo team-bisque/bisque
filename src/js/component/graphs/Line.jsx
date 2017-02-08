@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {findDOMNode} from 'react-dom';
 import { connect } from 'react-redux';
 
 import Dots from './Dots';
 import Axis from './Axis';
+// import Grid from './Grid';
 
 import { line } from 'd3-shape';
 import { scaleTime, scaleLinear } from 'd3-scale';
@@ -14,35 +14,6 @@ import { extent } from 'd3-array';
 import json from '../../controllers/dummyData.json';
 
 export class Line extends Component {
-  // constructor (props) {
-  //   super(props);
-  //   this.state = {
-  //     width: this.props.width
-  //   };
-  // }
-
-  // componentWillMount (){
-  //   Window.on('resize', e => {
-  //       this.updateSize();
-  //   });
-  //   this.setState({width: this.props.width});
-  // }
-  //
-  // componentDidMount() {
-  //   this.updateSize();
-  // }
-  //
-  // updateSize(){
-  //   var node = findDOMNode(this);
-  //   var parentWidth = node.width();
-  //
-  //   if (parentWidth < this.props.width){
-  //     this.setState({width: parentWidth - 20});
-  //   } else {
-  //     this.setState({width: this.props.width});
-  //   }
-  // }
-
   render() {
     const {data, height, width, margin} = this.props;
 
@@ -74,10 +45,11 @@ export class Line extends Component {
     return (
         <svg width={width} height={height}>
           <g transform={`translate(${margin.left},${margin.top})`}>
-            <Axis height={height - heightDiff} axis={yAxis} axisType="y" />
-            <Axis height={height - heightDiff} axis={xAxis} axisType="x" />
+            {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
             <path className="line" d={lineEquation(formattedData)} />
             <Dots data={formattedData} x={x} y={y} />
+            <Axis height={height - heightDiff} axis={yAxis} axisType="y" />
+            <Axis height={height - heightDiff} axis={xAxis} axisType="x" />
           </g>
         </svg>
     );
