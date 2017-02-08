@@ -3,8 +3,7 @@ import {connect} from 'react-redux';
 
 import Slice from './Slice';
 
-import * as d3 from 'd3';
-import { arc, pie } from 'd3-shape';
+import { pie } from 'd3-shape';
 
 export class Donut extends Component {
   renderSlice(value, i) {
@@ -31,12 +30,12 @@ export class Donut extends Component {
   render() {
     const {diameter, radius, data } = this.props;
 
-    const pie = d3.pie()
+    const pieEquation = pie();
 
     return (
       <svg className="donut-timer" width={diameter} height={diameter} >
         <g transform={`translate(${radius},${radius})`}>
-          {pie(data).map(this.renderSlice.bind(this))}
+          {pieEquation(data).map(this.renderSlice.bind(this))}
         </g>
       </svg>
     )
