@@ -2,6 +2,8 @@
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 const firebase = require('./firebase');
+const User = require('./user');
+const _ = require('lodash');
 import store from '../store';
 
 class Tabs {
@@ -10,6 +12,7 @@ class Tabs {
     constructor () {
         this.greylist = [];
         this.sitesVisited = [];
+        this.url = '';
 
         this.siteTracker             = this.siteTracker.bind(this);
         this.keyloggerSetup          = this.keyloggerSetup.bind(this);
@@ -18,6 +21,10 @@ class Tabs {
         this.findTime                = this.findTime.bind(this);
         this.checkDuplicates         = this.checkDuplicates.bind(this);
         this.filterDomain            = this.filterDomain.bind(this);
+        this.onMessage               = this.onMessage.bind(this);
+
+
+        // this.onMessageHandler = null;
     }
 
     _init () {
@@ -28,8 +35,14 @@ class Tabs {
         
         // Listens for tab updates and ensures keylogger runs on each tab
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-            this.keyloggerSetup(tabId, changeInfo, tab);
+            console.log('chrome.tabs.onUpdated', tabId, changeInfo)
+            if(changeInfo.status && changeInfo.status === "complete") {
+                console.log("EventListenr is added")
+                this.keyloggerSetup(tabId, changeInfo, tab);
+            }
         })
+
+        // remove eventlistner on certain
 
         // Processes greylist visits to DB every 5 seconds.
         setInterval(() => {
@@ -39,26 +52,56 @@ class Tabs {
 
     // KEYLOGGER METHODS
     // See keyLogger.js for content script side of process.
+    onMessage(port){
+        port.onMessage.addListener(msg => {
+            const history = store.getState().history;
+            const timeObject = this.findTime(msg.time);
+            const date = timeObject.getMonth() + 1 + '-' + timeObject.getDate() + '-' + timeObject.getFullYear();
+            const hour = timeObject.getHours().toString();
+            // if (timeObject === null) return;
+            const dbPath = this.setFirebasePath(timeObject);
+
+            console.log('KeyloggerSetup', timeObject, dbPath, msg)
+        
+            let arr = [],
+                data = {
+                    cpm: msg.cpm, wpm: msg.wpm, url: msg.url
+                };
+            if(history[date] && history[date][hour]) {
+                arr = history[date][hour]
+                // if data url already exists
+                let index = _.findIndex(arr, function(o) { return o.url === msg.url; });
+
+                if(index < 0){
+                    arr.push(data);
+                } else {
+                    let tempData = {
+                        cpm: arr[index].cpm !== data.cpm ? _.mean([arr[index].cpm, data.cpm]) : arr[index].cpm, 
+                        wpm: arr[index].wpm !== data.wpm ? _.mean([arr[index].wpm, data.wpm]) : arr[index].wpm, 
+                        url: arr[index].url
+                    }
+                    arr[index] = tempData;
+                }
+
+                
+            } else {
+                arr.push(data);
+            }
+
+            firebase.database().ref(dbPath).set(arr)
+                .then(()=>User.history.getById(store.getState().auth.uid));
+        });        
+    }
+
+
 
     keyloggerSetup (tabId, changeInfo, tab) {
+
         // Set up listener in background for the port that the keyLogger script will set up on the tab
         // This listener receives keystrokes from the tab
-
-        chrome.runtime.onConnect.addListener(port => {
-            port.onMessage.addListener(msg => {
-
-                // console.log('keyloggerSetup', msg)
-                // Next two lines ignore events triggered before keylogging begins.
-                const timeObject = msg ? this.findTime(msg) : null;
-                if (timeObject === null) return;
-
-                const dbPath = this.setFirebasePath(timeObject);
-
-                firebase.database().ref(dbPath + 'tabs/' + tab.id).set({
-                    cpm: msg.cpm, wpm: msg.wpm, url: msg.url
-                })
-            })
-        })
+        console.log("EventListenr is added")
+        chrome.runtime.onConnect.removeListener(this.onMessage)
+        chrome.runtime.onConnect.addListener(this.onMessage)
 
         // Inject keylogger/content script into tab
         // This sets up the keylogger
@@ -172,9 +215,9 @@ class Tabs {
 
     // UTILITY METHODS
 
-    findTime (msg) {
+    findTime (time) {
         // msg argument is optional; for use with keylogger only 
-        return msg ? new Date(msg.time) : new Date();
+        return time ? new Date(time) : new Date();
     }
 
     setFirebasePath (timeObject) {
@@ -182,7 +225,7 @@ class Tabs {
         const date = timeObject.getMonth() + 1 + '-' + timeObject.getDate() + '-' + timeObject.getFullYear();
         const hour = timeObject.getHours().toString();
 
-        const dbPath = ('user_history/' + userId + '/' + date + '/' + hour + '/').toString();
+        const dbPath = ('user_history/' + userId + '/' + date + '/' + hour).toString();
 
         // console.log('setFirebasePath', dbPath)
         return dbPath;

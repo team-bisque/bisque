@@ -47,6 +47,7 @@ export const setGreylist = () => dispatch => {
   User.greylist.set(store.getState().auth.uid, store.getState().settings);
 };
 
+// User function balance with action-creator
 export const addGreylist = payload => dispatch => {
   const User = require('../controllers/user');
   const userId = store.getState().auth.uid;

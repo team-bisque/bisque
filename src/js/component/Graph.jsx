@@ -13,6 +13,7 @@ export default class Graph extends React.Component {
       height: 500
     };
     this.updateDimensions = this.updateDimensions.bind(this);
+  }
   componentDidMount() {
     this.updateDimensions(); // Initial resize
     window.addEventListener('resize', this.updateDimensions);
@@ -46,7 +47,7 @@ export default class Graph extends React.Component {
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <LineGraph data={data} width={width} height={height} label={'Words Per Minute'}/>
+        <LineGraph data={this.props.history} width={width} height={height} label={'Words Per Minute'}/>
       </div>
     );
   }

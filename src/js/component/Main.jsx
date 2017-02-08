@@ -103,7 +103,7 @@ class Main extends React.Component{
   }
 
   render(){
-    const { status, settings, weather, auth, route, db } = this.props;
+    const { status, settings, weather, auth, route, history, greylist } = this.props;
     // let user = null; // for test
     let child;
     if (!this.props.route || this.props.route.includes("alarm")){
