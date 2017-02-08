@@ -6,6 +6,8 @@ import {
   ADD_FIVE_MINUTES,
   TOGGLE_WORK,
   TOGGLE_PAUSE,
+  START_BREAK,
+  START_WORK
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
@@ -29,17 +31,27 @@ export default (state = initialState, action) => {
       newState.timeRemaining += (5 * minute);
       break;
 
+    case START_BREAK:
+      newState.isWorking = false;
+      newState.isPaused = false;
+      newState.timeRemaining = store.getState().settings.breakDuration;
+      break;
+
+    case START_WORK:
+      newState.isWorking = true;
+      newState.isPaused = false;
+      newState.timeRemaining = store.getState().settings.workDuration;
+      break;
+
     case TOGGLE_WORK:
       // First, toggle work
       newState.isWorking = !newState.isWorking;
       // Second, make sure we're unpaused
-      if (newState.isPaused) newState.isPaused = !newState.isPaused;
+      newState.isPaused = false;
       // Last, put time on the clock
-      if (newState.isWorking) {
-        newState.timeRemaining = store.getState().settings.workDuration;
-      } else {
-        newState.timeRemaining = store.getState().settings.breakDuration;
-      }
+      newState.timeRemaining = newState.isWorking
+      ? store.getState().settings.workDuration
+      : store.getState().settings.breakDuration;
       break;
 
     case TOGGLE_PAUSE:

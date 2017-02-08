@@ -2,7 +2,9 @@
 import {
 	addFiveMinutes,
 	toggleWork,
-	togglePause
+	startWork,
+	startBreak,
+	setTimeRemaining
 } from '../action-creators/status';
 
 import store from '../store';
@@ -43,10 +45,10 @@ class Notifications {
 	}
 
 	loginHandler(noteId, buttonIndex) {
-		if (buttonIndex === 0) chrome.tabs.create({});
-		if (buttonIndex === 1) console.log('about page');
 		chrome.notifications.clear(noteId);
 		chrome.notifications.onButtonClicked.removeListener(this.loginHandler);
+		if (buttonIndex === 0) chrome.tabs.create({});
+		if (buttonIndex === 1) console.log('about page');
 	}
 
 	welcome(){
@@ -64,10 +66,11 @@ class Notifications {
 	}
 
 	welcomeHandler(noteId, buttonIndex) {
-		if (buttonIndex === 0) store.dispatch(toggleWork());
-		else console.log('User isn’t ready');
 		chrome.notifications.clear(noteId);
 		chrome.notifications.onButtonClicked.removeListener(this.welcomeHandler);
+		console.log('in welcomeHandler')
+		if (buttonIndex === 0) store.dispatch(toggleWork());
+		else console.log('User isn’t ready');
 	}
 
 	warning(){
@@ -86,9 +89,9 @@ class Notifications {
 	}
 
 	warningHandler(noteId, buttonIndex) {
-		if (buttonIndex === 1) store.dispatch(addFiveMinutes());
 		chrome.notifications.clear(noteId);
 		chrome.notifications.onButtonClicked.removeListener(this.warningHandler);
+		if (buttonIndex === 1) store.dispatch(addFiveMinutes());
 	}
 
 	statusChange(){
@@ -109,15 +112,16 @@ class Notifications {
 	}
 
 	statusHandler(noteId, buttonIndex) {
-		console.log(noteId);
+			console.log('in statusHandler');
+		chrome.notifications.clear(noteId);
+		chrome.notifications.onButtonClicked.removeListener(this.statusHandler);
 		if (buttonIndex === 0) { // User is ready
 			store.dispatch(toggleWork());
 		}
 		if (buttonIndex === 1) {
+			store.dispatch(setTimeRemaining(0));
 			store.dispatch(addFiveMinutes());
 		}
-		chrome.notifications.clear(noteId);
-		chrome.notifications.onButtonClicked.removeListener(this.statusHandler);
 	}
 
 	whereAreYou(){
@@ -126,7 +130,7 @@ class Notifications {
 			message: `Tell Bisque what to do`,
 			buttons: [
 				{ title: `Let’s get back to work!`},
-				{ title: `I’m still here, but want to start my break again.`}
+				{ title: `I’m back, but it's break time!`}
 			],
 			requireInteraction: true
 		}).then(() => {
@@ -135,24 +139,11 @@ class Notifications {
 	}
 
 	whereAreYouHandler(noteId, buttonIndex) {
-		// store.dispatch(togglePause());
-		const isWorking = store.getState().status.isWorking;
-		if (buttonIndex === 0 && !isWorking) {
-			toggleWork();
-		} else if (buttonIndex === 1 && isWorking) {
-			toggleWork();
-			togglePause();
-		}
-
-		// if (buttonIndex === 0) {
-		// 	store.dispatch(toggleWork());
-		// 	if (!store.getState().status.isWorking) {
-		// 		store.dispatch(toggleWork());
-		// 	}
-		// }
-		// if (buttonIndex === 1 && !store.getState().status.isPaused) store.dispatch(togglePause());
-		// chrome.notifications.clear(noteId);
-		// chrome.notifications.onButtonClicked.removeListener(this.whereAreYouHandler);
+		chrome.notifications.clear(noteId);
+		chrome.notifications.onButtonClicked.removeListener(this.whereAreYouHandler);
+		if (buttonIndex === 0) store.dispatch(startWork());
+		else store.dispatch(startBreak());
 	}
 }
+
 module.exports = Notifications;
