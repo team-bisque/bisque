@@ -1,11 +1,11 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-import { wrapStore } from 'react-chrome-redux';
+// import { wrapStore } from 'react-chrome-redux';
 
 import store from '../store';
 import firebase from './firebase';
-wrapStore(store, {portName: '1337'});
+// wrapStore(store, {portName: '1337'});
 
 const 	Tabs 			= require('./Tabs'),
 		WebRequest 		= require('./WebRequest'),

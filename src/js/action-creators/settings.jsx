@@ -31,24 +31,14 @@ export const setStartTime = startTime => ({
   type: SET_START_TIME, startTime
 });
 
-export const addUrl = url => {
-  return {
-    type: ADD_URL,
-    url
-  }
-}
+export const addUrl = url => ({
+  type: ADD_URL, url
+});
 
-export const removeUrl = index => {
-  return {
-    type: REMOVE_URL,
-    index
-  }
-}
+export const removeUrl = index => ({
+  type: REMOVE_URL, index
+});
 
-export const editUrl = (url, index) => {
-  return {
-    type: EDIT_URL,
-    url,
-    index
-  }
-}
+export const editUrl = (url, index) => ({  
+  type: EDIT_URL, url, index  
+});

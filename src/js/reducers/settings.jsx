@@ -40,13 +40,13 @@ export default (state = initialState, action) => {
 			newState.startTime = action.startTime;
 			break;
 	  case ADD_URL:
-	    newState.urlList.push(action.url);
+	    newState.greylist.push(action.url);
 	    break;
 	  case REMOVE_URL:
-	    newState.urlList = newState.urlList.filter((e, i) => i !== action.index);
+	    newState.greylist = newState.greylist.filter((e, i) => i !== action.index);
 	    break;
     case EDIT_URL:
-    	newState.urlList = newState.urlList.map((e, i) => i === action.index ? action.url : e);
+    	newState.greylist[action.index] = action.url;
     	break;
     case RECEIVE_SETTINGS:
     	newState.workDuration = action.settings.workDuration || newState.workDuration;

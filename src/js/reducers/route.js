@@ -12,7 +12,3 @@ export default (route = null, action) => {
 			return route;
 	}	
 };
-
-export const setRouteAlias = () =>({
-	
-})
