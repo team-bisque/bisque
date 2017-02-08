@@ -1,17 +1,9 @@
 'use strict';
 
 import React from 'react';
-// import Login from './Login';
-import { connect } from 'react-redux';
 
-export default class User extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render () {
-
-    const { auth, weather } = this.props;
+export default function User (props) {
+    const { auth } = props;
 
     var curHr = new Date().getHours();
 
@@ -28,5 +20,4 @@ export default class User extends React.Component {
         { auth ? message : null }
       </div>
     );
-  }
 }

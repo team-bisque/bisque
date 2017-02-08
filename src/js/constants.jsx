@@ -5,7 +5,7 @@ export const AUTHENTICATE = 'AUTHENTICATE';
 export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
 export const RECEIVE_SETTINGS = 'RECEIVE_SETTINGS';
 
-// settings
+// status
 export const TOGGLE_WORK = 'TOGGLE_WORK';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const TOGGLE_LUNCH = 'TOGGLE_LUNCH';
@@ -18,6 +18,9 @@ export const SET_BREAK_DURATION = 'SET_BREAK_DURATION';
 export const SET_LUNCH_DURATION = 'SET_LUNCH_DURATION';
 export const SET_SHIFT_DURATION = 'SET_SHIFT_DURATION';
 export const SET_START_TIME = 'SET_START_TIME';
+
+// tasks
+export const RECEIVE_TASKS = 'RECEIVE_TASKS';
 
 // greylist
 export const ADD_URL = 'ADD_URL';

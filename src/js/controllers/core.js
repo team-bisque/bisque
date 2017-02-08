@@ -1,11 +1,10 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-// import { wrapStore } from 'react-chrome-redux';
+import { fetchTasks } from '../action-creators/tasks';
 
 import store from '../store';
 import firebase from './firebase';
-// wrapStore(store, {portName: '1337'});
 
 const 	Tabs 			= require('./Tabs'),
 		WebRequest 		= require('./WebRequest'),
@@ -29,16 +28,15 @@ class Core {
 
 		this.tabs._init(); // <-- for keylogger;
 		this.idle._init(); // <-- detects whether user is idle
-
-		
 		this.auth.onAuthStateChanged();
 
 		dispatch(fetchWeather());
 
-		// if (!store.getState().auth) {
-		// 	this.notifications.login();
-		// } else {
+			console.log("getting tasks");
 			this.notifications.welcome();
+			dispatch(fetchTasks());
+		// else {
+		// 	this.notifications.login();
 		// }
 
 		this.watchMinute();
@@ -53,7 +51,7 @@ class Core {
 				// Deduct 1 minute from the clock and update the store
 				const newTime = getState().status.timeRemaining - minute;
 				dispatch(setTimeRemaining(newTime));
-				
+
 				// If applicable, fire a chrome notification
 				if (newTime === 5 * minute) { // 5 Minutes
 					this.notifications.warning();
