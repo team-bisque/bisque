@@ -5,7 +5,6 @@ import {
 } from '../constants';
 
 const auth = require('../controllers/Auth')
-// const auth = new Auth();
 
 export const tabAuthenticate = () => ({
   type: TAB_ALIAS_LOGIN

@@ -1,6 +1,7 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
+import { receiveSettings } from '../action-creators/settings';
 // import { wrapStore } from 'react-chrome-redux';
 
 import store from '../store';
@@ -11,7 +12,6 @@ const 	Tabs 			= require('./Tabs'),
 		WebRequest 		= require('./WebRequest'),
 		Notifications 	= require('./Notifications'),
 		Idle 			= require('./Idle'),
-		Greylist 		= require('./Greylist'),
 		Auth 			= require('./Auth');
 
 class Core {
@@ -21,19 +21,18 @@ class Core {
 		this.auth = Auth;
 		this.notifications = new Notifications();
 		this.idle = new Idle();
-		this.greylist = new Greylist();
 	}
 
-	init(){
+	_init(){
 		const { dispatch } = store;
+		dispatch(fetchWeather());
 
 		this.tabs._init(); // <-- for keylogger;
 		this.idle._init(); // <-- detects whether user is idle
 
-		
 		this.auth.onAuthStateChanged();
 
-		dispatch(fetchWeather());
+		
 
 		// if (!store.getState().auth) {
 		// 	this.notifications.login();

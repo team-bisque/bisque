@@ -13,14 +13,17 @@ import {
 
 const minute = 60 * 1000; // In miliseconds
 
+
+// greylist should be an object with key
+
 const initialState = {
   workDuration: 8 * minute,
   breakDuration: 6 * minute,
   lunchDuration: 5 * minute,
   startTime: 0,
   greylist: [
-    'youtube.com',
-    'buzzfeed.com'
+    0: 'youtube.com',
+    1: 'buzzfeed.com'
   ]
 };
 

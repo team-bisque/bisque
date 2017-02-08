@@ -12,4 +12,4 @@ chrome.browserAction.onClicked.addListener(() => {
 
 const Core = require('./controllers/Core');
 const core = new Core();
-core.init();
+core._init();

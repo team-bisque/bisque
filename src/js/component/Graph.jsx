@@ -1,8 +1,7 @@
 'use strict';
 import React from 'react';
-import { connect } from 'react-redux';
-import store from '../store';
-import LineGraph from './graphs/Line'
+import LineGraph from './graphs/Line';
+import { findDOMNode } from 'react-dom';
 // import { setRouteAlias } from '../action-creators/aliases';
 
 const data = require('../controllers/dummyData.json')
@@ -13,25 +12,40 @@ export default class Graph extends React.Component {
     this.state = {
       width: 500,
       height: 500
-    }
-  }  
+    };
+    this.updateDimensions = this.updateDimensions.bind(this);
+  }    
+
   componentDidMount() {
-    const element = document.getElementById('graph-modal');
-    console.log(element.offsetWidth);
-    this.setSize({
-      width: element.offsetWidth,
-      height: element.offsetHeight
-    })
+    // const elem = findDOMNode(this);
+    window.addEventListener("resize", this.updateDimensions);    
   }
 
-  setSize(size){
-    this.setState(size);
+  componentWillUnmount() {
+    // const elem = findDOMNode(this);
+    window.removeEventListener("resize", this.updateDimensions);
+  }
+
+  // componentWillUpdate(props, state) {
+  //   console.log('NEW WIDTH:', state.width, 'OLD WIDTH:', this.state.width);
+  //   if (state.width !== this.state.width) this.updateDimensions();
+  // }
+
+  updateDimensions() {
+    const elem = document.getElementById('graph-modal');
+    console.log('updateDimensions', elem.offsetWidth, elem.offsetHeight)
+    this.setState({
+      width: elem.offsetWidth - 50,
+      height: elem.offsetHeight -25
+    });
   }
 
   onClickClose(e){
     this.props.setRoute(null)
   }
-  render() {    
+
+  render() {
+    const {width, height} = this.state;
     return (
       <div id="graph-modal" className="content">
         <div className="modal-bar">
@@ -40,9 +54,8 @@ export default class Graph extends React.Component {
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <LineGraph data={data} width={this.state.width} height={this.state.height} label={'Words Per Minute'}/>
+        <LineGraph data={data} width={width} height={height} label={'Words Per Minute'}/>
       </div>
     );
   }
 }
-
