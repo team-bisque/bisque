@@ -29,10 +29,9 @@ class Core {
 
 		this.tabs._init(); // <-- for keylogger;
 		this.idle._init(); // <-- detects whether user is idle
-
 		this.auth.onAuthStateChanged();
 
-		
+
 
 		// if (!store.getState().auth) {
 		// 	this.notifications.login();
@@ -52,7 +51,7 @@ class Core {
 				// Deduct 1 minute from the clock and update the store
 				const newTime = getState().status.timeRemaining - minute;
 				dispatch(setTimeRemaining(newTime));
-				
+
 				// If applicable, fire a chrome notification
 				if (newTime === 5 * minute) { // 5 Minutes
 					this.notifications.warning();
@@ -68,7 +67,7 @@ class Core {
         // When paused, interval keeps running -- but does nothing
 				console.log('We are paused');
 			}
-		}, 5000); // Interval runs in hyperspeed for dev purposes
+		}, 2000); // Interval runs in hyperspeed for dev purposes
 	}
 }
 
