@@ -3,18 +3,17 @@ import {connect} from 'react-redux';
 
 import Slice from './Slice';
 
-import * as d3 from 'd3';
-import { arc, pie } from 'd3-shape';
+import { pie } from 'd3-shape';
 
 export class Donut extends Component {
   renderSlice(value, i) {
     const {data, radius, center} = this.props;
     let colorOptions = ['#fff', 'rgba(255, 255, 255, 0.3)'];
     // Less than 5 minutes triggers pink color
-    if (data[0].count < 6) {
+    if (data[0] < 6) {
       colorOptions = ['#ffb794', 'rgba(255, 183, 148, 0.3)'];
     }
-    if (data[0].count < 1) {
+    if (data[0] < 1) {
       colorOptions = ['#a92a2a', 'rgba(169, 42, 42, 0.3)'];
     }
 
@@ -31,12 +30,12 @@ export class Donut extends Component {
   render() {
     const {diameter, radius, data } = this.props;
 
-    const pie = d3.pie()
+    const pieEquation = pie().sort(null);
 
     return (
       <svg className="donut-timer" width={diameter} height={diameter} >
         <g transform={`translate(${radius},${radius})`}>
-          {pie(data).map(this.renderSlice.bind(this))}
+          {pieEquation(data).map(this.renderSlice.bind(this))}
         </g>
       </svg>
     )

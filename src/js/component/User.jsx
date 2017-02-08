@@ -14,30 +14,13 @@ export default class User extends React.Component {
     const { auth, weather } = this.props;
 
     var curHr = new Date().getHours();
-    var message;
 
-    if (curHr < 12) {
-      message = (
-        <div>
-          <h3>{ 'Good morning!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
-        </div>
-        );
-    } else if (curHr < 18) {
-      message = (
-        <div>
-          <h3>{ 'Good afternoon!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
-        </div>
-        );
-    } else {
-      message = (
-        <div>
-          <h3>{ 'Good night!' }</h3>
-          <h3>{ `${auth && auth.displayName}` }</h3>
-        </div>
-        );
-    }
+    let greeting;
+    if (curHr < 12) greeting = 'morning';
+    if (curHr < 16) greeting = 'afternoon';
+    else greeting = 'evening';
+
+    const message = (<h3>{`Good ${greeting}, ${auth && auth.displayName.split(' ')[0]}`}</h3>);
 
     // let auth = null;
     return  (
@@ -47,4 +30,3 @@ export default class User extends React.Component {
     );
   }
 }
-

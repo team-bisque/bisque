@@ -6,12 +6,12 @@ export default class Slice extends Component {
   render() {
     const {value, fill, innerRadius, outerRadius} = this.props;
 
-    const arc = d3.arc()
+    const arcEquation = arc()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius);
 
     return (
-      <path d={arc(value)} fill={fill} />
+      <path d={arcEquation(value)} fill={fill} />
     );
   }
 }
