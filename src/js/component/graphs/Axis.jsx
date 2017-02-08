@@ -3,18 +3,22 @@ import { findDOMNode } from 'react-dom';
 import {select} from 'd3-selection';
 
 export default class Axis extends Component {
-  componentDidUpdate() {
+  componentDidMount() {
     this.renderAxis();
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     this.renderAxis();
   }
 
   renderAxis() {
     const node = findDOMNode(this);
-    select(node).call(this.props.axis);
+    select(node).call(this.props.axis)
+      // Removes the axis line, so we just have ticks
+      .select('.domain')
+        .remove();
   }
+
   render() {
     const {axisType, height} = this.props;
 
