@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { addUrl, removeUrl, editUrl, tabAddGreylist } from '../action-creators/greylist';
+import { tabRemoveGreylist, tabEditGreylist, tabAddGreylist } from '../action-creators/greylist';
 
 class SettingsGreylistTab extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class SettingsGreylistTab extends React.Component {
 
   onChangeURL(e) {
     if(e.target.name === 'add-new') this.url = e.target.value;
-    else this.props.editUrl(e.target.value, parseInt(e.target.getAttribute('data-id')));
+    else this.props.tabEditGreylist(e.target.value, parseInt(e.target.getAttribute('data-id')));
   }
   onKeypressEnter(e) {
     console.log(e.key)
@@ -27,11 +27,11 @@ class SettingsGreylistTab extends React.Component {
   }
 
   remove(e) {
-    this.props.removeUrl(parseInt(e.target.getAttribute('data-id')));
+    this.props.tabRemoveGreylist(parseInt(e.target.getAttribute('data-id')));
   }
 
   render() {
-    const { settings } = this.props
+    const { greylist } = this.props
     return (
       <div>
         <p>
@@ -50,7 +50,7 @@ class SettingsGreylistTab extends React.Component {
         </div>
         <ul className="greylistURLs">
           { //greylist should be an object
-            settings.greylist && settings.greylist.length ? settings.greylist.map((url, index) => {
+            greylist && greylist.length ? greylist.map((url, index) => {
             return (
               <li key={index}>
                 <div>
@@ -76,11 +76,11 @@ class SettingsGreylistTab extends React.Component {
   }
 }
 
-const mapState = ({ settings }) => ({ settings });
+const mapState = ({ greylist }) => ({ greylist });
 const mapDispatch = dispatch => ({
-  addGreylist: url    => (dispatch(addGreylist(url))),
-  editUrl: (url, id)  => (dispatch(editUrl(url, id))),
-  removeUrl: id       => (dispatch(removeUrl(id)))
+  tabAddGreylist: url        => (dispatch(tabAddGreylist(url))),
+  tabEditGreylist: (url, id) => (dispatch(tabEditGreylist(url, id))),
+  tabRemoveGreylist: id      => (dispatch(tabRemoveGreylist(id)))
 });
 
 export default connect(mapState, mapDispatch)(SettingsGreylistTab);

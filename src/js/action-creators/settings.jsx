@@ -1,7 +1,4 @@
 'use strict';
-
-const User = require('../controllers/user');
-
 import store from '../store';
 import {
   SET_WORK_DURATION,
@@ -11,6 +8,8 @@ import {
   RECEIVE_SETTINGS,
   TAB_ALIAS_SAVE_SETTINGS
 } from '../constants';
+
+
 
 export const receiveSettings = settings => ({ 
   type: RECEIVE_SETTINGS, settings
@@ -35,6 +34,14 @@ export const setStartTime = startTime => ({
 export const tabSaveSettings = () => ({
   type: TAB_ALIAS_SAVE_SETTINGS  
 });
-export const setSettings = () => dispatch => {  
-  User.settings.setData(store.getState().auth.uid, store.getState().settings);
+export const setSettings = () => dispatch => {
+  // why having scope issue??  
+  const User = require('../controllers/user');
+  // console.log(User, User.settings)
+  const userId = store.getState().auth.uid;
+  let settings = Object.assign({}, store.getState().settings);
+      settings.greylist = store.getState().greylist;
+  
+  User.settings.set(userId, settings)
+    .then(() => User.settings.getById(userId));
 }

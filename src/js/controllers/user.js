@@ -14,23 +14,21 @@ var User = {
 };
 
 // set functions (returns promise value)
-User.settings.setData = (userId, data) => (
-	firebase.database().ref('users/'+userId).set(data)
-		.then((res)=>(console.log('USER SETTTING SET:', res)))
-		.catch(console.error)
-)
+User.settings.set = (userId, data) => firebase.database().ref('users/'+userId).set(data)
+		// .then((res)=>(console.log('USER SETTTING SET:', res)))
+		// .catch(console.error)
 
-User.greylist.setData = (userId, data) => (
+User.greylist.set = (userId, data) => (
 	firebase.database().ref(`users/${userId}/greylist`).set(data)
-		.then((res)=>(console.log('USER GREYLIST SET:', res)))
-		.catch(console.error)
-)
+		// .then((res)=>(console.log('USER GREYLIST SET:', res)))
+		// .catch(console.error)
+);
 
-User.history.setData = (userId, data) => (
+User.history.set = (userId, data) => (
 	firebase.database().ref('user_history/'+userId).set(data)
-		.then((res)=>(console.log('USER HISTORY SET:', res)))
-		.catch(console.error)
-)
+		// .then((res)=>(console.log('USER HISTORY SET:', res)))
+		// .catch(console.error)
+);
 
 // get functions
 User.history.getById = userId => {
@@ -47,7 +45,7 @@ User.history.getById = userId => {
 		// console.log('USER HISTORY GET BY ID:', res)
 		return res;
 	}).catch(console.error);
-}
+};
 
 User.settings.getById = userId => {
 	return new Promise((resolve, reject) => {
@@ -70,19 +68,6 @@ User.settings.getById = userId => {
 			store.dispatch(receiveGreylist(res.greylist));
 			return res;
 	}).catch(console.error);
-}
+};
 
 module.exports = User;
-
-
-// return new Promise(function (resolve, reject) {
-//     firebaseApp.auth().onAuthStateChanged(function (user) {
-//       if (user) {
-//         store.dispatch('LOGIN_SUCCESS', user.uid);
-//         resolve(user.uid);
-//       } else {
-//         store.dispatch('LOGIN_FAIL');
-//         reject(Error('It broke'));
-//       }
-//     });
-//   });

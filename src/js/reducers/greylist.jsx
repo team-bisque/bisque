@@ -18,8 +18,6 @@ export default (greylist = [], action) => {
 	    break;
 	  case REMOVE_URL:
 	    newState = newState.filter((e, i) => i !== action.index);
-	    
-	    
 	    break;
     case EDIT_URL:
     	newState.greylist[action.index] = action.url;
