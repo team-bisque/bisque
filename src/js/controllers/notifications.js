@@ -119,7 +119,7 @@ class Notifications {
 			store.dispatch(toggleWork());
 		}
 		if (buttonIndex === 1) {
-			store.dispatch(setTimeRemaining(5));
+			store.dispatch(setTimeRemaining(300000));
 		}
 	}
 
