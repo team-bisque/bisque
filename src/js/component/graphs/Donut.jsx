@@ -10,10 +10,11 @@ export class Donut extends Component {
     const {data, radius, center} = this.props;
     let colorOptions = ['#fff', 'rgba(255, 255, 255, 0.3)'];
     // Less than 5 minutes triggers pink color
-    if (data[0].count < 6) {
+    console.log(data.count);
+    if (data[0] < 6) {
       colorOptions = ['#ffb794', 'rgba(255, 183, 148, 0.3)'];
     }
-    if (data[0].count < 1) {
+    if (data[0] < 1) {
       colorOptions = ['#a92a2a', 'rgba(169, 42, 42, 0.3)'];
     }
 
@@ -30,7 +31,7 @@ export class Donut extends Component {
   render() {
     const {diameter, radius, data } = this.props;
 
-    const pieEquation = pie();
+    const pieEquation = pie().sort(null);
 
     return (
       <svg className="donut-timer" width={diameter} height={diameter} >
