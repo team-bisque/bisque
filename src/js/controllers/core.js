@@ -39,7 +39,7 @@ class Core {
 	}
 
 	watchMinute(){
-		const { dispatch, getState } = store
+		const { dispatch, getState } = store;
 		const minute = 60000;
 
 		setInterval(() => {
@@ -63,7 +63,7 @@ class Core {
         // When paused, interval keeps running -- but does nothing
 				console.log('We are paused');
 			}
-		}, 2000); // Interval runs in hyperspeed for dev purposes
+		}, 3000); // Interval runs in hyperspeed for dev purposes
 	}
 }
 
