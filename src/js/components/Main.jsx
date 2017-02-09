@@ -5,13 +5,12 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 var classNames = require('classnames');
 
 // Components
-import Timer from './Timer';
-import User from './User';
+import Graph from './Graph';
 import Login from './Login';
 import Settings from './Settings';
-import Graph from './Graph';
+import Timer from './Timer';
+import User from './User';
 import Weather from './Weather';
-import SettingsModal from './SettingsModal'; // <-- Are we using this?
 
 import { setRoute } from '../action-creators/route';
 
@@ -43,7 +42,6 @@ class Main extends React.Component{
       modal: null
     };
     this.handleMouseMove = this.handleMouseMove.bind(this);
-    // this.getMeta = this.getMeta.bind(this)
     this.canvas = null;
   }
 
@@ -61,12 +59,6 @@ class Main extends React.Component{
         BackgroundCheck.refresh(el);
     });
   }
-  // componentWillReceiveProps(nextProps) {
-  //   // console.log('componentWillReceiveProps', nextProps);
-  //   if(nextProps.auth){
-  //     if(nextProps.route !== this.props.route) this.props.setRoute(nextProps.route)
-  //   }
-  // }
 
   handleMouseMove(e) {
     let mouseStrength = 25,
@@ -90,14 +82,14 @@ class Main extends React.Component{
         height = e.target.naturalHeight;
 
     this.setState({
-      width:width,
-      height:height
+      width: width,
+      height: height
     })
   }
 
   render(){
     const { status, settings, weather, auth, route, history, greylist } = this.props;
-    // let user = null; // for test
+
     let child;
     if (!this.props.route || this.props.route.includes("alarm")){
       child = (<Timer status={status} />);
@@ -148,7 +140,6 @@ class Main extends React.Component{
           <div id="wrapper" className={this.props.route ? this.props.route : null}>
           {
             !auth ?
-            // !user ? // for test
             <Login /> : child
           }
           </div>

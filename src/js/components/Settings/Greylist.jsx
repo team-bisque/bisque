@@ -3,9 +3,9 @@ import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { tabRemoveGreylist, tabEditGreylist, tabAddGreylist } from '../action-creators/greylist';
 
-class SettingsGreylistTab extends React.Component {
+class Greylist extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.url = '';
   }
 
@@ -14,15 +14,14 @@ class SettingsGreylistTab extends React.Component {
     else this.props.tabEditGreylist(e.target.value, parseInt(e.target.getAttribute('data-id')));
   }
   onKeypressEnter(e) {
-    console.log(e.key)
-    if (e.key == 'Enter'){
-      this.props.tabAddGreylist(this.url)
+    if (e.key === 'Enter'){
+      this.props.tabAddGreylist(this.url);
     }
   }
 
   addNew(e) {
     e.preventDefault();
-    this.props.tabAddGreylist(this.url)
+    this.props.tabAddGreylist(this.url);
     document.getElementById('addNew-input').value = '';
   }
 
@@ -32,6 +31,7 @@ class SettingsGreylistTab extends React.Component {
 
   render() {
     const { greylist } = this.props
+
     return (
       <div>
         <p>
@@ -68,11 +68,11 @@ class SettingsGreylistTab extends React.Component {
                 </div>
 
               </li>
-            )
+            );
           }).reverse() : null}
         </ul>
       </div>
-     )
+    );
   }
 }
 
@@ -83,4 +83,4 @@ const mapDispatch = dispatch => ({
   tabRemoveGreylist: id      => (dispatch(tabRemoveGreylist(id)))
 });
 
-export default connect(mapState, mapDispatch)(SettingsGreylistTab);
+export default connect(mapState, mapDispatch)(Greylist);

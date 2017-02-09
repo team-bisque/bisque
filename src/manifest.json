@@ -10,7 +10,10 @@
     },
   "icons": {
     "16": "images/favicon-16.png",
+    "24": "images/favicon-24.png",
+    "32": "images/favicon-32.png",
     "48": "images/favicon-48.png",
+    "64": "images/favicon-64.png",
     "128": "images/favicon-128.png"
   },
 
