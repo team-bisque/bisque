@@ -14,7 +14,7 @@ export default class Dot extends Component {
                 className="dot"
                 r="1.5"
                 cx={x(d.date)}
-                cy={y(d.close)}
+                cy={y(d.totalCPM)}
               />
           );
           }
