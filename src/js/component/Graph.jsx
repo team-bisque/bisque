@@ -46,7 +46,7 @@ export default class Graph extends React.Component {
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <LineGraph data={data} width={width} height={height} label={'Words Per Minute'}/>
+        <LineGraph data={this.props.history} width={width} height={height} label={'Words Per Minute'}/>
       </div>
     );
   }

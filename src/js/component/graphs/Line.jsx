@@ -20,10 +20,39 @@ import json from '../../controllers/dummyData.json';
 export class Line extends Component {
   constructor(props) {
     super(props);
-    this.state = {tooltip: { data: {}, pos: {}}};
+    this.state = {
+      data: [],
+      tooltip: { data: {}, pos: {}}
+    }
     this.showTooltip = this.showTooltip.bind(this);
     this.hideTooltip = this.hideTooltip.bind(this);
   }
+
+  componentDidMount() {
+    this.setData();
+  }
+
+  setData () {
+    const {data} = this.props;
+    const graphData = this.mapData(data);    
+    this.setState({data: graphData[0]})
+  }
+
+  mapData (data) {
+    return _.map(Object.keys(data), (day)=>{
+      let datemilsec = new Date(day.replace('-', ' ')).getTime();
+      console.log(datemilsec)
+      return _.map(Object.keys(data[day]), (hour) => {
+        let hourmilsec = hour * 1000 * 3600;
+        return {
+          date: new Date(datemilsec+hourmilsec), 
+          avgCPM: _.meanBy(data[day][hour], 'cpm'), 
+          totalCPM: _.sumBy(data[day][hour], 'cpm')
+        }
+      })
+    });
+  }
+
   showTooltip(e) {
     e.target.setAttribute('fill', '#fff');
 
@@ -41,6 +70,7 @@ export class Line extends Component {
       }
    });
   }
+
   hideTooltip(e) {
     e.target.setAttribute('fill', '#fff');
     this.setState({
@@ -55,7 +85,8 @@ export class Line extends Component {
   }
 
   render() {
-    const {data, height, width, margin} = this.props;
+    const {height, width, margin} = this.props;
+    const {data} = this.state;
 
     let widthDiff = margin.left + margin.right;
     let heightDiff = margin.top + margin.bottom;
@@ -65,13 +96,13 @@ export class Line extends Component {
             .domain(extent(data, d => d.date))
             .rangeRound([0, (width - widthDiff)])
     let yCoords = scaleLinear()
-            .domain(extent(data, d => d.close))
+            .domain(extent(data, d => d.totalCPM))
             .range([(height - heightDiff), 0])
-    let lineEquation = line().x(d => xCoords(d.date)).y(d => yCoords(d.close))
+    let lineEquation = line().x(d => xCoords(d.date)).y(d => yCoords(d.totalCPM))
     let xAxisEquation = axisBottom(xCoords);
     let yAxisEquation = axisLeft(yCoords);
 
-
+    console.log('Line Data', data, x, y, lineEquation, xAxis, yAxis)
     return (
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
@@ -93,7 +124,7 @@ const margin = {top: 20, right: 20, bottom: 30, left: 50};
 
 const mapState = (state, {data, width, height, label}) => ({
   margin,
-  data: json.map(d => { return {close: +d.close, date: parseTime(d.date)}}),
+  data,
   width,
   height,
   label,
