@@ -13,8 +13,7 @@ import Graph from './Graph';
 import Weather from './Weather';
 import SettingsModal from './SettingsModal'; // <-- Are we using this?
 
-// Actions
-import { setRoute } from '../reducers/route';
+import { setRoute } from '../action-creators/route';
 
 let backgrounds = [
 'http://i.imgur.com/cAkrTyU.jpg',
