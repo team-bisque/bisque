@@ -1,3 +1,5 @@
+![Alt text](/src/images/favicon-128.png?raw=true)
+
 # Bisque
 
 A Chrome extension that helps writers get things done by managing their time, measuring their productivity, and avoiding distractions.
