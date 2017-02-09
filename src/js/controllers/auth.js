@@ -39,6 +39,7 @@ const Auth = {
 				throw new Error(chrome.runtime.lastError);
 	    } else if (token) {
 	      // Authrorize Firebase with the OAuth Access Token.
+				console.log(token);
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
 	      firebase.auth().signInWithCredential(credential)
 	      .then(user => {
