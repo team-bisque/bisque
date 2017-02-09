@@ -21,6 +21,7 @@ class Tabs {
     }
 
     _init () {
+
         // Listens for page navigation and identifies greylisted sites
         chrome.tabs.onUpdated.addListener(tab => {
             this.siteTracker(tab);
@@ -28,6 +29,7 @@ class Tabs {
         
         // Listens for tab updates and ensures keylogger runs on each tab
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+            // If the store hasn't initialized yet or if the user isn't logged in, return
             this.keyloggerSetup(tabId, changeInfo, tab);
         })
 
@@ -41,13 +43,13 @@ class Tabs {
     // See keyLogger.js for content script side of process.
 
     keyloggerSetup (tabId, changeInfo, tab) {
-        // Set up listener in background for the port that the keyLogger script will set up on the tab
-        // This listener receives keystrokes from the tab
+        // Set up a listener for the keylogger script injected into a new tab
 
         chrome.runtime.onConnect.addListener(port => {
             port.onMessage.addListener(msg => {
+                // If user is not logged in, don't process output from the keylogger script
+                if (!store || !store.getState().auth) return;
 
-                // console.log('keyloggerSetup', msg)
                 // Next two lines ignore events triggered before keylogging begins.
                 const timeObject = msg ? this.findTime(msg) : null;
                 if (timeObject === null) return;
@@ -77,6 +79,8 @@ class Tabs {
         const id = tab.id;
 
         chrome.webRequest.onCompleted.addListener(request => {
+            if (!store || !store.getState().auth) return;
+
             // Filters URLs down to the main domain before pushing to sitesVisited
             if (request.url.indexOf('chrome-extension://') > -1) return;
 
@@ -99,6 +103,7 @@ class Tabs {
     }
 
     checkDuplicates (request) {
+        // Removes duplicate sites visited (side effect of the Chrome onCompleted listener)
         const duplicateList = this.sitesVisited.filter(existingReq => {
                                   const existingReqId = Object.keys(existingReq)[0].toString();
                                   return existingReqId === request.requestId})
@@ -109,6 +114,7 @@ class Tabs {
     }
 
     filterDomain (request) {
+        // Filters a URL down to the primary domain
         const searchRegEx = /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i;
         const domainMatches = request.url.match(searchRegEx);
         let filteredDomain = domainMatches && domainMatches[1];
@@ -137,7 +143,8 @@ class Tabs {
     }
 
     calculateGreylistVisits () {
-        if (!this.sitesVisited) return; 
+        // If user is not logged in, don't calculate their greylist visits
+        if (!this.sitesVisited || !store || !store.getState().auth) return; 
 
         let greylistVisits = {};
         this.sitesVisited.map(req => {
