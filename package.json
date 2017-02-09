@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js",
-    "test": "mocha ./tests/**/*.js"
+    "test": "mocha tests/**/*.js --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
     "babel-loader": "^6.2.7",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
-    "babel-preset-react-hmre": "^1.1.1",
+    "babel-register": "^6.22.0",
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
     "chai-things": "^0.2.0",

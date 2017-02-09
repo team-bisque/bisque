@@ -26,7 +26,7 @@ describe('Weather Reducer', () => {
   });
 
   it('has proper initial state', () => {
-    expect(testStore.getState()).to.be.null();
+    expect(testStore.getState()).to.be.null;
   });
 
   it('can receive today’s weather report', () => {
