@@ -1,9 +1,8 @@
 'use strict';
-import React from 'react';
-import LineGraph from './graphs/Line';
-import { findDOMNode } from 'react-dom';
 
-const data = require('../controllers/dummyData.json')
+import React from 'react';
+import Chart from './Chart';
+import { findDOMNode } from 'react-dom';
 
 export default class Graph extends React.Component {
   constructor(props) {
@@ -37,7 +36,7 @@ export default class Graph extends React.Component {
   }
 
   render() {
-    const {width, height} = this.state;
+    const {width, height, history} = this.state;
     return (
       <div id="graph-modal" className="content">
         <div className="modal-bar">
@@ -46,7 +45,7 @@ export default class Graph extends React.Component {
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <LineGraph data={this.props.history} width={width} height={height} label={'Words Per Minute'}/>
+        <Chart data={history} width={width} height={height} label={'Words Per Minute'}/>
       </div>
     );
   }

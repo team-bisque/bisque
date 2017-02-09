@@ -3,19 +3,25 @@
 import React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { setWorkDuration, setBreakDuration, setLunchDuration, tabSaveSettings } from '../action-creators/settings';
 
-class SettingsDurationTab extends React.Component{
+import {
+  setWorkDuration,
+  setBreakDuration,
+  setLunchDuration,
+  tabSaveSettings
+} from '../../action-creators/settings';
+
+class Duration extends React.Component{
   constructor(props) {
-    super(props);  
-    this.onChangeMinutes = this.onChangeMinutes.bind(this)
+    super(props);
+    this.onChangeMinutes = this.onChangeMinutes.bind(this);
   }
   onChangeMinutes(e){
     const { name, value } = e.target;
 
-    if(name === 'work') this.props.setWorkDuration(value * 60000);
-    else if(name === 'break') this.props.setBreakDuration(value * 60000)
-    else if(name === 'lunch') this.props.setLunchDuration(value * 60000)    
+    if (name === 'work') this.props.setWorkDuration(value * 60000);
+    else if (name === 'break') this.props.setBreakDuration(value * 60000);
+    else if (name === 'lunch') this.props.setLunchDuration(value * 60000);
 
     let settings = this.props.settings;
 
@@ -25,16 +31,16 @@ class SettingsDurationTab extends React.Component{
   }
   render(){
     const { workDuration, breakDuration, lunchDuration } = this.props.settings;
-    return (    
+    return (
       <div>
         <FormGroup controlId="work-minutes">
           <ControlLabel className="settings-text">Work Minutes</ControlLabel>
           <FormControl type="number" value={workDuration / 60000} name="work" onChange={this.onChangeMinutes} />
-        </FormGroup>          
+        </FormGroup>
         <FormGroup controlId="break-minutes">
           <ControlLabel className="settings-text">Break Minutes</ControlLabel>
           <FormControl type="number" value={breakDuration / 60000} name="break" onChange={this.onChangeMinutes} />
-        </FormGroup>          
+        </FormGroup>
         <FormGroup controlId="lunch-minutes">
           <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
           <FormControl type="number" value={lunchDuration / 60000} name="lunch" onChange={this.onChangeMinutes} />
@@ -43,10 +49,9 @@ class SettingsDurationTab extends React.Component{
           Set duration of your work / break / lunch time in minute unit
         </p>
       </div>
-    );  
+    );
   }
-  
-};
+}
 
 const mapState = ({ settings }) => ({ settings });
 const mapDispatch = dispatch => ({
@@ -56,4 +61,4 @@ const mapDispatch = dispatch => ({
   setLunchDuration: duration => (dispatch(setLunchDuration(duration)))
 });
 
-export default connect(mapState, mapDispatch)(SettingsDurationTab);
+export default connect(mapState, mapDispatch)(Duration);

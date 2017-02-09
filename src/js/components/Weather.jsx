@@ -14,7 +14,7 @@ export default function Weather (props) {
 
   let hr = (new Date()).getHours(),
       daynight = 'day';
-  if(hr<6 && hr>18) daynight = 'night';
+  if (hr < 6 && hr > 18) daynight = 'night';
 
   return weather
     ? (

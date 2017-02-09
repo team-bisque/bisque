@@ -1,9 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { addFiveMinutes, togglePause, toggleWork } from '../action-creators/status';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-import Donut from './graphs/Donut';
+
+import Donut from './Donut';
+
+import {
+  addFiveMinutes,
+  togglePause,
+  toggleWork
+} from '../../action-creators/status';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -98,4 +103,3 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(Timer);
-
