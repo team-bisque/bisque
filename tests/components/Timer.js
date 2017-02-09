@@ -3,27 +3,22 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { spy } from 'sinon';
 
+import {createStore} from 'redux';
+
 import Timer from '../../src/js/components/Timer';
 
 describe('Timer component', () => {
 
-	let slider, togglePauseSpy;
+	let timer, togglePauseSpy;
 
 	beforeEach('Create component and spy', () => {
 		togglePauseSpy = spy();
-		slider = shallow(<Timer togglePause={togglePauseSpy} />);
+		timer = shallow(<Timer togglePause={togglePauseSpy} />);
 	});
 
-	it('can pause', () => {
+	it('pauses the timer', () => {
+		timer.simulate('click');
 
-		let el = slider.get(0);
-		expect(el.props.min).to.be.equal('0');
-		expect(el.props.max).to.be.equal('255');
-	});
-
-	it('calls onChange with proper value', () => {
-		slider.simulate('change', { target: {value: 5}});
-
-		expect(onChangeSpy.called).to.be.true();
+		expect(togglePauseSpy.called).to.be.true();
 	});
 });
