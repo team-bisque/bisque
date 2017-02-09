@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Dots from './Dots';
 import Axis from './Axis';
+import Tooltip from './Tooltip';
 // import Grid from './Grid';
 
 import { line } from 'd3-shape';
@@ -20,20 +21,20 @@ export class Line extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      tooltip: { data: {}, pos: {}}
     }
+    this.showTooltip = this.showTooltip.bind(this);
+    this.hideTooltip = this.hideTooltip.bind(this);
   }
+
   componentDidMount() {
     this.setData();
   }
 
   setData () {
     const {data} = this.props;
-
-    const graphData = this.mapData(data);
-
-    console.log(graphData);
-    
+    const graphData = this.mapData(data);    
     this.setState({data: graphData[0]})
   }
 
@@ -51,37 +52,68 @@ export class Line extends Component {
       })
     });
   }
+
+  showTooltip(e) {
+    e.target.setAttribute('fill', '#fff');
+
+    this.setState({
+      tooltip: {
+        display: true,
+        data: {
+          key: e.target.getAttribute('data-key'),
+          value: e.target.getAttribute('data-value')
+        },
+        pos: {
+          x: e.target.getAttribute('cx'),
+          y: e.target.getAttribute('cy')
+        }
+      }
+   });
+  }
+
+  hideTooltip(e) {
+    e.target.setAttribute('fill', '#fff');
+    this.setState({
+      tooltip: {
+        display: false,
+        data: {
+          key: '',
+          value: ''
+        }
+      }
+    });
+  }
+
   render() {
     const {height, width, margin} = this.props;
     const {data} = this.state;
-
-      console.log(data)    ;
 
     let widthDiff = margin.left + margin.right;
     let heightDiff = margin.top + margin.bottom;
 
     // D3 goodness
-    let x = scaleTime()
+    let xCoords = scaleTime()
             .domain(extent(data, d => d.date))
             .rangeRound([0, (width - widthDiff)])
-    let y = scaleLinear()
+    let yCoords = scaleLinear()
             .domain(extent(data, d => d.totalCPM))
             .range([(height - heightDiff), 0])
-    let lineEquation = line().x(d => x(d.date)).y(d => y(+d.totalCPM))
-    let xAxis = axisBottom(x);
-    let yAxis = axisLeft(y);
+    let lineEquation = line().x(d => xCoords(d.date)).y(d => yCoords(d.totalCPM))
+    let xAxisEquation = axisBottom(xCoords);
+    let yAxisEquation = axisLeft(yCoords);
 
     console.log('Line Data', data, x, y, lineEquation, xAxis, yAxis)
     return (
-        <svg width={width} height={height}>
-          <g transform={`translate(${margin.left},${margin.top})`}>
-            {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
-            <path className="line" d={lineEquation(data)} />
-            <Dots data={data} x={x} y={y} />
-            <Axis height={height - heightDiff} axis={yAxis} axisType="y" />
-            <Axis height={height - heightDiff} axis={xAxis} axisType="x" />
-          </g>
-        </svg>
+      <svg width={width} height={height}>
+        <g transform={`translate(${margin.left},${margin.top})`}>
+          {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
+          <path className="line" d={lineEquation(data)} />
+          <Dots data={data} x={xCoords} y={yCoords} showTooltip={this.showTooltip} hideTooltip={this.hideTooltip} />
+          <Axis height={height - heightDiff} axis={yAxisEquation} axisType="y" />
+          <Axis height={height - heightDiff} axis={xAxisEquation} axisType="x" />
+          <Tooltip tooltip={this.state.tooltip} />
+        </g>
+      </svg>
     );
   }
 }

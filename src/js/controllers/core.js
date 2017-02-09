@@ -29,17 +29,13 @@ class Core {
 		this.idle._init(); // <-- detects whether user is idle
 		this.auth.onAuthStateChanged();
 
-			this.notifications.welcome();
-			dispatch(fetchTasks());
-		// else {
-		// 	this.notifications.login();
-		// }
-
+		this.notifications.welcome();
+		dispatch(fetchTasks());
 		this.watchMinute();
 	}
 
 	watchMinute(){
-		const { dispatch, getState } = store
+		const { dispatch, getState } = store;
 		const minute = 60000;
 
 		setInterval(() => {
@@ -63,7 +59,7 @@ class Core {
         // When paused, interval keeps running -- but does nothing
 				console.log('We are paused');
 			}
-		}, 2000); // Interval runs in hyperspeed for dev purposes
+		}, 3000); // Interval runs in hyperspeed for dev purposes
 	}
 }
 

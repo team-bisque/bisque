@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import {connect} from 'react-redux';
-
+var classNames = require('classnames');
 
 // Components
 import Timer from './Timer';
@@ -9,19 +10,10 @@ import User from './User';
 import Login from './Login';
 import Settings from './Settings';
 import Graph from './Graph';
-
-
 import Weather from './Weather';
-import SettingsModal from './SettingsModal';
+import SettingsModal from './SettingsModal'; // <-- Are we using this?
 
-
-
-import { setRoute } from '../reducers/route';
-
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-
-
-var classNames = require('classnames');
+import { setRoute } from '../action-creators/route';
 
 let backgrounds = [
 'http://i.imgur.com/cAkrTyU.jpg',
@@ -32,7 +24,8 @@ let backgrounds = [
 'http://i.imgur.com/CA9gCNx.jpg',
 'http://i.imgur.com/aVcP3fF.jpg',
 'http://i.imgur.com/Jnh77yl.jpg'
-]
+];
+
 const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
 
 const BackgroundCheck = require('../controllers/backgroundCheck');
@@ -44,14 +37,14 @@ class Main extends React.Component{
     this.state = {
       bgPositionX: 0,
       bgPositionY: 0,
-      width:0,
-      height:0,
+      width: 0,
+      height: 0,
       src: '',
       modal: null
-    }
+    };
     this.handleMouseMove = this.handleMouseMove.bind(this);
     // this.getMeta = this.getMeta.bind(this)
-    this.canvas = null
+    this.canvas = null;
   }
 
   componentWillMount() {
