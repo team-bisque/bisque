@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "node utils/build.js",
-    "start": "node utils/webserver.js"
+    "start": "node utils/webserver.js",
+    "test": "mocha ./tests/**/*.js --watch --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "d3-selection": "^1.0.3",
     "d3-shape": "^1.0.4",
     "d3-time-format": "^2.0.3",
+    "enzyme": "^2.7.1",
     "file-loader": "^0.10.0",
     "firebase": "^3.6.8",
     "font-awesome": "^4.7.0",
