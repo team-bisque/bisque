@@ -29,12 +29,8 @@ class Core {
 		this.idle._init(); // <-- detects whether user is idle
 		this.auth.onAuthStateChanged();
 
-			this.notifications.welcome();
-			dispatch(fetchTasks());
-		// else {
-		// 	this.notifications.login();
-		// }
-
+		this.notifications.welcome();
+		dispatch(fetchTasks());
 		this.watchMinute();
 	}
 
