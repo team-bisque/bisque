@@ -14,9 +14,7 @@ import Graph from './Graph';
 import Weather from './Weather';
 import SettingsModal from './SettingsModal';
 
-
-
-import { setRoute } from '../reducers/route';
+import { setRoute } from '../action-creators/route';
 
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
