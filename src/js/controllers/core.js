@@ -59,7 +59,7 @@ class Core {
         // When paused, interval keeps running -- but does nothing
 				console.log('We are paused');
 			}
-		}, 3000); // Interval runs in hyperspeed for dev purposes
+		}, minute); // Interval runs in hyperspeed for dev purposes
 	}
 }
 
