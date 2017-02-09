@@ -12,7 +12,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import '../css/style.scss';
 
-import Main from './component/Main';
+import Main from './components/Main';
 
 const unsubscribe = proxy.subscribe(() => {
   unsubscribe(); // initial connection

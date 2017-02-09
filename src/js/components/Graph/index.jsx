@@ -1,4 +1,5 @@
 'use strict';
+
 import React from 'react';
 import Chart from './Chart';
 import { findDOMNode } from 'react-dom';

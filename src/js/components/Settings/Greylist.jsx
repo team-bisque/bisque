@@ -1,7 +1,12 @@
 import React from 'react';
-import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { tabRemoveGreylist, tabEditGreylist, tabAddGreylist } from '../action-creators/greylist';
+import { FormControl } from 'react-bootstrap';
+
+import {
+  tabRemoveGreylist,
+  tabEditGreylist,
+  tabAddGreylist
+} from '../../action-creators/greylist';
 
 class Greylist extends React.Component {
   constructor(props) {

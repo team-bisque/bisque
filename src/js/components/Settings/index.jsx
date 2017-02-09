@@ -1,6 +1,8 @@
 'use strict';
+
 import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
+
 import Duration from './Duration';
 import Greylist from './Greylist';
 

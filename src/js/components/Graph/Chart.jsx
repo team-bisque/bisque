@@ -12,7 +12,7 @@ import { scaleTime, scaleLinear } from 'd3-scale';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { extent } from 'd3-array';
 
-export class Line extends Component {
+export class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -121,4 +121,4 @@ const mapState = (state, {data, width, height, label}) => ({
   label,
 });
 
-export default connect(mapState, null)(Line);
+export default connect(mapState, null)(Chart);

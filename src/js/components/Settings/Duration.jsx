@@ -9,7 +9,7 @@ import {
   setBreakDuration,
   setLunchDuration,
   tabSaveSettings
-} from '../action-creators/settings';
+} from '../../action-creators/settings';
 
 class Duration extends React.Component{
   constructor(props) {
