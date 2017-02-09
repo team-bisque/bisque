@@ -2,7 +2,7 @@
 import { authenticate }  from '../action-creators/auth';
 import store         		 from '../store';
 
-import { setRoute } from '../reducers/route';
+import { setRoute } from '../action-creators/route';
 
 const firebase = require('./firebase');
 const User = require('./user');
@@ -19,8 +19,10 @@ const Auth = {
 				store.dispatch(authenticate(user));
 
 				User.history.getById(userId)
-					.then(() => User.settings.getById(userId))
-					.then(() => store.dispatch(setRoute(null)))
+					.then(() => {
+						store.dispatch(setRoute(null));
+						return User.settings.getById(userId);
+					});
 					
 			} else {
 				store.dispatch(authenticate(null))
