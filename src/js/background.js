@@ -1,5 +1,9 @@
 'use strict';
 
+// Spy wrapper for chrome functions
+// Activate only when testing or you will not be able to build
+// const chrome = require('sinon-chrome/extensions');
+
 // Provides redux store to newtab.js
 import { wrapStore } from 'react-chrome-redux';
 import store from './store';

@@ -4,17 +4,23 @@
 
 A Chrome extension that helps writers get things done by managing their time, measuring their productivity, and avoiding distractions.
 
-- Track your output (words per minute) on various sites
+- Track raw output (words per minute) on browser-based text editors, like Google Docs
+- Customize a "greylist", to identify the sources of your largest distractions
 - Graph your productivity over time to find hours, weeks, or months when you aren't getting as much done
-- Customize your "greylist", which identifies distracting sites and graphs your biggest sources of distractions
-- Schedule work and break periods to maximize focus with notifications to let you know when it's time to switch
+- Schedule work and break periods to minimize fatigue
+- Chrome notifications let you know when it's time for a stretch or time to focus in
+- ...and even more features coming soon!
 
 # Instructions
 
 ```
-git clone https://github.com/dgodow/go-outside
+git clone https://github.com/dgodow/bisque
 npm install
 npm start
-
-Check out your Chrome extensions and ensure that Go Outside is enabled. Click on the app icon to trigger a cycle of tab creation and removal (an artificially accelerated version of "break" vs. "work" time).
 ```
+
+Open Chrome's extensions panel and click `Load unpacked extension...`. Browse to your Bisque directory, highlight the `build` folder and press `Select`. Click on the lobster claw-shaped app icon to login via Google.
+
+Now you're all set! Set your timers and greylists then get to work: flesh out your dissertation, finish that report or begin writing the Great American Novel!
+
+For development purposes, Bisque's timer is currently running at 10-20 times speed.
