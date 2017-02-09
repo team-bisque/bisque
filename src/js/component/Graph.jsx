@@ -9,8 +9,8 @@ export default class Graph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: 500,
-      height: 500
+      width: 800,
+      height: 400
     };
     this.updateDimensions = this.updateDimensions.bind(this);
   }
