@@ -43,13 +43,13 @@ class Main extends React.Component{
       modal: null
     };
     this.handleMouseMove = this.handleMouseMove.bind(this);
-    // this.getMeta = this.getMeta.bind(this)
     this.canvas = null;
   }
 
   componentWillMount() {
     this.setBackground(backgrounds[random]);
   }
+
   componentDidMount() {
     BackgroundCheck.init({
       targets: '.bg-check',
@@ -61,12 +61,6 @@ class Main extends React.Component{
         BackgroundCheck.refresh(el);
     });
   }
-  // componentWillReceiveProps(nextProps) {
-  //   // console.log('componentWillReceiveProps', nextProps);
-  //   if(nextProps.auth){
-  //     if(nextProps.route !== this.props.route) this.props.setRoute(nextProps.route)
-  //   }
-  // }
 
   handleMouseMove(e) {
     let mouseStrength = 25,

@@ -2,6 +2,7 @@
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 const firebase = require('./firebase');
+
 import store from '../store';
 
 class Tabs {
@@ -29,7 +30,6 @@ class Tabs {
         
         // Listens for tab updates and ensures keylogger runs on each tab
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-            // If the store hasn't initialized yet or if the user isn't logged in, return
             this.keyloggerSetup(tabId, changeInfo, tab);
         })
 
@@ -110,6 +110,7 @@ class Tabs {
                               .map(req => Object.keys(req)[0])
         
         if (duplicateList.indexOf(request.requestId) > -1) return true;
+
         return false;
     }
 
@@ -191,7 +192,6 @@ class Tabs {
 
         const dbPath = ('user_history/' + userId + '/' + date + '/' + hour + '/').toString();
 
-        // console.log('setFirebasePath', dbPath)
         return dbPath;
     }
 
