@@ -29,7 +29,6 @@ describe('<Weather/>', () => {
 	});
 
   it('has expected props', () => {
-    console.log(weather.props());
     expect(weather.props().weather).to.be.defined;
     expect(weather.props().weather.temp).to.be.equal(testWeather.main.temp);
     expect(weather.props().weather.name).to.be.equal(testWeather.name);
