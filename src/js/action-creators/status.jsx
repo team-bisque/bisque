@@ -1,6 +1,6 @@
 'use strict';
 
-// import store from '../store';
+import store from '../store';
 
 import {
   SET_TIME_REMAINING,
@@ -46,12 +46,12 @@ export const tabSaveSettings = () => ({
   type: TAB_ALIAS_SAVE_SETTINGS
 });
 
-// export const setSettings = () => dispatch => {
-//   const User = require('../controllers/user');
-//   const userId = store.getState().auth.uid;
-//   let settings = Object.assign({}, store.getState().status.durations);
-//       settings.greylist = store.getState().greylist;
+export const setSettings = () => dispatch => {
+  const User = require('../controllers/user');
+  const userId = store.getState().auth.uid;
+  let settings = Object.assign({}, store.getState().status.durations);
+      settings.greylist = store.getState().greylist;
 
-//   User.settings.set(userId, settings)
-//     .then(() => User.settings.getById(userId));
-// };
+  User.settings.set(userId, settings)
+    .then(() => User.settings.getById(userId));
+};

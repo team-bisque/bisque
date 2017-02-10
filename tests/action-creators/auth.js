@@ -10,4 +10,14 @@ describe('Auth action creators', () => {
     expect(authActionCreators.tabAuthenticate())
       .to.be.deep.equal(expectedAction);
   });
+
+  it('return an AUTHENTICATE action', () => {
+    const user = 'Davelin Nichols-Griggs-Kang';
+    const expectedAction = {
+      type: types.AUTHENTICATE,
+      user
+    };
+    expect(authActionCreators.authenticate(user))
+      .to.be.deep.equal(expectedAction);
+  });
 });
