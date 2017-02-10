@@ -103,6 +103,11 @@ body {
       margin-top: $margin;
       margin-left: $margin;
     }
+
+    .top-center {
+      top: 0;            
+    }
+
     .bottom-left {
       bottom: 0;
       left: 0;
@@ -170,7 +175,7 @@ body {
     animation-play-state: running;
   }
 
-  &.settings {
+  &.settings, &.tasks {
     width: 300px;
     height: 500px;
     border-radius: 10px;
@@ -199,8 +204,15 @@ body {
   }
 }
 
-#weather, #settings, #chart, #user {
+#weather, #settings, #chart, #user, #tasks {
   position: absolute;
+}
+
+#user {
+  width: 80%;
+  left: 10%;
+  margin-top: 15vh;
+  text-align: center;
 }
 
 #signin.icon {
@@ -375,6 +387,30 @@ body {
     color: white;
   }
 }
+
+#task-modal {
+  .checkbox{
+    display: inline-block;
+  }
+  .inline.md {
+    width: 80%;
+    margin-left: 5px;
+  }
+  .task-list{
+    height: 250px;
+    overflow-y: scroll;
+  }
+
+  .icon {
+    display: inline-block;
+    font-size: 0.5em;
+    margin-left: 10px
+  }
+  .checkbox {
+    width: 5%;
+  }
+}
+
 
 ul {
   list-style: none;
