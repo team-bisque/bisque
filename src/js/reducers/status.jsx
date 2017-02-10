@@ -1,5 +1,4 @@
 'use strict';
-import store from '../store';
 
 import {
   SET_TIME_REMAINING,
@@ -7,16 +6,22 @@ import {
   TOGGLE_WORK,
   TOGGLE_PAUSE,
   START_BREAK,
-  START_WORK
+  START_WORK,
+  RECEIVE_DURATIONS
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
 
-// Pause begins true, waits for user to start
+// Pause begins true, waits for user
 const initialState = {
   timeRemaining: 0,
   isWorking: false,
   isPaused: true,
+  durations: {
+    workDuration: 8 * minute,
+    breakDuration: 6 * minute,
+    lunchDuration: 30 * minute
+  }
 };
 
 export default (state = initialState, action) => {
@@ -34,29 +39,35 @@ export default (state = initialState, action) => {
     case START_BREAK:
       newState.isWorking = false;
       newState.isPaused = false;
-      newState.timeRemaining = store.getState().settings.breakDuration;
+      newState.timeRemaining = state.durations.breakDurations;
       break;
 
     case START_WORK:
       newState.isWorking = true;
       newState.isPaused = false;
-      newState.timeRemaining = store.getState().settings.workDuration;
+      newState.timeRemaining = state.durations.workDurations;
       break;
 
     case TOGGLE_WORK:
       // First, toggle work
       newState.isWorking = !newState.isWorking;
-      // Second, make sure we're unpaused
-      newState.isPaused = false;
-      // Last, put time on the clock
+      // Second, put time on the clock
       newState.timeRemaining = newState.isWorking
-      ? store.getState().settings.workDuration
-      : store.getState().settings.breakDuration;
+      ? state.durations.workDurations
+      : state.durations.breakDurations;
+      // Last, unpause
+      newState.isPaused = false;
       break;
 
     case TOGGLE_PAUSE:
       newState.isPaused = !newState.isPaused;
       break;
+
+    case RECEIVE_DURATIONS:
+    newState.durations.workDuration = action.durations.workDuration || newState.durations.workDuration;
+    newState.durations.breakDuration = action.durations.breakDuration || newState.durations.breakDuration;
+    newState.durations.lunchDuration = action.durations.lunchDuration || newState.durations.lunchDuration;
+    break;
 
     default:
       break;

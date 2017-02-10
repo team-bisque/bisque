@@ -5,11 +5,11 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import {
-  setWorkDuration,
-  setBreakDuration,
-  setLunchDuration,
+  receiveDurations,
   tabSaveSettings
-} from '../../action-creators/settings';
+} from '../../action-creators/status';
+
+const minute = 60 * 1000;
 
 class Duration extends React.Component{
   constructor(props) {
@@ -17,48 +17,48 @@ class Duration extends React.Component{
     this.onChangeMinutes = this.onChangeMinutes.bind(this);
   }
   onChangeMinutes(e){
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    value = value * minute;
 
-    if (name === 'work') this.props.setWorkDuration(value * 60000);
-    else if (name === 'break') this.props.setBreakDuration(value * 60000);
-    else if (name === 'lunch') this.props.setLunchDuration(value * 60000);
+    let durations = Object.assign({}, this.props.status.durations)
 
-    let settings = this.props.settings;
+    durations[`${name}Duration`] = value;
 
-    settings[`${name}Duration`] = value * 60000;
-
-    this.props.tabSaveSettings(settings)
+    // Because we have to alias our thunks I'm leaving this optmistic call
+    // on the frontend, so as to prevent any lag between user input
+    // and rerendering off the state. Maybe we can find an elegant way
+    // to refactor this later on.
+    this.props.receiveDurations(durations);
+    this.props.tabSaveSettings(durations);
   }
   render(){
-    const { workDuration, breakDuration, lunchDuration } = this.props.settings;
+    const { durations } = this.props.status;
     return (
       <div>
+        <p>
+          Set in minutes the length of your work, break and lunch periods:
+        </p>
         <FormGroup controlId="work-minutes">
           <ControlLabel className="settings-text">Work Minutes</ControlLabel>
-          <FormControl type="number" value={workDuration / 60000} name="work" onChange={this.onChangeMinutes} />
+          <FormControl type="number" value={durations.workDuration / minute} name="work" onChange={this.onChangeMinutes} />
         </FormGroup>
         <FormGroup controlId="break-minutes">
           <ControlLabel className="settings-text">Break Minutes</ControlLabel>
-          <FormControl type="number" value={breakDuration / 60000} name="break" onChange={this.onChangeMinutes} />
+          <FormControl type="number" value={durations.breakDuration / minute} name="break" onChange={this.onChangeMinutes} />
         </FormGroup>
         <FormGroup controlId="lunch-minutes">
           <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
-          <FormControl type="number" value={lunchDuration / 60000} name="lunch" onChange={this.onChangeMinutes} />
+          <FormControl type="number" value={durations.lunchDuration / minute} name="lunch" onChange={this.onChangeMinutes} />
         </FormGroup>
-        <p>
-          Set duration of your work / break / lunch time in minute unit
-        </p>
       </div>
     );
   }
 }
 
-const mapState = ({ settings }) => ({ settings });
+const mapState = ({ status }) => ({ status });
 const mapDispatch = dispatch => ({
   tabSaveSettings:  () => (dispatch(tabSaveSettings())),
-  setWorkDuration:  duration => (dispatch(setWorkDuration(duration))),
-  setBreakDuration: duration => (dispatch(setBreakDuration(duration))),
-  setLunchDuration: duration => (dispatch(setLunchDuration(duration)))
+  receiveDurations:  duration => (dispatch(receiveDurations(duration)))
 });
 
 export default connect(mapState, mapDispatch)(Duration);
