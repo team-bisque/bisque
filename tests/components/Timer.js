@@ -4,10 +4,14 @@ import { shallow } from 'enzyme';
 import { spy } from 'sinon';
 
 import { Provider } from 'react-redux';
-import {createStore} from 'redux';
+import { createStore } from 'redux';
+
+// Spy wrapper for chrome functions
+// Activate only when testing or you will not be able to build
+const chrome = require('sinon-chrome/extensions');
 
 import Timer from '../../src/js/components/Timer';
-// import statusReducer from '../../src/js/reducers/status';
+import statusReducer from '../../src/js/reducers/status';
 
 const minute = 60000
 

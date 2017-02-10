@@ -21,14 +21,14 @@ const Auth = {
 				User.history.getById(userId)
 					.then(() => User.settings.getById(userId))
 					.then(() => store.dispatch(setRoute(null)))
-					
+
 			} else {
 				store.dispatch(authenticate(null))
 				store.dispatch(setRoute('signin'))
 			}
 		})
 	},
-	
+
 	authenticate:(interactive)=>{
 		chrome.identity.getAuthToken({
 			interactive: !!interactive
@@ -48,7 +48,7 @@ const Auth = {
 	      		breakDuration: 300000,
 	      		lunchDuration: 300000,
 	      		greylist: {
-	      			0: 'facebook.com', 
+	      			0: 'facebook.com',
 	      			1: 'youtube.com'
 	      		}
 	      	}
