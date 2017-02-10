@@ -6,16 +6,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Login from './Login';
 import Timer from './Timer';
 
-let backgrounds = [
-'http://i.imgur.com/cAkrTyU.jpg',
-'http://i.imgur.com/kvhSMjC.jpg',
-'http://i.imgur.com/KBWmaas.jpg',
-'http://i.imgur.com/976n77H.jpg',
-'http://i.imgur.com/H1Lb2Xv.jpg',
-'http://i.imgur.com/CA9gCNx.jpg',
-'http://i.imgur.com/aVcP3fF.jpg',
-'http://i.imgur.com/Jnh77yl.jpg'
-];
+let backgrounds = 'http://imgur.com/CA9gCNx'
 
 const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
 const BackgroundCheck = require('../controllers/backgroundCheck');
@@ -30,9 +21,12 @@ class Popup extends React.Component {
     };
 
     return (
-      <div id="popup">
+      <div id="popup"
+        className="fullsizeBg"
+        style={{ background: `url("http://i.imgur.com/CA9gCNx.jpg")`}}
+        >
         <div id="home" className="icon top-right">
-          <OverlayTrigger placement="top" overlay={tooltip.home}>
+          <OverlayTrigger placement="bottom" overlay={tooltip.home}>
             <i className="fa fa-home" onClick={(e)=>{chrome.tabs.create({})}}/>
           </OverlayTrigger>
         </div>
