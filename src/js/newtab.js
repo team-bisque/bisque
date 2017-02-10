@@ -2,10 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-// Spy wrapper for chrome functions
-// Activate only when testing or you will not be able to build
-const chrome = require('sinon-chrome/extensions');
-
 // Begins linstening to the Store,
 // which is sent out from background.js
 import { Store } from 'react-chrome-redux';
