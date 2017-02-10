@@ -1,8 +1,10 @@
 'use strict';
 import { authenticate }  from '../action-creators/auth';
+import { fetchTasks } from '../action-creators/tasks';
 import store         		 from '../store';
 
-import { setRoute } from '../reducers/route';
+import { setRoute } from '../action-creators/route';
+
 
 const firebase = require('./firebase');
 const User = require('./user');
@@ -20,7 +22,8 @@ const Auth = {
 
 				User.history.getById(userId)
 					.then(() => User.settings.getById(userId))
-					.then(() => store.dispatch(setRoute(null)))
+					.then(() => store.dispatch(fetchTasks()))
+					.then(() => store.dispatch(setRoute(null)));
 					
 			} else {
 				store.dispatch(authenticate(null))
@@ -39,8 +42,9 @@ const Auth = {
 				throw new Error(chrome.runtime.lastError);
 	    } else if (token) {
 	      // Authrorize Firebase with the OAuth Access Token.
-				console.log(token);
+	      console.log('token', token)
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
+	      console.log('credential', credential)
 	      firebase.auth().signInWithCredential(credential)
 	      .then(user => {
 	      	console.log(user);

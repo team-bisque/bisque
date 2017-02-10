@@ -1,8 +1,8 @@
-import React, {Component } from 'react'
+import React, {Component } from 'react';
 import {findDOMNode} from 'react-dom';
 import {select} from 'd3-selection';
 
-export default class Grid extends Component{
+export default class Grid extends Component {
   componentDidMount() {
     this.renderGrid();
   }
