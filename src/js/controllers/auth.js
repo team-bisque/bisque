@@ -23,7 +23,7 @@ const Auth = {
 				User.history.getById(userId)
 					.then(() => User.settings.getById(userId))
 					.then(() => store.dispatch(fetchTasks()))
-					.then(() => store.dispatch(setRoute(null)))
+					.then(() => store.dispatch(setRoute(null)));
 					
 			} else {
 				store.dispatch(authenticate(null))
