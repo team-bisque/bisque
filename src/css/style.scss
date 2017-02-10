@@ -397,15 +397,18 @@ body {
     margin-left: 5px;
   }
   .task-list{
-      height: 250px;
-      overflow-y: scroll;
-    }
+    height: 250px;
+    overflow-y: scroll;
+  }
 
-    .icon {
-      display: inline-block;
-      font-size: 0.5em;
-      margin-left: 10px
-    }
+  .icon {
+    display: inline-block;
+    font-size: 0.5em;
+    margin-left: 10px
+  }
+  .checkbox {
+    width: 5%;
+  }
 }
 
 
