@@ -1,7 +1,7 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-import { fetchTasks } from '../action-creators/tasks';
+
 
 import store from '../store';
 import firebase from './firebase';
@@ -30,7 +30,7 @@ class Core {
 		this.auth.onAuthStateChanged();
 
 		this.notifications.welcome();
-		dispatch(fetchTasks());
+		// dispatch(fetchTasks());
 		this.watchMinute();
 	}
 
