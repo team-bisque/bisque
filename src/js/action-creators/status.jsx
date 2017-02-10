@@ -1,6 +1,6 @@
 'use strict';
 
-import store from '../store';
+// import store from '../store';
 
 import {
   SET_TIME_REMAINING,
