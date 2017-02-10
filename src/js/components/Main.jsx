@@ -47,6 +47,7 @@ class Main extends React.Component{
   componentWillMount() {
     this.setBackground(backgrounds[random]);
   }
+
   componentDidMount() {
     BackgroundCheck.init({
       targets: '.bg-check',
