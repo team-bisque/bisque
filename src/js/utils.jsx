@@ -14,6 +14,14 @@ export const callBackground = (method, ...args) => {
   });
 }
 
+export const getPreciseLocation = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(position => {
+      resolve(position.coords);
+    });
+  });
+};
+
 export const convertMillisecondsToHM = (milliseconds) => {
   let totalSeconds = milliseconds / 1000;
   let hours = Math.floor(totalSeconds / 3600);

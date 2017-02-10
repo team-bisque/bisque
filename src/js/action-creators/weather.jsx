@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import {weatherKey} from '../apiKeys';
+import {getPreciseLocation} from '../utils';
 
 import {
   RECEIVE_WEATHER
@@ -10,16 +11,6 @@ import {
 const openweather =
   `http://api.openweathermap.org/data/2.5/weather?APPID=${weatherKey}`;
 
-// Helper function
-function getPreciseLocation(){
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(position => {
-      resolve(position.coords);
-    });
-  });
-}
-
-// Action creator function
 export const receiveWeather = (weather) =>
   ({weather, type: RECEIVE_WEATHER});
 

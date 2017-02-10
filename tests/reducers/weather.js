@@ -29,7 +29,7 @@ describe('Weather Reducer', () => {
     expect(testStore.getState()).to.be.null;
   });
 
-  it('can receive today’s weather report', () => {
+  it('can receive a weather report', () => {
     testStore.dispatch({type: 'RECEIVE_WEATHER', weather});
     let newState = testStore.getState();
     expect(newState).to.be.deep.equal(weather);
