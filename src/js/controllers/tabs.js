@@ -5,6 +5,7 @@ const firebase = require('./firebase');
 const User = require('./user');
 const _ = require('lodash');
 const moment = require('moment');
+
 import store from '../store';
 
 class Tabs {
@@ -30,6 +31,7 @@ class Tabs {
     }
 
     _init () {
+
         // Listens for page navigation and identifies greylisted sites
         chrome.tabs.onUpdated.addListener(tab => {
             this.siteTracker(tab);
@@ -101,7 +103,6 @@ class Tabs {
 
         const dbPath = ('user_history/' + userId + '/' + date + '/' + hour).toString();
 
-        // console.log('setFirebasePath', dbPath)
         return dbPath;
     }
 
