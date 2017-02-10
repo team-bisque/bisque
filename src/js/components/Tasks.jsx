@@ -40,6 +40,7 @@ class Tasks extends React.Component{
 
   render(){
     const tasks = dummyData;
+    
     return (
       <div id="task-modal" className="content">
         <div className="modal-bar">
