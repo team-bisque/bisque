@@ -9,6 +9,7 @@ import Settings from './Settings';
 import Timer from './Timer';
 import User from './User';
 import Weather from './Weather';
+import Tasks from './Tasks';
 
 import { setRoute } from '../action-creators/route';
 
@@ -87,31 +88,15 @@ class Main extends React.Component{
   render(){
     const { status, settings, weather, auth, route, history, greylist } = this.props;
 
-    // Task placeholder, this should be in Task Component
-    // Use Greylist component as reference
-    const Tasks = (
-      <div id="task-modal" className="content">
-        <div className="modal-bar">
-          <div className="modal-title">Tasks</div>
-          <div>
-            <i className="fa fa-times" onClick={(e) => this.props.setRoute(null)}></i>
-          </div>
-        </div>
-        <div>
-          This is task placeholder  
-        </div>
-      </div>
-    );
-
     let child;
     if (!this.props.route || this.props.route.includes("alarm")){
       child = (<Timer status={status} />);
     } else if (this.props.route === "settings"){
-      child = (<Settings {...this.props}/>);
+      child = (<Settings {...this.props} />);
     } else if (this.props.route === "chart"){
-      child = (<Graph {...this.props}/>);
+      child = (<Graph {...this.props} />);
     } else if (this.props.route === "tasks"){
-      child = (Tasks);
+      child = (<Tasks {...this.props} />);
     }
 
     const tooltip = {
