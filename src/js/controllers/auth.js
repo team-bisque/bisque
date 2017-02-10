@@ -31,7 +31,7 @@ const Auth = {
 			}
 		})
 	},
-	
+
 	authenticate:(interactive)=>{
 		chrome.identity.getAuthToken({
 			interactive: !!interactive
@@ -53,7 +53,7 @@ const Auth = {
 	      		breakDuration: 300000,
 	      		lunchDuration: 300000,
 	      		greylist: {
-	      			0: 'facebook.com', 
+	      			0: 'facebook.com',
 	      			1: 'youtube.com'
 	      		}
 	      	}

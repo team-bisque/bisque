@@ -1,22 +1,13 @@
 import {expect} from 'chai';
 import {createStore} from 'redux';
 
-// import authReducer from '../../src/js/reducers/auth';
+import authReducer from '../../src/js/reducers/auth';
 
-const weather = {
-  coord: {
-    lat: 40.71,
-    lon: -74.01
-  },
-  main: {
-    humidity: 100,
-    temp: 270.814
-  },
-  name: 'New York',
-  weather: [{
-    description: 'overcast clouds',
-    id: 804
-  }]
+const user = {
+  displayName: 'Barack Obama',
+  email: 'barackobama@vacation.com',
+  uid: 'udiSTRING',
+  v: 'go-outside-76d86.firebaseapp.com'
 };
 
 describe('Auth Reducer', () => {
@@ -27,5 +18,11 @@ describe('Auth Reducer', () => {
 
   it('has proper initial state', () => {
     expect(testStore.getState()).to.be.null;
+  });
+
+  it('can receive user info', () => {
+    testStore.dispatch({type: 'AUTHENTICATE', user});
+    let newState = testStore.getState();
+    expect(newState).to.be.deep.equal(user);
   });
 });
