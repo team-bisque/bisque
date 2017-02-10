@@ -28,7 +28,6 @@ var manifest = require("../src/manifest.json"),
 // generates the manifest file using the package.json informations
 manifest.description = process.env.npm_package_description;
 manifest.version = process.env.npm_package_version;
-
 manifest.oauth2.client_id = apiKeys.googleClientID;
 
 fileSystem.writeFileSync(

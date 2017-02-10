@@ -61,7 +61,7 @@ class KeyLogger {
 	save() {
 		if (!this.shouldSave) return;
 
-		const url = document.URL.slice(document.URL.indexOf('//') + 2).replace(/[\.]/g, '-').replace(/[\/]/g, '');
+		const url = document.URL.split('/')[2];
 
 		const {time, cpm, wpm} = this;
 		const data = {time, cpm, wpm, url};
