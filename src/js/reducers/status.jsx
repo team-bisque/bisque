@@ -39,13 +39,13 @@ export default (state = initialState, action) => {
     case START_BREAK:
       newState.isWorking = false;
       newState.isPaused = false;
-      newState.timeRemaining = state.durations.breakDurations;
+      newState.timeRemaining = state.durations.breakDuration;
       break;
 
     case START_WORK:
       newState.isWorking = true;
       newState.isPaused = false;
-      newState.timeRemaining = state.durations.workDurations;
+      newState.timeRemaining = state.durations.workDuration;
       break;
 
     case TOGGLE_WORK:
@@ -53,8 +53,8 @@ export default (state = initialState, action) => {
       newState.isWorking = !newState.isWorking;
       // Second, put time on the clock
       newState.timeRemaining = newState.isWorking
-      ? state.durations.workDurations
-      : state.durations.breakDurations;
+      ? state.durations.workDuration
+      : state.durations.breakDuration;
       // Last, unpause
       newState.isPaused = false;
       break;
