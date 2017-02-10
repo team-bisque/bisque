@@ -87,16 +87,16 @@ class Main extends React.Component{
   }
 
   render(){
-    const { status, settings, weather, auth, route, history, greylist } = this.props;
+    const { status, weather, auth, route, history, greylist } = this.props;
 
     let child;
-    if (!this.props.route || this.props.route.includes("alarm")){
+    if (!route || route.includes('alarm')){
       child = (<Timer status={status} />);
-    } else if (this.props.route === "settings"){
+    } else if (route === "settings"){
       child = (<Settings {...this.props} />);
-    } else if (this.props.route === "chart"){
+    } else if (route === "chart"){
       child = (<Graph {...this.props} />);
-    } else if (this.props.route === "tasks"){
+    } else if (route === "tasks"){
       child = (<Tasks {...this.props} />);
     }
 
@@ -148,7 +148,7 @@ class Main extends React.Component{
 
 
         <div className="flex-center">
-          <div id="wrapper" className={this.props.route ? this.props.route : null}>
+          <div id="wrapper" className={route ? route : null}>
           {
             !auth ?
             <Login /> : child

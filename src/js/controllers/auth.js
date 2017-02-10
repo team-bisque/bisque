@@ -5,7 +5,6 @@ import store         		 from '../store';
 
 import { setRoute } from '../action-creators/route';
 
-
 const firebase = require('./firebase');
 const User = require('./user');
 const ChromePromise = require('chrome-promise');
