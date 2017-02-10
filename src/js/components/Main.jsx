@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-var classNames = require('classnames');
-
 // Components
 import Graph from './Graph';
 import Login from './Login';
@@ -26,8 +24,8 @@ let backgrounds = [
 ];
 
 const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
-
 const BackgroundCheck = require('../controllers/backgroundCheck');
+const classNames = require('classnames');
 
 class Main extends React.Component{
 
@@ -77,7 +75,6 @@ class Main extends React.Component{
   }
 
   onImageLoad(e){
-
     let width = e.target.naturalWidth,
         height = e.target.naturalHeight;
 
@@ -90,6 +87,22 @@ class Main extends React.Component{
   render(){
     const { status, settings, weather, auth, route, history, greylist } = this.props;
 
+    // Task placeholder, this should be in Task Component
+    // Use Greylist component as reference
+    const Tasks = (
+      <div id="task-modal" className="content">
+        <div className="modal-bar">
+          <div className="modal-title">Tasks</div>
+          <div>
+            <i className="fa fa-times" onClick={(e) => this.props.setRoute(null)}></i>
+          </div>
+        </div>
+        <div>
+          This is task placeholder  
+        </div>
+      </div>
+    );
+
     let child;
     if (!this.props.route || this.props.route.includes("alarm")){
       child = (<Timer status={status} />);
@@ -97,11 +110,14 @@ class Main extends React.Component{
       child = (<Settings {...this.props}/>);
     } else if (this.props.route === "chart"){
       child = (<Graph {...this.props}/>);
+    } else if (this.props.route === "tasks"){
+      child = (Tasks);
     }
 
     const tooltip = {
       settings: (<Tooltip id="settings-tooltip">Settings</Tooltip>),
-      graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>)
+      graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>),
+      tasks: (<Tooltip id="task-tooltip">Tasks</Tooltip>)
     }
 
     return (
@@ -117,7 +133,16 @@ class Main extends React.Component{
         {
           auth ? (
             <div>
-              <User {...this.props} />
+              {
+                !this.props.route ? 
+                <User {...this.props} /> : null
+              }              
+              <div id="tasks" className="icon top-left bg-check">
+                <OverlayTrigger placement="bottom" overlay={tooltip.tasks}>
+                  <i className="fa fa-calendar-check-o" onClick={(e)=>{this.props.setRoute('tasks')}}></i>
+                </OverlayTrigger>
+              </div>
+
               <Weather weather={weather} />
 
               <div id="settings" className="icon bottom-left bg-check">

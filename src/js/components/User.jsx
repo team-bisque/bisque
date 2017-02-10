@@ -15,7 +15,7 @@ export default function User (props) {
     const message = (<h3>{`Good ${greeting}, ${auth && auth.displayName.split(' ')[0]}`}</h3>);
 
     return  (
-      <div id="user" className="icon top-left bg-check">
+      <div id="user" className="icon top-center bg-check">
         { auth ? message : null }
       </div>
     );
