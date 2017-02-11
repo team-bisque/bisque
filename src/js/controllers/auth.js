@@ -23,7 +23,8 @@ const Auth = {
 					.then(() => User.settings.getById(userId))
 					.then(() => store.dispatch(fetchTasks()))
 					.then(() => store.dispatch(setRoute(null)));
-					
+
+				chrome.tabs.reload();
 			} else {
 				store.dispatch(authenticate(null))
 				store.dispatch(setRoute('signin'))
