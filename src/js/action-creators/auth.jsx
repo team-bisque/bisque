@@ -13,6 +13,6 @@ export const tabAuthenticate = () => ({
 
 export const authenticate = user => ({ type: AUTHENTICATE, user });
 
-export const login = () => dispatch => {
-  auth.authenticate(true)
-}
+export const login = () => (dispatch) => {
+  auth.authenticate(true);
+};
