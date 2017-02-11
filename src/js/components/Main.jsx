@@ -12,6 +12,7 @@ import Weather from './Weather';
 import Tasks from './Tasks';
 
 import { setRoute } from '../action-creators/route';
+import { tabReceiveHistory } from '../action-creators/history';
 
 let backgrounds = [
 'http://i.imgur.com/cAkrTyU.jpg',
@@ -38,7 +39,8 @@ class Main extends React.Component{
       width: 0,
       height: 0,
       src: '',
-      modal: null
+      initialized: false,
+      modal: false
     };
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.canvas = null;
@@ -47,16 +49,20 @@ class Main extends React.Component{
   componentWillMount() {
     this.setBackground(backgrounds[random]);
   }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.route !== nextProps.route) this.setState({modal: nextProps.route})
+  }
   componentDidMount() {
-    BackgroundCheck.init({
-      targets: '.bg-check',
-      images: '.fullsizeBg'
-    });
-    var elements = document.getElementsByClassName('bg-check');
-    Array.prototype.forEach.call(elements, (el) => {
-        // Do stuff here
-        BackgroundCheck.refresh(el);
-    });
+    // BackgroundCheck.init({
+    //   targets: '.bg-check',
+    //   images: '.fullsizeBg'
+    // });
+    // var elements = document.getElementsByClassName('bg-check');
+    // Array.prototype.forEach.call(elements, (el) => {
+    //     // Do stuff here
+    //     BackgroundCheck.refresh(el);
+    // });
   }
 
   handleMouseMove(e) {
@@ -147,7 +153,7 @@ class Main extends React.Component{
 
 
         <div className="flex-center">
-          <div id="wrapper" className={this.props.route ? this.props.route : null}>
+          <div id="wrapper" className={this.state.modal ? this.state.modal : null}>
           {
             !auth ?
             <Login /> : child

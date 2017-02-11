@@ -1,40 +1,46 @@
 'use strict';
-const ChromePromise = require('chrome-promise');
-const chromep = new ChromePromise();
 
-class WebRequest {
-    // https://developer.chrome.com/extensions/webRequest
-    constructor() {
-        this.filter = {
-            urls: ['https://*/*', 'http://*/*']
-        };
-        this.OnBeforeRequestOptions = [ 'blocking' ];  
-        this.redirectUrl = 'javascript:';
+/*
+ * ==========
+ * WebRequest
+ * ==========
+ *  Handles events on user web request.
+ */
 
+const User = require('./user');
+const WebRequest = () => {
 
-        this.redirect = this.redirect.bind(this)
+  function increaseVisits(request) {
+    // Filters URLs down to the main domain before pushing to sitesVisited
+    if (request.url.indexOf('chrome-extension://') > -1) return;
+    let baseURL = request.url.split('/')[2];
+    return User.history.increaseVisits(baseURL);
+  }
+
+  function redirectUrl() {
+    return { redirectUrl: 'javascript:' };
+  }
+
+  return {
+    visitCounter: function(tab) {
+      // chrome.webRequest.onCompleted.removeListener(increaseVisits);
+      chrome.webRequest.onCompleted.addListener(
+        increaseVisits, {
+          urls: ["<all_urls>"],
+          // tabId: tab.id,
+          types: ["main_frame"]
+        }, ["responseHeaders"]
+      );
+    },
+    block: function() {
+      // chrome.webRequest.onCompleted.removeListener(redirectUrl);
+      chrome.webRequest.onBeforeRequest.addListener(
+        redirectUrl, {
+          urls: ['https://*/*', 'http://*/*']
+        }, ['blocking']
+      );
     }
-
-    // https://developer.chrome.com/extensions/webRequest#event-onBeforeRequest
-
-    redirect(){
-        return { redirectUrl: this.redirectUrl }
-    }
-
-    addOnBeforeRequestEvent(){
-        chrome.webRequest.onBeforeRequest.addListener(
-          this.redirect,
-          this.filter, 
-          this.OnBeforeRequestOptions
-        );
-    }
-
-    removeOnBeforeRequestEvent(){
-        chrome.webRequest.onBeforeRequest.removeListener(this.redirect)   
-    }
-
-
-    
+  }
 }
 
-module.exports = WebRequest;
+module.exports = WebRequest();

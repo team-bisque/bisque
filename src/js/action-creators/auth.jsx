@@ -1,6 +1,6 @@
 'use strict';
 import {
-  AUTHENTICATE,
+  RECIEVE_USER,
   TAB_ALIAS_LOGIN
 } from '../constants';
 
@@ -10,8 +10,8 @@ export const tabAuthenticate = () => ({
   type: TAB_ALIAS_LOGIN
 });
 
-export const login = () => dispatch => {
+export const authenticate = () => dispatch => {
   auth.authenticate(true)
 }
 
-export const authenticate = user => ({ type: AUTHENTICATE, user });
+export const recieveUser = user => ({ type: RECIEVE_USER, user });

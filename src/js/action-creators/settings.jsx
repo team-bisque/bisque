@@ -35,6 +35,14 @@ export const tabSaveSettings = () => ({
   type: TAB_ALIAS_SAVE_SETTINGS
 });
 
+export const receive_settings = settings => dispatch => {
+
+  return new Promise((resolve, reject) => {
+      firebaseDb.ref(`${this._path}/${key}`)
+        .remove(error => error ? reject(error) : resolve());
+    });
+}
+
 export const setSettings = () => dispatch => {
   // why having scope issue??
   const User = require('../controllers/user');

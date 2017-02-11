@@ -1,12 +1,12 @@
 'use strict';
-import { authenticate }  from '../action-creators/auth';
+import { recieveUser }  from '../action-creators/auth';
 import { fetchTasks } from '../action-creators/tasks';
 import store         		 from '../store';
 
 import { setRoute } from '../action-creators/route';
 
 
-const firebase = require('./firebase');
+const { firebaseAuth, firebaseDb, GoogleAuthProvider } = require('../firebase');
 const User = require('./user');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -14,11 +14,11 @@ const chromep = new ChromePromise();
 const Auth = {
 
 	onAuthStateChanged: ()=>{
-		firebase.auth().onAuthStateChanged(user => {
+		firebaseAuth.onAuthStateChanged(user => {
 		  if (user) {
 				const userId = user.uid;
 
-				store.dispatch(authenticate(user));
+				store.dispatch(recieveUser(user));
 
 				User.history.getById(userId)
 					.then(() => User.settings.getById(userId))
@@ -26,7 +26,7 @@ const Auth = {
 					.then(() => store.dispatch(setRoute(null)));
 					
 			} else {
-				store.dispatch(authenticate(null))
+				store.dispatch(recieveUser(null))
 				store.dispatch(setRoute('signin'))
 			}
 		})
@@ -43,9 +43,9 @@ const Auth = {
 	    } else if (token) {
 	      // Authrorize Firebase with the OAuth Access Token.
 	      console.log('token', token)
-	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
+	      var credential = GoogleAuthProvider.credential(null, token);
 	      console.log('credential', credential)
-	      firebase.auth().signInWithCredential(credential)
+	      firebaseAuth.signInWithCredential(credential)
 	      .then(user => {
 	      	console.log(user);
 	      	let defaultSettings = {
@@ -57,7 +57,7 @@ const Auth = {
 	      			1: 'youtube.com'
 	      		}
 	      	}
-	      	firebase.database().ref('users/' + user.uid).set(defaultSettings)
+	      	firebaseDb.ref('users/' + user.uid).set(defaultSettings)
 	      })
 	      .catch(error => {
 	        // The OAuth token might have been invalidated. Let's remove it from cache.

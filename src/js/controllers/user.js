@@ -4,7 +4,8 @@ import { receiveHistory } from '../action-creators/history';
 import { receiveSettings } from '../action-creators/settings';
 import { receiveGreylist } from '../action-creators/greylist';
 
-const firebase = require('./firebase');
+const { firebaseDb } = require('../firebase');
+// const firebase = require('./firebase');
 const moment = require('moment');
 const _ = require('lodash');
 
@@ -30,7 +31,7 @@ User.settings.set = (userId, data) => firebase.database().ref('users/'+userId).s
 		// .catch(console.error)
 
 User.greylist.set = (userId, data) => (
-	firebase.database().ref(`users/${userId}/greylist`).set(data)
+	firebaseDb.ref(`users/${userId}/greylist`).set(data)
 		// .then((res)=>(console.log('USER GREYLIST SET:', res)))
 		// .catch(console.error)
 );
@@ -52,8 +53,8 @@ User.history.set = (data, time) => {
 				cpm: data.cpm || 0,
 				wpm: data.wpm || 0,
 				url: data.url,
-				visits: data.visits || 1,
-				isGreylist: isGreylist(data.url)
+				visits: data.visits,
+				isGreylist: data.isGreylist || isGreylist(data.url)
 			};
 
 	console.log('User.history.set : newDATA', newData)
@@ -71,8 +72,7 @@ User.history.set = (data, time) => {
           newData.cpm = dataset[index].cpm !== newData.cpm ? _.mean([dataset[index].cpm, newData.cpm]) : dataset[index].cpm;
           newData.wpm = dataset[index].wpm !== newData.wpm ? _.mean([dataset[index].cpm, newData.wpm]) : dataset[index].wpm;
           newData.url = dataset[index].url;
-          newData.visits = dataset[index].visits !== newData.visits ? newData.visits : dataset[index].visits;
-          newData.isGreylist = dataset[index].isGreylist !== newData.isGreylist ? newData.isGreylist : dataset[index].isGreylist;
+          newData.visits = newData.visits.length ? newData.visits : dataset[index].visits;
           dataset[index] = newData;
       }
       
@@ -80,37 +80,45 @@ User.history.set = (data, time) => {
       dataset.push(newData);
   }
   console.log('User.history.set : dataset', data, time, dataset)
-	return firebase.database().ref(refPath).set(dataset);
+	return firebaseDb.ref(refPath).set(dataset);
 		// .then((res)=>(console.log('USER HISTORY SET:', res)))
 		// .catch(console.error)
 };
 
 User.history.increaseVisits = (url) => {
 	if (!url) Error('url is required');
-	const time = new Date();
-	const history = store.getState().history;
+	let time = new Date();
+	let history = store.getState().history;
 
 	let date = moment(time).format('MM-DD-YYYY'),
 			hour = time.getHours();
 
-	
+	let tempData = { 
+		url: url,
+		visits: 1
+	}
+	console.log('increaseVisits',history[date],history[date][hour])
+	if(!history[date] || !history[date][hour]) {
+		return User.history.set(tempData, time);
+	} else {
+		let index = _.findIndex(history[date][hour], o => o.url === url);		
+		if(index === -1) return User.history.set(tempData, time);
+		else {
+			let visits = history[date][hour][index].visits;
 
-	if(history[date] && history[date][hour]) {
-    let index = _.findIndex(history[date][hour], o => o.url === url);
-
-    console.log('User.history.increaseVisits', history[date][hour][index])
-
-    if(index === -1) return User.history.set({ url: url }, time);
-    else return User.history.set({ url: url, visits: history[date][hour][index].visits+1 }, time);
- 	} else {
- 		return User.history.set({ url: url }, time);	
- 	}	
+			console.log('increaseVisits',visits + 1)
+    	return User.history.set({ 
+        	url: url, 
+        	visits: visits + 1
+        }, time);
+		}
+	}
 }
 
 // get functions
 User.history.getById = userId => {
 	return new Promise((resolve, reject) => {
-		firebase.database().ref('user_history/' + userId).once('value', (snapshot) => {
+		firebaseDb.ref('user_history/' + userId).on('value', (snapshot) => {
 			if(snapshot){
 				store.dispatch(receiveHistory(snapshot.val()));
 				resolve(snapshot.val());				
@@ -126,7 +134,7 @@ User.history.getById = userId => {
 
 User.settings.getById = userId => {
 	return new Promise((resolve, reject) => {
-		firebase.database().ref('users/' + userId).once('value', (snapshot) => {
+		firebaseDb.ref('users/' + userId).on('value', (snapshot) => {
 			if(snapshot){
 				const settings = _.pickBy(snapshot.val(), (value, key) =>{
 					return key !== "greylist";

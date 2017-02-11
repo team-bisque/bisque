@@ -1,10 +1,7 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-
-
 import store from '../store';
-import firebase from './firebase';
 
 const 	Tabs 			= require('./tabs'),
 		WebRequest 		= require('./webRequest'),
@@ -15,7 +12,7 @@ const 	Tabs 			= require('./tabs'),
 class Core {
 	constructor() {
 		this.tabs = new Tabs();
-		this.webRequest = new WebRequest();
+		// this.webRequest = new WebRequest();
 		this.auth = Auth;
 		this.notifications = new Notifications();
 		this.idle = new Idle();
@@ -32,6 +29,9 @@ class Core {
 		this.notifications.welcome();
 		// dispatch(fetchTasks());
 		this.watchMinute();
+
+
+		WebRequest.visitCounter();
 	}
 
 	watchMinute(){
