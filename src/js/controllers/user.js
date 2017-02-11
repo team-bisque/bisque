@@ -41,7 +41,7 @@ User.history.set = (data, time) => {
 	if (!time) time = Error('time is required');
 	const userId = store.getState().auth.uid,
 				history = store.getState().history;
-	
+
 	let date = moment(time).format('MM-DD-YYYY'),
 			hour = time.getHours(),
 			refPath = `user_history/${userId}/${date}/${hour}`;
@@ -67,7 +67,7 @@ User.history.set = (data, time) => {
           // push a new dataset to array
           dataset.push(newData);
       } else {
-          // update existing dataset 
+          // update existing dataset
           newData.cpm = dataset[index].cpm !== newData.cpm ? _.mean([dataset[index].cpm, newData.cpm]) : dataset[index].cpm;
           newData.wpm = dataset[index].wpm !== newData.wpm ? _.mean([dataset[index].cpm, newData.wpm]) : dataset[index].wpm;
           newData.url = dataset[index].url;
@@ -75,7 +75,7 @@ User.history.set = (data, time) => {
           newData.isGreylist = dataset[index].isGreylist !== newData.isGreylist ? newData.isGreylist : dataset[index].isGreylist;
           dataset[index] = newData;
       }
-      
+
   } else {
       dataset.push(newData);
   }
@@ -93,7 +93,7 @@ User.history.increaseVisits = (url) => {
 	let date = moment(time).format('MM-DD-YYYY'),
 			hour = time.getHours();
 
-	
+
 
 	if(history[date] && history[date][hour]) {
     let index = _.findIndex(history[date][hour], o => o.url === url);
@@ -103,8 +103,8 @@ User.history.increaseVisits = (url) => {
     if(index === -1) return User.history.set({ url: url }, time);
     else return User.history.set({ url: url, visits: history[date][hour][index].visits+1 }, time);
  	} else {
- 		return User.history.set({ url: url }, time);	
- 	}	
+ 		return User.history.set({ url: url }, time);
+ 	}
 }
 
 // get functions

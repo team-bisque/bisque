@@ -15,19 +15,37 @@ const minute = 60 * 1000;
 class Duration extends React.Component{
   constructor(props) {
     super(props);
+    this.state = {
+      nuclear: '',
+      validated: this.props.status.durations.nuclear || false
+    };
     this.onChangeMinutes = this.onChangeMinutes.bind(this);
-    this.onClickNuclear = this.onClickNuclear.bind(this);
+    this.nuclearValidation = this.nuclearValidation.bind(this);
   }
-  onClickNuclear(e){
-    this.props.toggleNuclear();
+  nuclearValidation(e){
+    let {value} = e.target;
+    const key = 'GO NUCLEAR';
+    const substring = key.substring(0, value.length);
+
+    if (value === substring) this.setState({nuclear: value});
+    if (value === key) this.setState({validated: true});
   }
+
   onChangeMinutes(e){
     let { name, value } = e.target;
-    value = value * minute;
+    if (name !== 'nuclear') {
+      value = value * minute;
+    } else {
+      value = !this.props.status.durations.nuclear
+      this.setState({nuclear: ''});
+      if (this.props.status.durations.nuclear) {
+        this.setState({validated: false});
+      }
+    }
 
     let durations = Object.assign({}, this.props.status.durations)
 
-    durations[`${name}Duration`] = value;
+    durations[`${name}`] = value;
 
     // Because we have to alias our thunks I'm leaving this optmistic call
     // on the frontend, so as to prevent any lag between user input
@@ -37,7 +55,7 @@ class Duration extends React.Component{
     this.props.tabSaveSettings(durations);
   }
   render(){
-    const { durations, nuclear } = this.props.status;
+    const { durations } = this.props.status;
 
     const popover = {
       durations: (
@@ -51,7 +69,7 @@ class Duration extends React.Component{
         <Popover
           id="popover-positioned-top popover-trigger-click"
           title="The Nuclear Option">
-          If you’re feeling hopelessly under the command of your own computer, the Nuclear Option might be for you. When turned on, Bisque will lock your Chrome browser from displaying anything other than your Bisque dashboard, until you’re supposed to resume working. Use at your own risk. (And, yes, you can cheat the system, but that’s not really in keeping with the spirit of the Nuclear Option, now is it?)
+          If you’re feeling hopelessly under the command of your own computer, the Nuclear Option might be for you. When turned on, Bisque will lock your Chrome browser from displaying anything other than your Bisque dashboard, until you’re supposed to resume working. Type “GO NUCLEAR” in the adjacent form to activate the button. (And, yes, you can cheat the system, but that’s not really in keeping with the spirit of the Nuclear Option, now is it?)
         </Popover>
       )
     };
@@ -60,39 +78,55 @@ class Duration extends React.Component{
     let workDuration = durations.workDuration / minute;
     let breakDuration = durations.breakDuration / minute;
     let lunchDuration = durations.lunchDuration / minute;
+    let nuclear = durations.nuclear;
     const trigger = ['hover', 'focus'];
 
     return (
-
       <div>
-        <div id="help" className="icon">
-          <OverlayTrigger trigger={trigger} placement="right" overlay={popover.durations}>
-            <i className="fa fa-question-circle"/>
-          </OverlayTrigger>
-        </div>
         <FormGroup controlId="work-minutes">
-          <ControlLabel className="settings-text">
-            {`Work Minutes: ${workDuration}`}
-          </ControlLabel>
-          <FormControl type="range" min="5" max="90" step="5" value={workDuration} name="work" onChange={this.onChangeMinutes} />
+            <ControlLabel className="settings-text">
+              {`Work Minutes: ${workDuration}`}
+            </ControlLabel>
+            <div id="help" className="icon">
+              <OverlayTrigger trigger={trigger} className="inline" overlay={popover.durations}>
+                <i className="fa fa-question-circle"/>
+              </OverlayTrigger>
+            </div>
+          <FormControl type="range" min="5" max="90" step="5" value={workDuration} name="workDuration" onChange={this.onChangeMinutes} />
           <ControlLabel className="settings-text">
             {`Break Minutes: ${breakDuration}`}
           </ControlLabel>
-          <FormControl type="range" min="5" max="90" step="5" value={breakDuration} name="break" onChange={this.onChangeMinutes} />
+          <FormControl type="range" min="5" max="90" step="5" value={breakDuration} name="breakDuration" onChange={this.onChangeMinutes} />
           <ControlLabel className="settings-text">
             {`Lunch Minutes: ${lunchDuration}`}
           </ControlLabel>
-          <FormControl type="range" min="5" max="90" step="5" value={lunchDuration} name="lunch" onChange={this.onChangeMinutes} />
+          <FormControl type="range" min="5" max="90" step="5" value={lunchDuration} name="lunchDuration" onChange={this.onChangeMinutes} />
         </FormGroup>
+
         <FormGroup controlId="nuclear">
           <ControlLabel className="settings-text">
             The Nuclear Option
           </ControlLabel>
-          <OverlayTrigger trigger={trigger} placement="top" overlay={popover.nuclear}>
-            <Button className={nuclear ? 'btn-danger' : 'btn-default'} style={{ 'margin-left': '10px'}} onClick={this.onClickNuclear}>
-              <i className="fa fa-bomb" />
-            </Button>
-          </OverlayTrigger>
+
+          <div>
+            <FormControl type="text" value={this.state.nuclear} name="nuclear-validation" className="inline" onChange={this.nuclearValidation} />
+            <div className="icon">
+              <OverlayTrigger trigger={trigger} placement="top" overlay={popover.nuclear}>
+                <i className="fa fa-question-circle pull-right" />
+              </OverlayTrigger>
+            </div>
+          </div>
+
+          <Button
+            style={{ marginTop: '10px', paddingLeft: '10%', paddingRight: '10%' }}
+            name="nuclear"
+            onClick={this.onChangeMinutes}
+            disabled={!this.state.validated}>
+            { nuclear ?
+              'Turn off the Nuclear Option'
+              : 'I understand, go Nuclear'}
+          </Button>
+
         </FormGroup>
       </div>
     );
@@ -102,8 +136,7 @@ class Duration extends React.Component{
 const mapState = ({ status }) => ({ status });
 const mapDispatch = dispatch => ({
   tabSaveSettings:  () => (dispatch(tabSaveSettings())),
-  receiveDurations:  duration => (dispatch(receiveDurations(duration))),
-  toggleNuclear: () => (dispatch(toggleNuclear()))
+  receiveDurations:  duration => (dispatch(receiveDurations(duration)))
 });
 
 export default connect(mapState, mapDispatch)(Duration);

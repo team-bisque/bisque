@@ -28,9 +28,6 @@ export const RECEIVE_DURATIONS = 'RECEIVE_DURATIONS';
 export const SET_DURATIONS = 'SET_DURATIONS';
 export const SET_START_TIME = 'SET_START_TIME';
 
-// status.nuclear
-export const TOGGLE_NUCLEAR = 'TOGGLE_NUCLEAR';
-
 // tasks
 export const RECEIVE_TASKS = 'RECEIVE_TASKS';
 
