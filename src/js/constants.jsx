@@ -1,28 +1,17 @@
 // auth
 export const RECIEVE_USER = 'RECIEVE_USER';
 
-// history
-export const TAB_ALIAS_RECEIVE_HISTORY = 'TAB_ALIAS_RECEIVE_HISTORY';
-export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
-export const SET_VISITS = 'SET_VISITS';
-
-
 // greylist
 export const ADD_URL = 'ADD_URL';
 export const REMOVE_URL = 'REMOVE_URL';
 export const EDIT_URL = 'EDIT_URL';
 export const RECEIVE_GREYLIST = 'RECEIVE_GREYLIST';
 
+// history
+export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
+
 // routes
 export const SET_ROUTE = 'SET_ROUTE';
-
-// settings
-export const RECEIVE_SETTINGS = 'RECEIVE_SETTINGS';
-export const SET_WORK_DURATION = 'SET_WORK_DURATION';
-export const SET_BREAK_DURATION = 'SET_BREAK_DURATION';
-export const SET_LUNCH_DURATION = 'SET_LUNCH_DURATION';
-export const SET_SHIFT_DURATION = 'SET_SHIFT_DURATION';
-export const SET_START_TIME = 'SET_START_TIME';
 
 // status
 export const TOGGLE_WORK = 'TOGGLE_WORK';
@@ -32,6 +21,11 @@ export const START_WORK = 'START_WORK';
 export const START_BREAK = 'START_BREAK';
 export const SET_TIME_REMAINING = 'SET_TIME_REMAINING';
 export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
+
+// status.durations
+export const RECEIVE_DURATIONS = 'RECEIVE_DURATIONS';
+export const SET_DURATIONS = 'SET_DURATIONS';
+export const SET_START_TIME = 'SET_START_TIME';
 
 // tasks
 export const RECEIVE_TASKS = 'RECEIVE_TASKS';

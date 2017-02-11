@@ -20,13 +20,17 @@ class Core {
 
 	_init(){
 		const { dispatch } = store;
-		dispatch(fetchWeather());
 
-		this.tabs._init(); // <-- for keylogger;
+		dispatch(fetchWeather()); // Initial weather check
+		setInterval(() => { // Update weather every 20 minutes
+			dispatch(fetchWeather());
+		}, 1200000);
+
+		this.tabs._init(); // <-- begins keylogger
 		this.idle._init(); // <-- detects whether user is idle
-		this.auth.onAuthStateChanged();
+		this.auth.onAuthStateChanged(); // <-- firebase authentication listener
 
-		this.notifications.welcome();
+		this.notifications.welcome(); // <-- sends welcome notification
 		// dispatch(fetchTasks());
 		this.watchMinute();
 
@@ -36,7 +40,7 @@ class Core {
 
 	watchMinute(){
 		const { dispatch, getState } = store;
-		const minute = 60000;
+		const minute = 60 * 1000;
 
 		setInterval(() => {
 			if (!getState().status.isPaused) {
@@ -45,13 +49,13 @@ class Core {
 				dispatch(setTimeRemaining(newTime));
 
 				// If applicable, fire a chrome notification
-				if (newTime === 5 * minute) { // 5 Minutes
+				if (newTime === 5 * minute) {
 					this.notifications.warning();
 				}
 				else if (newTime === 0) {
 					this.notifications.statusChange();
 				}
-				else if (newTime === -5 * minute) {
+				else if (newTime === -10 * minute) {
 					this.notifications.whereAreYou();
 					dispatch(togglePause());
 				}
@@ -59,7 +63,7 @@ class Core {
         // When paused, interval keeps running -- but does nothing
 				console.log('We are paused');
 			}
-		}, 3000); // Interval runs in hyperspeed for dev purposes
+		}, 3000); // Interval runs at 20x speed for dev purposes
 	}
 }
 

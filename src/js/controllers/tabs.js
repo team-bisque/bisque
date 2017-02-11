@@ -5,10 +5,12 @@ const chromep = new ChromePromise();
 const User = require('./user');
 const _ = require('lodash');
 const moment = require('moment');
+
 import store from '../store';
 
 class Tabs {
 
+//<<<<<<< HEAD
   // https://developer.chrome.com/extensions/tabs
   constructor() {
     // this.greylist = [];
@@ -87,7 +89,6 @@ class Tabs {
       .then(res => res[0])
   }
 }
-
 
 const Test = () => {
 

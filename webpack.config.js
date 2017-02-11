@@ -17,7 +17,8 @@ if (fileSystem.existsSync(secretsPath)) {
 module.exports = {
   entry: {
     newtab: path.join(__dirname, "src", "js", "newtab.js"),
-    background: path.join(__dirname, "src", "js", "background.js")
+    background: path.join(__dirname, "src", "js", "background.js"),
+    popup: path.join(__dirname, "src", "js", "popup.js")
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -26,13 +27,13 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "babel" },
-      { test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/, loader: 'file?name=[name].[ext]' },      
+      { test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/, loader: 'file?name=[name].[ext]' },
       {
         test: /\.scss$/,
         exclude: /(node_modules|bower_components)/,
         loaders: ['style', 'css', 'sass']
       },
-      { test: /\.css$/, loaders: ['style', 'css'] },      
+      { test: /\.css$/, loaders: ['style', 'css'] },
     ]
   },
   resolve: {
@@ -51,6 +52,11 @@ module.exports = {
       template: path.join(__dirname, "src", "background.html"),
       filename: "background.html",
       chunks: ["background"]
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "popup.html"),
+      filename: "popup.html",
+      chunks: ["popup"]
     }),
     new WriteFilePlugin()
   ]

@@ -5,8 +5,8 @@ import store         		 from '../store';
 
 import { setRoute } from '../action-creators/route';
 
-
 const { firebaseAuth, firebaseDb, GoogleAuthProvider } = require('../firebase');
+const firebase = require('./firebase');
 const User = require('./user');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -24,14 +24,15 @@ const Auth = {
 					.then(() => User.settings.getById(userId))
 					.then(() => store.dispatch(fetchTasks()))
 					.then(() => store.dispatch(setRoute(null)));
-					
+
+				chrome.tabs.reload();
 			} else {
 				store.dispatch(recieveUser(null))
 				store.dispatch(setRoute('signin'))
 			}
 		})
 	},
-	
+
 	authenticate:(interactive)=>{
 		chrome.identity.getAuthToken({
 			interactive: !!interactive
@@ -53,7 +54,7 @@ const Auth = {
 	      		breakDuration: 300000,
 	      		lunchDuration: 300000,
 	      		greylist: {
-	      			0: 'facebook.com', 
+	      			0: 'facebook.com',
 	      			1: 'youtube.com'
 	      		}
 	      	}

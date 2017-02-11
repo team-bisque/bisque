@@ -10,6 +10,7 @@ export const tabAuthenticate = () => ({
   type: TAB_ALIAS_LOGIN
 });
 
+
 export const authenticate = () => dispatch => {
   auth.authenticate(true)
 }

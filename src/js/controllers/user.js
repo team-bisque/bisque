@@ -1,7 +1,7 @@
 'use strict';
 import store         		 from '../store';
 import { receiveHistory } from '../action-creators/history';
-import { receiveSettings } from '../action-creators/settings';
+import { receiveDurations } from '../action-creators/status';
 import { receiveGreylist } from '../action-creators/greylist';
 
 const { firebaseDb } = require('../firebase');
@@ -121,7 +121,7 @@ User.history.getById = userId => {
 		firebaseDb.ref('user_history/' + userId).on('value', (snapshot) => {
 			if(snapshot){
 				store.dispatch(receiveHistory(snapshot.val()));
-				resolve(snapshot.val());				
+				resolve(snapshot.val());
 			} else {
 				reject(Error('no data'));
 			}
@@ -149,7 +149,7 @@ User.settings.getById = userId => {
 		});
 	}).then((res)=>{
 			// console.log('USER SETTING GET BY ID:', res);
-			store.dispatch(receiveSettings(res.settings));
+			store.dispatch(receiveDurations(res.settings));
 			store.dispatch(receiveGreylist(res.greylist));
 			return res;
 	}).catch(console.error);
