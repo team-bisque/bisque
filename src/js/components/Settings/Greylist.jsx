@@ -11,23 +11,29 @@ import {
 class Greylist extends React.Component {
   constructor(props) {
     super(props);
-    this.url = '';
+    this.state = {
+      url: ''
+    };
   }
 
   onChangeURL(e) {
-    if(e.target.name === 'add-new') this.url = e.target.value;
-    else this.props.tabEditGreylist(e.target.value, parseInt(e.target.getAttribute('data-id')));
+    let {name, value} = e.target;
+    if (name === 'add-new') this.setState({url: value});
+    else this.props.tabEditGreylist(value, +e.target.getAttribute('data-id'));
   }
-  onKeypressEnter(e) {
+
+  onKeyPressEnter(e) {
     if (e.key === 'Enter'){
-      this.props.tabAddGreylist(this.url);
+      e.preventDefault();
+      this.props.tabAddGreylist(this.state.url);
+      this.setState({url: ''});
     }
   }
 
   addNew(e) {
     e.preventDefault();
-    this.props.tabAddGreylist(this.url);
-    document.getElementById('addNew-input').value = '';
+    this.props.tabAddGreylist(this.state.url);
+    this.setState({url: ''});
   }
 
   remove(e) {
@@ -57,8 +63,9 @@ class Greylist extends React.Component {
           <FormControl
             id="addNew-input"
             type="text"
+            value={this.state.url}
             onChange={this.onChangeURL.bind(this)}
-            onKeyPress={this.onKeypressEnter.bind(this)}
+            onKeyPress={this.onKeyPressEnter.bind(this)}
             name="add-new"
             className="inline"
               />
