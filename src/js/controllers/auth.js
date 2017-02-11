@@ -41,26 +41,22 @@ const Auth = {
 				throw new Error(chrome.runtime.lastError);
 	    } else if (token) {
 	      // Authrorize Firebase with the OAuth Access Token.
-	      console.log('token', token)
 	      var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
-	      console.log('credential', credential)
 	      firebase.auth().signInWithCredential(credential)
 	      .then(user => {
-	      	console.log(user);
-	      	let defaultSettings = {
-	      		workDuration: 300000,
-	      		breakDuration: 300000,
-	      		lunchDuration: 300000,
-	      		greylist: {
-	      			0: 'facebook.com',
-	      			1: 'youtube.com'
-	      		}
-	      	}
-	      	firebase.database().ref('users/' + user.uid).set(defaultSettings)
+					let defaultSettings = {
+						workDuration: 300000,
+						breakDuration: 300000,
+						lunchDuration: 300000,
+						greylist: {
+							0: 'facebook.com',
+							1: 'youtube.com'
+						}
+					}
+					firebase.database().ref('users/' + user.uid).set(defaultSettings)
 	      })
 	      .catch(error => {
 	        // The OAuth token might have been invalidated. Let's remove it from cache.
-
 	        console.error(error)
 	        if (error) {
 	          chrome.identity.removeCachedAuthToken({token: token}, function() {

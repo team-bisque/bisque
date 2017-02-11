@@ -1,45 +1,82 @@
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormControl } from 'react-bootstrap';
-import {
-  receiveTasks
-} from '../action-creators/tasks';
-
-const dummyData = [
-  { title: 'Update my resume', complete: false },
-  { title: 'Update linkedin', complete: false },
-  { title: 'Job research', complete: false },
-  { title: 'Clean up the desk', complete: true }
-];
+import { FormControl, ButtonGroup, Button } from 'react-bootstrap';
+import { tabAddTask, tabRemoveTask, tabCompleteTask } from '../action-creators/tasks';
+import store from '../store';
 
 class Tasks extends React.Component{
   constructor(props) {
-    super(props);    
+    super(props);
+    this.state = {
+      selectedList: [],
+      newTaskTitle: ''
+    }
+
+    this.toggleList = this.toggleList.bind(this);
+    this.addNewTaskChange = this.addNewTaskChange.bind(this);
+    this.addNewTaskEnter = this.addNewTaskEnter.bind(this);
+    this.buildTaskResource = this.buildTaskResource.bind(this);
+    this.removeTask = this.removeTask.bind(this);
+    this.toggleTaskComplete = this.toggleTaskComplete.bind(this);
   }
 
-  onChangeTask(e){
-
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      selectedList: nextProps && nextProps.tasks.filter(list => list.id === this.state.selectedList.id)[0]
+    })
   }
 
-  onKeypressEnter(e){
-
+  buildTaskResource () {
+    // For adding new tasks -- builds the task object required by the Google Tasks API
+    const newTask = {
+        title: this.state.newTaskTitle,
+        status: 'needsAction'
+    }
+    return newTask;
   }
 
-  toggleTask(e){
-
+  addNewTaskChange (e) {
+    // Tracks input field for adding tasks
+    e.preventDefault();
+    this.setState({
+      newTaskTitle: e.target.value
+    })
   }
 
-  addNew(e){
-
+  addNewTaskEnter () {
+    // Submits data in input field to add new task
+    const newTask = this.buildTaskResource();
+    this.props.tabAddTask(newTask, this.state.selectedList.id);
+    this.setState({
+      newTaskTitle: ''
+    })
   }
 
-  remove(e){
+  toggleTaskComplete (e) {
+    // Mark a task as completed
+    const taskToUpdate = this.state.selectedList.data.filter(task => task.id === e.target.dataset.id)[0];
+    taskToUpdate.status = 'completed';
+    this.props.tabCompleteTask(taskToUpdate, this.state.selectedList.id)
+  }
 
+  removeTask (e) {
+    // Remove a task from the list
+    this.props.tabRemoveTask(e.target.dataset.id, this.state.selectedList.id);
+  }
+
+  toggleList (e) {
+    // Show the tasks from a selected task list
+    const newSelectedList = this.props.tasks.filter(taskList => taskList.title === e.target.textContent)[0];
+    this.setState({
+      selectedList: newSelectedList
+    })
   }
 
   render(){
-    const tasks = dummyData;
+    const tasks = this.props.tasks;
+    const selectedList = this.state.selectedList;
+
     return (
       <div id="task-modal" className="content">
         <div className="modal-bar">
@@ -49,50 +86,65 @@ class Tasks extends React.Component{
           </div>
         </div>
         <div>
-          <p>
-            This is tasks placeholder
-          </p>
+          <p>Task Lists</p>
+          <ButtonGroup>
+            {
+              tasks && tasks.length ? tasks.map((list, idx) => {
+                return (
+                  <Button
+                    id={idx}
+                    key={list.id}
+                    className="list-title"
+                    onClick={this.toggleList}
+                  >
+                  {list.title}
+                  </Button>)
+              }) : null
+            } 
+          </ButtonGroup>
           <div className="addNew">
+            <p>Add a New Task</p>
             <FormControl
               id="addNew-input"
               type="text"
-              onChange={this.onChangeTask.bind(this)}
-              onKeyPress={this.onKeypressEnter.bind(this)}
+              value={this.state.newTaskTitle}
+              onChange={this.addNewTaskChange}
+              onSubmit={this.addNewTaskEnter}
               name="add-new"
               className="inline"
                 />
-            <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>
+            <div className="icon" onClick={this.addNewTaskEnter}><i className="fa fa-plus pull-right"></i></div>
           </div>  
           <ul className="tasks-list">
-            { //greylist should be an object
-              tasks && tasks.length ? tasks.map((task, index) => {
-              return (
-                <li key={index}>
-                  <div>
-                    {
-                      task.complete ? 
-                      <div className="icon checkbox">
-                        <i className="fa fa-check-square-o" data-id={index} onClick={this.toggleTask.bind(this)}></i>
-                      </div> :
-                      <div className="icon checkbox">
-                        <i className="fa fa-square-o" data-id={index} onClick={this.toggleTask.bind(this)}></i>
+            <p>Task List</p>
+            {
+              selectedList && selectedList.data ? selectedList.data.map((task, index) => {
+                return (
+                  <li key={task.id}>
+                    <div>
+                      {
+                        task.status === 'completed' ? 
+                        <div className="icon checkbox">
+                          <i className="fa fa-check-square-o" data-id={task.id}></i>
+                        </div> :
+                        <div className="icon checkbox">
+                          <i className="fa fa-square-o" data-id={task.id} onClick={this.toggleTaskComplete.bind(this)}></i>
+                        </div>
+                      }                    
+                      <FormControl
+                        readOnly
+                        type="text"
+                        value={task.title}
+                        data-id={index}
+                        name="subject"
+                        className="inline md"
+                      />
+                      <div className="icon">
+                        <i className="fa fa-times pull-right" data-id={task.id} onClick={this.removeTask.bind(this)}></i>
                       </div>
-                    }                    
-                    <FormControl
-                      type="text"
-                      value={task.title}
-                      onChange={this.onChangeTask.bind(this)}
-                      data-id={index}
-                      name="subject"
-                      className="inline md"
-                    />
-                    <div className="icon">
-                      <i className="fa fa-times pull-right" data-id={index} onClick={this.remove.bind(this)}></i>
                     </div>
-                  </div>
-
-                </li>
-              );
+                  </li>
+                );
             }) : null}
           </ul>
         </div>
@@ -100,6 +152,12 @@ class Tasks extends React.Component{
     );
   }
 }
-const mapState = null;
-const mapDispatch = null;
+
+const mapState = ({ tasks }) => ({ tasks });
+const mapDispatch = dispatch => ({
+  tabAddTask: (task, taskList) => dispatch(tabAddTask(task, taskList)),
+  tabRemoveTask: (task, taskList) => dispatch(tabRemoveTask(task, taskList)),
+  tabCompleteTask: (task, taskList) => dispatch(tabCompleteTask(task, taskList))
+});
+
 export default connect(mapState, mapDispatch)(Tasks);
