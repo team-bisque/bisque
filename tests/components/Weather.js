@@ -51,9 +51,8 @@ describe('<Weather/>', () => {
     expect(weatherSpy.props().weather.weather[0].id).to.be.equal(weather.weather[0].id);
   });
 
-	xit('shows the appropriate weather icon', () => {
-    const icon = weatherSpy.find('i');
-    console.log(icon);
+  it('shows a weather icon', () => {
+    const icon = weatherSpy.dive().find('i');
 		expect(icon).to.have.length(1);
 	});
 });
