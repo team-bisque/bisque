@@ -12,10 +12,11 @@ describe('Status Reducer ', () => {
       timeRemaining: 0,
       isWorking: false,
       isPaused: true,
+      nuclear: false,
       durations: {
-        workDuration: 8 * minute,
-        breakDuration: 6 * minute,
-        lunchDuration: 30 * minute
+        workDuration: 25 * minute,
+        breakDuration: 5 * minute,
+        lunchDuration: 60 * minute
       }
     };
     expect(reducer(undefined, {}))

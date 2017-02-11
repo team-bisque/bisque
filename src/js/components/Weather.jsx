@@ -4,7 +4,6 @@ import React from 'react';
 
 export default function Weather (props) {
   const { weather } = props;
-  console.log(weather);
   // Current weather is broadcast in weather.main
   // weather.name is the city name
   // weather.main.temp is in Kelvin, so must be converted to Celsius
@@ -13,9 +12,8 @@ export default function Weather (props) {
   // Forecast IDs pair with a corresponding glyphicon
   // See https://erikflowers.github.io/weather-icons/api-list.html
 
-  let hr = (new Date()).getHours(),
-      daynight = 'day';
-  if (hr < 6 && hr > 18) daynight = 'night';
+  const hr = (new Date()).getHours();
+  const daynight = (hr < 6 && hr > 18) ? 'night' : 'day';
 
   return weather
     ? (
