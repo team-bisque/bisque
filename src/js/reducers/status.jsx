@@ -5,7 +5,6 @@ import {
   ADD_FIVE_MINUTES,
   TOGGLE_WORK,
   TOGGLE_PAUSE,
-  TOGGLE_NUCLEAR,
   START_BREAK,
   START_WORK,
   RECEIVE_DURATIONS
@@ -18,11 +17,11 @@ const initialState = {
   timeRemaining: 0,
   isWorking: false,
   isPaused: true,
-  nuclear: false,
   durations: {
     workDuration: 25 * minute,
     breakDuration: 5 * minute,
-    lunchDuration: 60 * minute
+    lunchDuration: 60 * minute,
+    nuclear: false
   }
 };
 
@@ -66,13 +65,7 @@ export default (state = initialState, action) => {
       break;
 
     case RECEIVE_DURATIONS:
-      newState.durations.workDuration = action.durations.workDuration || newState.durations.workDuration;
-      newState.durations.breakDuration = action.durations.breakDuration || newState.durations.breakDuration;
-      newState.durations.lunchDuration = action.durations.lunchDuration || newState.durations.lunchDuration;
-      break;
-
-    case TOGGLE_NUCLEAR:
-      newState.nuclear = !newState.nuclear;
+      newState.durations = Object.assign({}, newState.durations, action.durations);
       break;
 
     default:
