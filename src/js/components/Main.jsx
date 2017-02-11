@@ -12,6 +12,7 @@ import Weather from './Weather';
 import Tasks from './Tasks';
 
 import { setRoute } from '../action-creators/route';
+import { createNewTask } from '../action-creators/tasks';
 
 let backgrounds = [
 'http://i.imgur.com/cAkrTyU.jpg',
@@ -86,8 +87,8 @@ class Main extends React.Component{
     })
   }
 
-  render(){
-    const { status, settings, weather, auth, route, history, greylist } = this.props;
+  render() {
+    const { status, settings, weather, auth, route, history, greylist, tasks } = this.props;
 
     let child;
     if (!this.props.route || this.props.route.includes("alarm")){
@@ -97,7 +98,7 @@ class Main extends React.Component{
     } else if (this.props.route === "chart"){
       child = (<Graph {...this.props} />);
     } else if (this.props.route === "tasks"){
-      child = (<Tasks {...this.props} />);
+      child = (<Tasks createNewTask={createNewTask} {...this.props} />);
     }
 
     const tooltip = {

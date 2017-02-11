@@ -175,11 +175,22 @@ body {
     animation-play-state: running;
   }
 
-  &.settings, &.tasks {
+  &.settings {
     width: 300px;
     height: 500px;
     border-radius: 10px;
     padding: 50px 10px 10px 10px;
+    -webkit-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+  }
+
+  &.tasks {
+    width: 300px;
+    height: 500px;
+    border-radius: 10px;
+    padding: 20px 10px 10px 10px;
     -webkit-transition: all 200ms ease-in;
     -ms-transition: all 200ms ease-in;
     -moz-transition: all 200ms ease-in;
@@ -408,8 +419,14 @@ body {
     font-size: 0.5em;
     margin-left: 10px
   }
+
   .checkbox {
     width: 5%;
+  }
+
+  p {
+    font-weight: bold;
+    padding: 20px 0 10px 0;
   }
 }
 
