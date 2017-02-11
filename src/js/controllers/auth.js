@@ -5,11 +5,8 @@ import store         		 from '../store';
 
 import { setRoute } from '../action-creators/route';
 
-
 const firebase = require('./firebase');
 const User = require('./user');
-const ChromePromise = require('chrome-promise');
-const chromep = new ChromePromise();
 
 const Auth = {
 
@@ -24,14 +21,16 @@ const Auth = {
 					.then(() => User.settings.getById(userId))
 					.then(() => store.dispatch(fetchTasks()))
 					.then(() => store.dispatch(setRoute(null)));
-					
+
+				chrome.tabs.reload();
+
 			} else {
 				store.dispatch(authenticate(null))
 				store.dispatch(setRoute('signin'))
 			}
 		})
 	},
-	
+
 	authenticate:(interactive)=>{
 		chrome.identity.getAuthToken({
 			interactive: !!interactive
@@ -50,11 +49,11 @@ const Auth = {
 						breakDuration: 300000,
 						lunchDuration: 300000,
 						greylist: {
-	      			0: 'facebook.com',
-	      			1: 'youtube.com'
-	      		}
-	      	}
-	      	firebase.database().ref('users/' + user.uid).set(defaultSettings)
+							0: 'facebook.com',
+							1: 'youtube.com'
+						}
+					}
+					firebase.database().ref('users/' + user.uid).set(defaultSettings)
 	      })
 	      .catch(error => {
 	        // The OAuth token might have been invalidated. Let's remove it from cache.

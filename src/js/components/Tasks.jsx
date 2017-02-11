@@ -132,8 +132,9 @@ class Tasks extends React.Component{
                         </div>
                       }                    
                       <FormControl
+                        readOnly
                         type="text"
-                        defaultValue={task.title}
+                        value={task.title}
                         data-id={index}
                         name="subject"
                         className="inline md"

@@ -1,5 +1,4 @@
 'use strict';
-import store from '../store';
 
 import {
   SET_TIME_REMAINING,
@@ -7,16 +6,23 @@ import {
   TOGGLE_WORK,
   TOGGLE_PAUSE,
   START_BREAK,
-  START_WORK
+  START_WORK,
+  RECEIVE_DURATIONS
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
 
-// Pause begins true, waits for user to start
+// Pause begins true, waits for user
 const initialState = {
   timeRemaining: 0,
   isWorking: false,
   isPaused: true,
+  durations: {
+    workDuration: 25 * minute,
+    breakDuration: 5 * minute,
+    lunchDuration: 60 * minute,
+    nuclear: false
+  }
 };
 
 export default (state = initialState, action) => {
@@ -34,28 +40,32 @@ export default (state = initialState, action) => {
     case START_BREAK:
       newState.isWorking = false;
       newState.isPaused = false;
-      newState.timeRemaining = store.getState().settings.breakDuration;
+      newState.timeRemaining = state.durations.breakDuration;
       break;
 
     case START_WORK:
       newState.isWorking = true;
       newState.isPaused = false;
-      newState.timeRemaining = store.getState().settings.workDuration;
+      newState.timeRemaining = state.durations.workDuration;
       break;
 
     case TOGGLE_WORK:
       // First, toggle work
       newState.isWorking = !newState.isWorking;
-      // Second, make sure we're unpaused
-      newState.isPaused = false;
-      // Last, put time on the clock
+      // Second, put time on the clock
       newState.timeRemaining = newState.isWorking
-      ? store.getState().settings.workDuration
-      : store.getState().settings.breakDuration;
+      ? state.durations.workDuration
+      : state.durations.breakDuration;
+      // Last, unpause
+      newState.isPaused = false;
       break;
 
     case TOGGLE_PAUSE:
       newState.isPaused = !newState.isPaused;
+      break;
+
+    case RECEIVE_DURATIONS:
+      newState.durations = Object.assign({}, newState.durations, action.durations);
       break;
 
     default:

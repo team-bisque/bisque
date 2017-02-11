@@ -1,5 +1,5 @@
 import { login } from './auth';
-import { setSettings } from './settings';
+import { setSettings } from './status';
 import { addGreylist, editGreylist, removeGreylist } from './greylist';
 import { createNewTask, deleteTask, finishTask } from './tasks';
 

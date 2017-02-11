@@ -105,7 +105,7 @@ body {
     }
 
     .top-center {
-      top: 0;            
+      top: 0;
     }
 
     .bottom-left {
@@ -129,6 +129,22 @@ body {
       height: 100%;
     }
 
+}
+
+popover {
+  background: #000
+}
+
+.popover-title {
+  background: #222
+}
+
+.popover-content {
+  color: #000
+}
+
+#popup {
+  padding: 15px;
 }
 
 #wrapper {
@@ -269,6 +285,10 @@ body {
     font-size: 1em;
     text-align: center;
   }
+}
+
+buttonHolder {
+  text-align: center;
 }
 
 // Icons

@@ -38,6 +38,8 @@ export const tabCompleteTask = (task, taskList) => ({
 })
 
 export const fetchTasks = () => dispatch => {
+	// The Google Tasks API requires us to get all of a user's tasklists
+	// And separately request all of the tasks in that list, requiring two AJAX requests
 	chrome.identity.getAuthToken({interactive: true}, token => {
 		let config = { headers: { 'Authorization': 'Bearer ' + token } }
 		axios.get(`https://www.googleapis.com/tasks/v1/users/@me/lists?key=${firebaseConfig.apiKey}`, config)
@@ -48,11 +50,7 @@ export const fetchTasks = () => dispatch => {
 					.then(task => {
 						const title = list.title;
 						const id = list.id;
-						
-						return {
-							title,
-							id,
-							data: task.data.items}
+						return {title, id, data: task.data.items}
 						}
 					)
 			})
@@ -72,7 +70,7 @@ export const createNewTask = payload => dispatch => {
 		axios.post(`https://www.googleapis.com/tasks/v1/lists/${taskList}/tasks?key=${firebaseConfig.apiKey}`, task, config)
 		.then(newTask => {
 			const taskListToAdd = taskList;
-			dispatch(receiveTask(newTask, taskListToAdd)) // taskList is the TITLE
+			dispatch(receiveTask(newTask, taskListToAdd))
 		})
 		.catch(err => console.error(err));
 	})

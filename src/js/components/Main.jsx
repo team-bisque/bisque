@@ -12,7 +12,6 @@ import Weather from './Weather';
 import Tasks from './Tasks';
 
 import { setRoute } from '../action-creators/route';
-import { createNewTask } from '../action-creators/tasks';
 
 let backgrounds = [
 'http://i.imgur.com/cAkrTyU.jpg',
@@ -91,14 +90,14 @@ class Main extends React.Component{
     const { status, settings, weather, auth, route, history, greylist, tasks } = this.props;
 
     let child;
-    if (!this.props.route || this.props.route.includes("alarm")){
+    if (!route || route.includes('alarm')){
       child = (<Timer status={status} />);
-    } else if (this.props.route === "settings"){
+    } else if (route === "settings"){
       child = (<Settings {...this.props} />);
-    } else if (this.props.route === "chart"){
+    } else if (route === "chart"){
       child = (<Graph {...this.props} />);
-    } else if (this.props.route === "tasks"){
-      child = (<Tasks createNewTask={createNewTask} {...this.props} />);
+    } else if (route === "tasks"){
+      child = (<Tasks {...this.props} />);
     }
 
     const tooltip = {
@@ -121,9 +120,9 @@ class Main extends React.Component{
           auth ? (
             <div>
               {
-                !this.props.route ? 
+                !this.props.route ?
                 <User {...this.props} /> : null
-              }              
+              }
               <div id="tasks" className="icon top-left bg-check">
                 <OverlayTrigger placement="bottom" overlay={tooltip.tasks}>
                   <i className="fa fa-calendar-check-o" onClick={(e)=>{this.props.setRoute('tasks')}}></i>
@@ -140,7 +139,7 @@ class Main extends React.Component{
 
               <div id="chart" className="icon bottom-right bg-check">
                 <OverlayTrigger placement="top" overlay={tooltip.graph}>
-                  <i className="fa fa-bar-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
+                  <i className="fa fa-line-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
                 </OverlayTrigger>
               </div>
             </div>
@@ -149,7 +148,7 @@ class Main extends React.Component{
 
 
         <div className="flex-center">
-          <div id="wrapper" className={this.props.route ? this.props.route : null}>
+          <div id="wrapper" className={route ? route : null}>
           {
             !auth ?
             <Login /> : child

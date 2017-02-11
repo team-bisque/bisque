@@ -3,10 +3,6 @@ import {tabAuthenticate} from '../action-creators/auth';
 import {connect} from 'react-redux';
 
 export class Login extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   authenticate() {
     this.props.tabAuthenticate();
   }
