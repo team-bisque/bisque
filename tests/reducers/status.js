@@ -1,38 +1,22 @@
 import {expect} from 'chai';
-// import {createStore, combineReducers} from 'redux';
 
 import * as types from '../../src/js/constants';
-
 import reducer from '../../src/js/reducers/status';
-// import store from '../../src/js/store';
 
-describe('Status Reducer (currently only works if you comment out the import store and the START_WORK, START_BREAK, and TOGGLE_WORK cases in the reducer)', () => {
+describe('Status Reducer ', () => {
 
-  // let testStore;
-
-  // beforeEach('Create test store', () => {
-  //   let testRoot = combineReducers({status})
-  //   testStore = createStore({testRoot});
-  // });
-
-  // beforeEach('create initial state', () => {
-  //   const nonsenseAction = {type: 'nonsense'};
-  //   reducer(undefined, nonsenseAction);
-  // })
-
-  // it('has proper initial state', () => {
-  //   let newState = testStore.getState();
-
-  //   expect(newState.isWorking).to.be.false();
-  //   expect(newState.isPaused).to.be.false();
-  //   expect(newState.timeRemaining).to.be.equal(0);
-  // });
+  const minute = 60 * 1000;
 
   it('has proper initial state', () => {
     const initialState = {
       timeRemaining: 0,
       isWorking: false,
       isPaused: true,
+      durations: {
+        workDuration: 8 * minute,
+        breakDuration: 6 * minute,
+        lunchDuration: 30 * minute
+      }
     };
     expect(reducer(undefined, {}))
       .to.be.deep.equal(initialState);
@@ -44,7 +28,6 @@ describe('Status Reducer (currently only works if you comment out the import sto
       type: types.SET_TIME_REMAINING,
       timeRemaining
     };
-
     expect(reducer({}, setTimeAction)).to.be.deep.equal({timeRemaining: 31});
 
     timeRemaining = 67;
@@ -54,6 +37,18 @@ describe('Status Reducer (currently only works if you comment out the import sto
     };
     expect(reducer({}, setTimeAction)).to.be.deep.equal({timeRemaining: 67});
   });
+
+  it('adds five minutes', () => {
+    const initialState = {
+      timeRemaining: 8 * minute
+    };
+    const action = {type: types.ADD_FIVE_MINUTES};
+    const expectedState = {
+      timeRemaining: 13 * minute
+    };
+    expect(reducer(initialState, action))
+      .to.be.deep.equal(expectedState);
+  })
 
   it('toggles pause', () => {
     const initialState = {

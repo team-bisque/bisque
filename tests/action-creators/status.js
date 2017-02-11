@@ -54,5 +54,31 @@ describe('status actions', () => {
     };
     expect(statusActions.toggleLunch()).to.be.deep.equal(expectedAction);
   });
+
+  it('should create an action to receive durations', () => {
+    const durations = 3;
+    const expectedAction = {
+      type: types.RECEIVE_DURATIONS,
+      durations
+    };
+    expect(statusActions.receiveDurations(durations))
+      .to.be.deep.equal(expectedAction);
+  });
+
+  it('should create an action to set start time', () => {
+    const startTime = 10000000;
+    const expectedAction = {
+      type: types.SET_START_TIME,
+      startTime
+    };
+    expect(statusActions.setStartTime(startTime))
+      .to.be.deep.equal(expectedAction);
+  });
+
+  it('should create an action to save settings', () => {
+    const expectedAction = {type: types.TAB_ALIAS_SAVE_SETTINGS};
+    expect(statusActions.tabSaveSettings())
+      .to.be.deep.equal(expectedAction);
+  });
 });
 
