@@ -7,8 +7,6 @@ import { setRoute } from '../action-creators/route';
 
 const firebase = require('./firebase');
 const User = require('./user');
-const ChromePromise = require('chrome-promise');
-const chromep = new ChromePromise();
 
 const Auth = {
 
@@ -25,6 +23,7 @@ const Auth = {
 					.then(() => store.dispatch(setRoute(null)));
 
 				chrome.tabs.reload();
+
 			} else {
 				store.dispatch(authenticate(null))
 				store.dispatch(setRoute('signin'))
