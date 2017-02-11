@@ -24,8 +24,8 @@ class Core {
 	_init(){
 		const { dispatch } = store;
 
-		// Checks weather every 20 minutes
-		setInterval(() => {
+		dispatch(fetchWeather()); // Initial weather check
+		setInterval(() => { // Update weather every 20 minutes
 			dispatch(fetchWeather());
 		}, 1200000);
 
