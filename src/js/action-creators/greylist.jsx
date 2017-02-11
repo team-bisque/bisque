@@ -1,7 +1,7 @@
 'use strict';
 import store from '../store';
 import _ from 'lodash';
-import {  
+import {
   ADD_URL,
   REMOVE_URL,
   EDIT_URL,
@@ -19,8 +19,8 @@ export const removeUrl = index => ({
   type: REMOVE_URL, index
 });
 
-export const editUrl = (url, index) => ({  
-  type: EDIT_URL, url, index  
+export const editUrl = (url, index) => ({
+  type: EDIT_URL, url, index
 });
 
 export const tabAddGreylist = url => ({
@@ -43,7 +43,7 @@ export const receiveGreylist = greylist => ({
   type: RECEIVE_GREYLIST, greylist
 })
 
-export const setGreylist = () => dispatch => {  
+export const setGreylist = () => dispatch => {
   User.greylist.set(store.getState().auth.uid, store.getState().settings);
 };
 

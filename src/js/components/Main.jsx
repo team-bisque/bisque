@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-var classNames = require('classnames');
-
 // Components
 import Graph from './Graph';
 import Login from './Login';
@@ -11,6 +9,7 @@ import Settings from './Settings';
 import Timer from './Timer';
 import User from './User';
 import Weather from './Weather';
+import Tasks from './Tasks';
 
 import { setRoute } from '../action-creators/route';
 
@@ -26,8 +25,8 @@ let backgrounds = [
 ];
 
 const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
-
 const BackgroundCheck = require('../controllers/backgroundCheck');
+const classNames = require('classnames');
 
 class Main extends React.Component{
 
@@ -48,6 +47,7 @@ class Main extends React.Component{
   componentWillMount() {
     this.setBackground(backgrounds[random]);
   }
+
   componentDidMount() {
     BackgroundCheck.init({
       targets: '.bg-check',
@@ -77,7 +77,6 @@ class Main extends React.Component{
   }
 
   onImageLoad(e){
-
     let width = e.target.naturalWidth,
         height = e.target.naturalHeight;
 
@@ -88,20 +87,23 @@ class Main extends React.Component{
   }
 
   render(){
-    const { status, settings, weather, auth, route, history, greylist } = this.props;
+    const { status, weather, auth, route, history, greylist } = this.props;
 
     let child;
-    if (!this.props.route || this.props.route.includes("alarm")){
+    if (!route || route.includes('alarm')){
       child = (<Timer status={status} />);
-    } else if (this.props.route === "settings"){
-      child = (<Settings {...this.props}/>);
-    } else if (this.props.route === "chart"){
-      child = (<Graph {...this.props}/>);
+    } else if (route === "settings"){
+      child = (<Settings {...this.props} />);
+    } else if (route === "chart"){
+      child = (<Graph {...this.props} />);
+    } else if (route === "tasks"){
+      child = (<Tasks {...this.props} />);
     }
 
     const tooltip = {
       settings: (<Tooltip id="settings-tooltip">Settings</Tooltip>),
-      graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>)
+      graph: (<Tooltip id="graph-tooltip">Graphs</Tooltip>),
+      tasks: (<Tooltip id="task-tooltip">Tasks</Tooltip>)
     }
 
     return (
@@ -117,7 +119,16 @@ class Main extends React.Component{
         {
           auth ? (
             <div>
-              <User {...this.props} />
+              {
+                !this.props.route ? 
+                <User {...this.props} /> : null
+              }              
+              <div id="tasks" className="icon top-left bg-check">
+                <OverlayTrigger placement="bottom" overlay={tooltip.tasks}>
+                  <i className="fa fa-calendar-check-o" onClick={(e)=>{this.props.setRoute('tasks')}}></i>
+                </OverlayTrigger>
+              </div>
+
               <Weather weather={weather} />
 
               <div id="settings" className="icon bottom-left bg-check">
@@ -137,7 +148,7 @@ class Main extends React.Component{
 
 
         <div className="flex-center">
-          <div id="wrapper" className={this.props.route ? this.props.route : null}>
+          <div id="wrapper" className={route ? route : null}>
           {
             !auth ?
             <Login /> : child

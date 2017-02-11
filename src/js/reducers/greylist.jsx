@@ -1,6 +1,6 @@
 'use strict';
 
-import {	
+import {
 	ADD_URL,
 	REMOVE_URL,
 	EDIT_URL,
@@ -12,15 +12,15 @@ import {
 // ### reducer needs refactor
 export default (greylist = [], action) => {
 	let newState = greylist;
-	switch (action.type) {		
-	  case ADD_URL:	  
+	switch (action.type) {
+	  case ADD_URL:
 	  	newState.push(action.url);
 	    break;
 	  case REMOVE_URL:
 	    newState = newState.filter((e, i) => i !== action.index);
 	    break;
     case EDIT_URL:
-    	newState.greylist[action.index] = action.url;
+    	newState[action.index] = action.url;
     	break;
     case RECEIVE_GREYLIST:
     	newState = action.greylist;
