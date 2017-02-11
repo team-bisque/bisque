@@ -7,15 +7,18 @@ import {
   SET_LUNCH_DURATION,
   SET_BREAK_DURATION,
   SET_START_TIME,
-  RECEIVE_SETTINGS,
+  RECEIVE_DURATIONS,
   TAB_ALIAS_SAVE_SETTINGS
 } from '../constants';
 
-export const receiveSettings = settings => ({
-  type: RECEIVE_SETTINGS, settings
+import { firebaseDb } from '../firebase';
+const settingsRef = firebaseDb.ref('users');
+
+const receive_duration = durations => ({
+  type: RECEIVE_DURATIONS, durations
 });
 
-export const setWorkDuration = workDuration => ({
+export const set_workDuration = workDuration => ({
   type: SET_WORK_DURATION, workDuration
 });
 
@@ -35,13 +38,15 @@ export const tabSaveSettings = () => ({
   type: TAB_ALIAS_SAVE_SETTINGS
 });
 
-export const receive_settings = settings => dispatch => {
-
-  return new Promise((resolve, reject) => {
-      firebaseDb.ref(`${this._path}/${key}`)
-        .remove(error => error ? reject(error) : resolve());
-    });
+export const receiveDuration = () => (dispatch, getState) => {
+  const ref = settingsRef.child(getState().auth.uid);
+  ref.once('value', (snapshot) => {
+    console.log('receiveSettings: snapshop', snapshot.val())
+    dispatch(receive_duration(snapshot.val()));
+  });
 }
+
+
 
 export const setSettings = () => dispatch => {
   // why having scope issue??

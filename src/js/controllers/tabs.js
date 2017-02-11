@@ -6,6 +6,7 @@ const User = require('./user');
 const _ = require('lodash');
 const moment = require('moment');
 
+import { setHistory } from '../action-creators/history'
 import store from '../store';
 
 class Tabs {
@@ -38,9 +39,10 @@ class Tabs {
   // See keyLogger.js for content script side of process.
   onMessage(port) {
     port.onMessage.addListener(msg => {
-      User.history.set(msg, new Date())
-        .then(() => User.history.getById(store.getState().auth.uid))
-        .catch(console.error)
+      store.dispatch(setHistory(new Date(), msg))
+      // User.history.set(msg, new Date())
+      //   .then(() => User.history.getById(store.getState().auth.uid))
+      //   .catch(console.error)
     });
   }
   keyloggerSetup(tabId, changeInfo, tab) {
@@ -88,10 +90,6 @@ class Tabs {
       .then(() => chromep.tabs.query({ active: true }))
       .then(res => res[0])
   }
-}
-
-const Test = () => {
-
 }
 
 module.exports = Tabs;

@@ -1,5 +1,5 @@
 // auth
-export const RECIEVE_USER = 'RECIEVE_USER';
+export const RECEIVE_USER = 'RECEIVE_USER';
 
 // greylist
 export const ADD_URL = 'ADD_URL';
@@ -9,6 +9,7 @@ export const RECEIVE_GREYLIST = 'RECEIVE_GREYLIST';
 
 // history
 export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
+export const SET_HISTORY = 'SET_HISTORY';
 
 // routes
 export const SET_ROUTE = 'SET_ROUTE';
@@ -26,6 +27,8 @@ export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
 export const RECEIVE_DURATIONS = 'RECEIVE_DURATIONS';
 export const SET_DURATIONS = 'SET_DURATIONS';
 export const SET_START_TIME = 'SET_START_TIME';
+
+export const SET_DURATION_ALIAS = 'SET_DURATION_ALIAS';
 
 // tasks
 export const RECEIVE_TASKS = 'RECEIVE_TASKS';

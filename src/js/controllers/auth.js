@@ -1,12 +1,14 @@
 'use strict';
-import { recieveUser }  from '../action-creators/auth';
+import { receiveUser }  from '../action-creators/auth';
+import { receiveHistory } from '../action-creators/history';
+import { receiveDuration } from '../action-creators/status';
 import { fetchTasks } from '../action-creators/tasks';
 import store         		 from '../store';
 
 import { setRoute } from '../action-creators/route';
 
 const { firebaseAuth, firebaseDb, GoogleAuthProvider } = require('../firebase');
-const firebase = require('./firebase');
+// const firebase = require('./firebase');
 const User = require('./user');
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
@@ -18,16 +20,16 @@ const Auth = {
 		  if (user) {
 				const userId = user.uid;
 
-				store.dispatch(recieveUser(user));
-
-				User.history.getById(userId)
-					.then(() => User.settings.getById(userId))
-					.then(() => store.dispatch(fetchTasks()))
-					.then(() => store.dispatch(setRoute(null)));
-
-				chrome.tabs.reload();
+				store.dispatch(receiveUser(user));
+				store.dispatch(receiveHistory());
+				store.dispatch(receiveDuration());
+				store.dispatch(fetchTasks());
+				store.dispatch(setRoute(null));
+				
+				// do not reload!! it looks like app has glitch
+				// chrome.tabs.reload();
 			} else {
-				store.dispatch(recieveUser(null))
+				store.dispatch(receiveUser(null))
 				store.dispatch(setRoute('signin'))
 			}
 		})

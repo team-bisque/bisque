@@ -1,11 +1,11 @@
 
 import {
-  RECIEVE_USER,
+  RECEIVE_USER,
 } from '../constants';
 
 export default (state = null, action) => {
   switch (action.type) {
-    case RECIEVE_USER:
+    case RECEIVE_USER:
       return action.user;
     default:
       return state;

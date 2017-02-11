@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 
 import {
   receiveDurations,
-  tabSaveSettings
+  tabSaveSettings,
+  setDurationAlias
 } from '../../action-creators/status';
 
 const minute = 60 * 1000;
@@ -18,18 +19,15 @@ class Duration extends React.Component{
   }
   onChangeMinutes(e){
     let { name, value } = e.target;
-    value = value * minute;
-
-    let durations = Object.assign({}, this.props.status.durations)
-
-    durations[`${name}Duration`] = value;
+    
+    let durations = Object.assign({}, this.props.status.durations);
+        durations[`${name}Duration`] = value * minute;
 
     // Because we have to alias our thunks I'm leaving this optmistic call
     // on the frontend, so as to prevent any lag between user input
     // and rerendering off the state. Maybe we can find an elegant way
     // to refactor this later on.
-    this.props.receiveDurations(durations);
-    this.props.tabSaveSettings(durations);
+    this.props.setDurationAlias(durations);
   }
   render(){
     const { durations } = this.props.status;
@@ -56,9 +54,6 @@ class Duration extends React.Component{
 }
 
 const mapState = ({ status }) => ({ status });
-const mapDispatch = dispatch => ({
-  tabSaveSettings:  () => (dispatch(tabSaveSettings())),
-  receiveDurations:  duration => (dispatch(receiveDurations(duration)))
-});
+const mapDispatch = {setDurationAlias};
 
 export default connect(mapState, mapDispatch)(Duration);
