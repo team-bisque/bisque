@@ -17,6 +17,7 @@ export const SET_ROUTE = 'SET_ROUTE';
 export const TOGGLE_WORK = 'TOGGLE_WORK';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const TOGGLE_LUNCH = 'TOGGLE_LUNCH';
+
 export const START_WORK = 'START_WORK';
 export const START_BREAK = 'START_BREAK';
 export const SET_TIME_REMAINING = 'SET_TIME_REMAINING';
@@ -26,6 +27,9 @@ export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
 export const RECEIVE_DURATIONS = 'RECEIVE_DURATIONS';
 export const SET_DURATIONS = 'SET_DURATIONS';
 export const SET_START_TIME = 'SET_START_TIME';
+
+// status.nuclear
+export const TOGGLE_NUCLEAR = 'TOGGLE_NUCLEAR';
 
 // tasks
 export const RECEIVE_TASKS = 'RECEIVE_TASKS';
