@@ -13,15 +13,15 @@ import { createStore } from 'redux';
 import Timer from '../../src/js/components/Timer';
 import statusReducer from '../../src/js/reducers/status';
 
-const minute = 60000;
+// const minute = 60000;
 
-const store = {
-	status: {
-		timeRemaining: 1 * minute,
-		isWorking: true,
-		isPaused: false,
-	}
-};
+// const store = {
+// 	status: {
+// 		timeRemaining: 1 * minute,
+// 		isWorking: true,
+// 		isPaused: false,
+// 	}
+// };
 
 describe('<Timer>', () => {
 

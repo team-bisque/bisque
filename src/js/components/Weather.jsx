@@ -4,6 +4,7 @@ import React from 'react';
 
 export default function Weather (props) {
   const { weather } = props;
+  console.log(weather);
   // Current weather is broadcast in weather.main
   // weather.name is the city name
   // weather.main.temp is in Kelvin, so must be converted to Celsius
