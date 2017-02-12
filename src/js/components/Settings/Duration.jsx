@@ -35,8 +35,8 @@ class Duration extends React.Component{
   onChangeMinutes(e){
     let { name, value } = e.target;
     
-    let durations = Object.assign({}, this.props.status.durations);
-        durations[name] = value * minute;
+    // let durations = Object.assign({}, this.props.status.durations);
+    //     durations[name] = value * minute;
 
     if (name !== 'nuclear') {
       value = value * minute;
@@ -47,6 +47,10 @@ class Duration extends React.Component{
         this.setState({validated: false});
       }
     }
+
+    let durations = Object.assign({}, this.props.status.durations)
+
+    durations[`${name}`] = value;
 
     // Because we have to alias our thunks I'm leaving this optmistic call
     // on the frontend, so as to prevent any lag between user input
@@ -92,15 +96,15 @@ class Duration extends React.Component{
                 <i className="fa fa-question-circle"/>
               </OverlayTrigger>
             </div>
-          <FormControl type="number" min="5" max="90" value={workDuration} name="workDuration" onChange={this.onChangeMinutes} />
+          <FormControl type="range" min="5" max="90" step="5" value={workDuration} name="workDuration" onChange={this.onChangeMinutes} />
           <ControlLabel className="settings-text">
             {`Break Minutes: ${breakDuration}`}
           </ControlLabel>
-          <FormControl type="number" min="5" max="90" value={breakDuration} name="breakDuration" onChange={this.onChangeMinutes} />
+          <FormControl type="range" min="5" max="90" step="5" value={breakDuration} name="breakDuration" onChange={this.onChangeMinutes} />
           <ControlLabel className="settings-text">
             {`Lunch Minutes: ${lunchDuration}`}
           </ControlLabel>
-          <FormControl type="number" min="5" max="90" value={lunchDuration} name="lunchDuration" onChange={this.onChangeMinutes} />
+          <FormControl type="range" min="5" max="90" step="5" value={lunchDuration} name="lunchDuration" onChange={this.onChangeMinutes} />
         </FormGroup>
 
         <FormGroup controlId="nuclear">
@@ -116,8 +120,8 @@ class Duration extends React.Component{
               </OverlayTrigger>
             </div>
           </div>
-        </FormGroup>
-        <Button
+
+          <Button
             style={{ marginTop: '10px', paddingLeft: '10%', paddingRight: '10%' }}
             name="nuclear"
             onClick={this.onChangeMinutes}
@@ -126,6 +130,8 @@ class Duration extends React.Component{
               'Turn off the Nuclear Option'
               : 'I understand, go Nuclear'}
           </Button>
+
+        </FormGroup>
       </div>
     );
   }
