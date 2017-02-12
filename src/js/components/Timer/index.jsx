@@ -31,10 +31,6 @@ class Timer extends React.Component {
     const { status } = this.props;
     const min = status.timeRemaining / 60000;
 
-    // function getMinitue(millisec) {
-    //   return moment.utc(Math.abs(millisec)).format('hh:mm');
-    // }
-
     let message;
     if (status && status.isPaused) message = 'Timer is paused';
     if (status && !status.isPaused && status.isWorking) message = "You're on work";
@@ -51,8 +47,6 @@ class Timer extends React.Component {
 
     return (
       <div className="timer-wrapper">
-
-
         <div className="timer-message">
           <span>{ message }</span>
         </div>
@@ -103,3 +97,4 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(Timer);
+export {Timer as TestableTimer};

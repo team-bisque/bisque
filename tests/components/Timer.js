@@ -2,53 +2,165 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { spy } from 'sinon';
-
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import {Tooltip} from 'react-bootstrap';
 
-// Spy wrapper for chrome functions
-// Activate only when testing or you will not be able to build
-// const chrome = require('sinon-chrome/extensions');
-
-import Timer from '../../src/js/components/Timer';
+import {TestableTimer} from '../../src/js/components/Timer';
+import Donut from '../../src/js/components/Timer/Donut';
 import statusReducer from '../../src/js/reducers/status';
+import * as types from '../../src/js/constants';
 
-// const minute = 60000;
-
-// const store = {
-// 	status: {
-// 		timeRemaining: 1 * minute,
-// 		isWorking: true,
-// 		isPaused: false,
-// 	}
-// };
+const minute = 60000;
 
 describe('<Timer>', () => {
 
-	let timer, testStore;
+	let timerSpy, testStore, action
 
 	beforeEach('Create component and spy', () => {
 		testStore = createStore(statusReducer);
-
-		timer = shallow(
+		action = {type: 'give me your tired, your poor, your global states yearning to be hydrated'};
+		testStore.dispatch(action);
+		timerSpy = shallow(
 			<Provider store={testStore}>
-				<Timer status={testStore.getState()} />
+				<TestableTimer status={testStore.getState()} />
 			</Provider>
 		);
 	});
 
 	it('has the expected props', () => {
-		expect(timer.props().status.timeRemaining).to.be.defined;
-		expect(timer.props().status.isWorking).to.be.defined;
-		expect(timer.props().status.isPaused).to.be.defined;
-		expect(timer.props().status.addFiveMinutes).to.be.defined;
-		expect(timer.props().status.togglePause).to.be.defined;
-		expect(timer.props().status.toggleWork).to.be.defined;
+		const status = {
+		  timeRemaining: 0,
+		  isWorking: false,
+		  isPaused: true,
+		  durations: {
+		    workDuration: 25 * minute,
+		    breakDuration: 5 * minute,
+		    lunchDuration: 60 * minute,
+		    nuclear: false
+		  }
+		};
+		expect(timerSpy.props().status).to.be.deep.equal(status);
 	});
 
-	// it('pauses the timer', () => {
-	// 	timer.simulate('click');
-	//
-	// 	expect(togglePauseSpy.called).to.be.true();
-	// });
+	it('renders a play button when paused', () => {
+		const arrayOfPlayButtons = timerSpy
+			.dive().find('.fa-play');
+		expect(arrayOfPlayButtons).to.have.length(1);
+	});
+
+	it('renders the appropriate buttons when timer is going and user is on break', () => {
+		const unPauseAction = {type: types.TOGGLE_PAUSE};
+		testStore.dispatch(unPauseAction);
+		timerSpy = shallow(
+			<Provider store={testStore}>
+				<TestableTimer status={testStore.getState()} />
+			</Provider>
+		);
+		const pauseButtonExists = timerSpy
+			.dive().find('.fa-pause').exists();
+		const addFiveMinutesButtonExists = timerSpy
+			.dive().find('.fa-history').exists();
+		const workButtonExists = timerSpy
+			.dive().find('.fa-suitcase').exists();
+		expect(pauseButtonExists).to.equal(true);
+		expect(addFiveMinutesButtonExists).to.equal(true);
+		expect(workButtonExists).to.equal(true);
+	});
+
+	it('renders the appropriate buttons when timer is going and user is on work', () => {
+		const onWorkAction = {type: types.START_WORK};
+		testStore.dispatch(onWorkAction);
+		timerSpy = shallow(
+			<Provider store={testStore}>
+				<TestableTimer status={testStore.getState()} />
+			</Provider>
+		);
+		const pauseButtonExists = timerSpy
+			.dive().find('.fa-pause').exists();
+		const addFiveMinutesButtonExists = timerSpy
+			.dive().find('.fa-history').exists();
+		const breakButtonExists = timerSpy
+			.dive().find('.fa-beer').exists();
+		expect(pauseButtonExists).to.equal(true);
+		expect(addFiveMinutesButtonExists).to.equal(true);
+		expect(breakButtonExists).to.equal(true);
+	});
+
+	it('renders the right message if timer is paused', () => {
+		const message = (
+			<div className="timer-message">
+        <span>Timer is paused</span>
+      </div>
+		)
+		expect(timerSpy.dive().contains(message))
+			.to.equal(true);
+	});
+
+	it('renders the right message if timer is playing and user is on work', () => {
+		const onWorkAction = {type: types.START_WORK};
+		testStore.dispatch(onWorkAction);
+		timerSpy = shallow(
+			<Provider store={testStore}>
+				<TestableTimer status={testStore.getState()} />
+			</Provider>
+		);
+		const message = (
+			<div className="timer-message">
+        <span>You're on work</span>
+      </div>
+		)
+		expect(timerSpy.dive().contains(message))
+			.to.equal(true);
+	});
+
+	it('renders the right message if timer is playing and user is on break', () => {
+		const onBreakAction = {type: types.START_BREAK};
+		testStore.dispatch(onBreakAction);
+		timerSpy = shallow(
+			<Provider store={testStore}>
+				<TestableTimer status={testStore.getState()} />
+			</Provider>
+		);
+		const message = (
+			<div className="timer-message">
+        <span>You're on break</span>
+      </div>
+		);
+		expect(timerSpy.dive().contains(message))
+			.to.equal(true);
+	});
+
+	it('renders a Donut component', () => {
+		const donut = (
+      <Donut
+      	status={testStore.getState()}
+      	diameter={250}
+      	center={10}
+      />
+    );
+		expect(timerSpy.dive().contains(donut))
+			.to.equal(true);
+	});
+
+	it('renders the appropriate message for whether or not time is up', () => {
+		let message = (<span>minutes passed</span>);
+		expect(timerSpy.dive().contains(message))
+			.to.equal(true);
+
+		const timeRemaining = 1;
+		const setTimeRemainingAction = {
+			type: types.SET_TIME_REMAINING,
+			timeRemaining
+		};
+		testStore.dispatch(setTimeRemainingAction);
+		timerSpy = shallow(
+			<Provider store={testStore}>
+				<TestableTimer status={testStore.getState()} />
+			</Provider>
+		);
+		message = (<span>minutes left</span>);
+		expect(timerSpy.dive().contains(message))
+			.to.equal(true);
+	});
 });
