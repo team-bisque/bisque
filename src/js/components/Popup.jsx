@@ -6,12 +6,6 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Login from './Login';
 import Timer from './Timer';
 
-let backgrounds = 'http://imgur.com/CA9gCNx'
-
-const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
-const BackgroundCheck = require('../controllers/backgroundCheck');
-const classNames = require('classnames');
-
 class Popup extends React.Component {
   render() {
     const { status, auth } = this.props;
@@ -46,3 +40,4 @@ class Popup extends React.Component {
 const mapState = (state) => (state);
 
 export default connect(mapState, null)(Popup);
+export {Popup as TestablePopup};
