@@ -2,21 +2,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormControl, ButtonGroup, Button } from 'react-bootstrap';
-import { tabAddTask, tabRemoveTask, tabCompleteTask } from '../action-creators/tasks';
-import store from '../store';
+import { tabAddTask, tabRemoveTask, tabCompleteTask } from '../../action-creators/tasks';
 
 class Tasks extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
       selectedList: [],
-      newTaskTitle: ''
+      title: ''
     }
 
     this.toggleList = this.toggleList.bind(this);
     this.addNewTaskChange = this.addNewTaskChange.bind(this);
     this.addNewTaskEnter = this.addNewTaskEnter.bind(this);
-    this.buildTaskResource = this.buildTaskResource.bind(this);
     this.removeTask = this.removeTask.bind(this);
     this.toggleTaskComplete = this.toggleTaskComplete.bind(this);
   }
@@ -27,30 +25,21 @@ class Tasks extends React.Component{
     })
   }
 
-  buildTaskResource () {
-    // For adding new tasks -- builds the task object required by the Google Tasks API
-    const newTask = {
-        title: this.state.newTaskTitle,
-        status: 'needsAction'
-    }
-    return newTask;
-  }
-
   addNewTaskChange (e) {
-    // Tracks input field for adding tasks
-    e.preventDefault();
-    this.setState({
-      newTaskTitle: e.target.value
-    })
+    this.setState({ title: e.target.value })
   }
 
-  addNewTaskEnter () {
-    // Submits data in input field to add new task
-    const newTask = this.buildTaskResource();
-    this.props.tabAddTask(newTask, this.state.selectedList.id);
-    this.setState({
-      newTaskTitle: ''
-    })
+  onKeyPressEnter(e) {
+    if (e.key === 'Enter'){
+      this.addNewTaskEnter(e);
+    }
+  }
+
+  addNewTaskEnter (e) {
+    const { title } = this.state
+    e.preventDefault();
+    this.props.tabAddTask({ title }, this.state.selectedList.id);
+    this.setState({ title: '' });
   }
 
   toggleTaskComplete (e) {
@@ -100,21 +89,22 @@ class Tasks extends React.Component{
                   {list.title}
                   </Button>)
               }) : null
-            } 
+            }
           </ButtonGroup>
           <div className="addNew">
             <p>Add a New Task</p>
             <FormControl
               id="addNew-input"
               type="text"
-              value={this.state.newTaskTitle}
+              value={this.state.title}
               onChange={this.addNewTaskChange}
+              onKeyPress={this.onKeyPressEnter.bind(this)}
               onSubmit={this.addNewTaskEnter}
               name="add-new"
               className="inline"
                 />
             <div className="icon" onClick={this.addNewTaskEnter}><i className="fa fa-plus pull-right"></i></div>
-          </div>  
+          </div>
           <ul className="tasks-list">
             <p>Task List</p>
             {
@@ -123,14 +113,14 @@ class Tasks extends React.Component{
                   <li key={task.id}>
                     <div>
                       {
-                        task.status === 'completed' ? 
+                        task.status === 'completed' ?
                         <div className="icon checkbox">
                           <i className="fa fa-check-square-o" data-id={task.id}></i>
                         </div> :
                         <div className="icon checkbox">
                           <i className="fa fa-square-o" data-id={task.id} onClick={this.toggleTaskComplete.bind(this)}></i>
                         </div>
-                      }                    
+                      }
                       <FormControl
                         readOnly
                         type="text"

@@ -9,8 +9,8 @@ import {
 
 import store from '../store';
 
-// const ChromePromise = require('chrome-promise');
-// const chromep = new ChromePromise();
+const ChromePromise = require('chrome-promise');
+const chromep = new ChromePromise();
 
 class Notifications {
 	// https://developer.chrome.com/apps/notifications
