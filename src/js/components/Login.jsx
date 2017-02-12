@@ -21,3 +21,4 @@ const mapState = null;
 const mapDispatch = {tabAuthenticate};
 
 export default connect(mapState, mapDispatch)(Login);
+export {Login as TestableLogin};
