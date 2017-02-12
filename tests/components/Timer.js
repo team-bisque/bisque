@@ -1,7 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { spy } from 'sinon';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import {Tooltip} from 'react-bootstrap';
@@ -44,9 +43,9 @@ describe('<Timer>', () => {
 	});
 
 	it('renders a play button when paused', () => {
-		const arrayOfPlayButtons = timerSpy
-			.dive().find('.fa-play');
-		expect(arrayOfPlayButtons).to.have.length(1);
+		const playButtonExists = timerSpy
+			.dive().find('.fa-play').exists();
+		expect(playButtonExists).to.equal(true);
 	});
 
 	it('renders the appropriate buttons when timer is going and user is on break', () => {
