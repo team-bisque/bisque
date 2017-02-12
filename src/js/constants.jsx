@@ -10,6 +10,7 @@ export const RECEIVE_GREYLIST = 'RECEIVE_GREYLIST';
 // history
 export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
 export const SET_HISTORY = 'SET_HISTORY';
+export const INCREASE_VISIT = 'INCREASE_VISIT';
 
 // routes
 export const SET_ROUTE = 'SET_ROUTE';
@@ -18,6 +19,7 @@ export const SET_ROUTE = 'SET_ROUTE';
 export const TOGGLE_WORK = 'TOGGLE_WORK';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const TOGGLE_LUNCH = 'TOGGLE_LUNCH';
+
 export const START_WORK = 'START_WORK';
 export const START_BREAK = 'START_BREAK';
 export const SET_TIME_REMAINING = 'SET_TIME_REMAINING';

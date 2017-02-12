@@ -128,9 +128,9 @@ class Main extends React.Component{
           auth ? (
             <div>
               {
-                !this.props.route ? 
+                !this.props.route ?
                 <User {...this.props} /> : null
-              }              
+              }
               <div id="tasks" className="icon top-left bg-check">
                 <OverlayTrigger placement="bottom" overlay={tooltip.tasks}>
                   <i className="fa fa-calendar-check-o" onClick={(e)=>{this.props.setRoute('tasks')}}></i>
@@ -147,7 +147,7 @@ class Main extends React.Component{
 
               <div id="chart" className="icon bottom-right bg-check">
                 <OverlayTrigger placement="top" overlay={tooltip.graph}>
-                  <i className="fa fa-bar-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
+                  <i className="fa fa-line-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
                 </OverlayTrigger>
               </div>
             </div>

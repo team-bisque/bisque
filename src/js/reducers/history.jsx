@@ -1,7 +1,8 @@
 'ues strict';
 import {
   RECEIVE_HISTORY,
-  SET_HISTORY
+  SET_HISTORY,
+  INCREASE_VISIT
 } from '../constants';
 
 const moment = require('moment');
@@ -14,18 +15,26 @@ export default (history = null, action) => {
     case RECEIVE_HISTORY:
       return action.history;
     case SET_HISTORY: 
-    	let date = moment(action.time).format('MM-DD-YYYY'),
-					hour = action.time.getHours(),
-					data = action.data;
+    	var date = moment(action.time).format('MM-DD-YYYY'),
+					hour = action.time.getHours();
 
 					if(action.index <= 0){
-						newState[date][hour].push(data)
+            newState[date] = {}
+            newState[date][hour] = [];
+						newState[date][hour].push(action.data)
 					} else {
-						newState[date][hour][index] = action.data;
+						newState[date][hour][action.index] = action.data;
 					}
 
     	return newState;
 
+    case INCREASE_VISIT:
+    	var date = moment(action.time).format('MM-DD-YYYY'),
+					hour = action.time.getHours();
+
+					newState[date][hour][action.index].visits = action.visits;
+
+    	return newState;
     default:
       return history;
   }

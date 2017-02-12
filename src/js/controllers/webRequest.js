@@ -7,14 +7,20 @@
  *  Handles events on user web request.
  */
 
-const User = require('./user');
+// const User = require('./user');
+import { increaseVisits } from '../action-creators/history';
+import store from '../store';
+
 const WebRequest = () => {
 
-  function increaseVisits(request) {
+
+  function increaseVisitsHandler(request) {
     // Filters URLs down to the main domain before pushing to sitesVisited
-    if (request.url.indexOf('chrome-extension://') > -1) return;
+    console.log('increaseVisits',request, store)
+    // if (request.url.indexOf('chrome-extension://') > -1) return;
     let baseURL = request.url.split('/')[2];
-    return User.history.increaseVisits(baseURL);
+    store.dispatch(increaseVisits(new Date(), baseURL))
+    // return User.history.increaseVisits(baseURL);
   }
 
   function redirectUrl() {
@@ -23,10 +29,10 @@ const WebRequest = () => {
 
   return {
     visitCounter: function(tab) {
-      // chrome.webRequest.onCompleted.removeListener(increaseVisits);
+      chrome.webRequest.onCompleted.removeListener(increaseVisitsHandler);
       chrome.webRequest.onCompleted.addListener(
-        increaseVisits, {
-          urls: ["<all_urls>"],
+        increaseVisitsHandler, {
+          urls: ['https://*/*', 'http://*/*'],
           // tabId: tab.id,
           types: ["main_frame"]
         }, ["responseHeaders"]

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormControl } from 'react-bootstrap';
+import { FormControl, Popover, OverlayTrigger } from 'react-bootstrap';
 
 import {
   tabRemoveGreylist,
@@ -37,11 +37,22 @@ class Greylist extends React.Component {
   render() {
     const { greylist } = this.props
 
+
+    const popover = (
+      <Popover
+        id="popover-positioned-right popover-trigger-click"
+        title="Durations">
+        Add distracting websites you want to stay away from during your work periods, e.g. “facebook.com”. Bisque does not bar you from visiting these sites, but it will keep track of how often you visit them.
+      </Popover>
+    );
+
     return (
       <div>
-        <p>
-          Add greylists site you want to be away from during your work time. e.g) buzzfeed.com
-        </p>
+        <div id="help" className="icon">
+          <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={popover}>
+            <i className="fa fa-question-circle"/>
+          </OverlayTrigger>
+        </div>
         <div className="addNew">
           <FormControl
             id="addNew-input"

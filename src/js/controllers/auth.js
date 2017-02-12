@@ -10,8 +10,6 @@ import { setRoute } from '../action-creators/route';
 const { firebaseAuth, firebaseDb, GoogleAuthProvider } = require('../firebase');
 // const firebase = require('./firebase');
 const User = require('./user');
-const ChromePromise = require('chrome-promise');
-const chromep = new ChromePromise();
 
 const Auth = {
 
@@ -19,7 +17,6 @@ const Auth = {
 		firebaseAuth.onAuthStateChanged(user => {
 		  if (user) {
 				const userId = user.uid;
-
 				store.dispatch(receiveUser(user));
 				store.dispatch(receiveHistory());
 				store.dispatch(receiveDuration());

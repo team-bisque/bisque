@@ -19,7 +19,7 @@ class Core {
 	}
 
 	_init(){
-		const { dispatch } = store;
+		const { dispatch, getState } = store;
 
 		dispatch(fetchWeather()); // Initial weather check
 		setInterval(() => { // Update weather every 20 minutes
@@ -29,9 +29,7 @@ class Core {
 		this.tabs._init(); // <-- begins keylogger
 		this.idle._init(); // <-- detects whether user is idle
 		this.auth.onAuthStateChanged(); // <-- firebase authentication listener
-
 		this.notifications.welcome(); // <-- sends welcome notification
-		// dispatch(fetchTasks());
 		this.watchMinute();
 
 
@@ -54,6 +52,7 @@ class Core {
 				}
 				else if (newTime === 0) {
 					this.notifications.statusChange();
+					const status = getState().status;
 				}
 				else if (newTime === -10 * minute) {
 					this.notifications.whereAreYou();

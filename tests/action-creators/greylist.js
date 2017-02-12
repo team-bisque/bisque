@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import * as types from '../../src/js/constants';
 import * as greylistActions from '../../src/js/action-creators/greylist';
 
-describe('Greylist action creators (currently only works with the store import and the store.getState()-ing action creators commented out from the greylist action creator file)', () => {
+describe('Greylist action creators', () => {
 
   it('return an addUrl action', () => {
     const url = 'bisque.com';

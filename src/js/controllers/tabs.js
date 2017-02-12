@@ -62,8 +62,6 @@ class Tabs {
         console.log('keyloggerSetup RES', res)
         if (chrome.runtime.lastError) {
           console.log(chrome.runtime.lastError.message);
-        } else {
-          // Tab exists
         }
       })
     }

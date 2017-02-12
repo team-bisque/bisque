@@ -18,9 +18,10 @@ const initialState = {
   isWorking: false,
   isPaused: true,
   durations: {
-    workDuration: 8 * minute,
-    breakDuration: 6 * minute,
-    lunchDuration: 30 * minute
+    workDuration: 25 * minute,
+    breakDuration: 5 * minute,
+    lunchDuration: 60 * minute,
+    nuclear: false
   }
 };
 
@@ -64,10 +65,8 @@ export default (state = initialState, action) => {
       break;
 
     case RECEIVE_DURATIONS:
-    newState.durations.workDuration = action.durations.workDuration || newState.durations.workDuration;
-    newState.durations.breakDuration = action.durations.breakDuration || newState.durations.breakDuration;
-    newState.durations.lunchDuration = action.durations.lunchDuration || newState.durations.lunchDuration;
-    break;
+      newState.durations = Object.assign({}, newState.durations, action.durations);
+      break;
 
     default:
       break;

@@ -1,13 +1,14 @@
 'use strict';
 
 import React from 'react';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Button, FormGroup, FormControl, ControlLabel, Popover, OverlayTrigger } from 'react-bootstrap';
 
 import {
   receiveDurations,
   tabSaveSettings,
-  setDurationAlias
+  setDurationAlias,
+  toggleNuclear
 } from '../../action-creators/status';
 
 const minute = 60 * 1000;
@@ -15,13 +16,37 @@ const minute = 60 * 1000;
 class Duration extends React.Component{
   constructor(props) {
     super(props);
+    this.state = {
+      nuclear: '',
+      validated: this.props.status.durations.nuclear || false
+    };
     this.onChangeMinutes = this.onChangeMinutes.bind(this);
+    this.nuclearValidation = this.nuclearValidation.bind(this);
   }
+  nuclearValidation(e){
+    let {value} = e.target;
+    const key = 'GO NUCLEAR';
+    const substring = key.substring(0, value.length);
+
+    if (value === substring) this.setState({nuclear: value});
+    if (value === key) this.setState({validated: true});
+  }
+
   onChangeMinutes(e){
     let { name, value } = e.target;
     
     let durations = Object.assign({}, this.props.status.durations);
-        durations[`${name}Duration`] = value * minute;
+        durations[name] = value * minute;
+
+    if (name !== 'nuclear') {
+      value = value * minute;
+    } else {
+      value = !this.props.status.durations.nuclear
+      this.setState({nuclear: ''});
+      if (this.props.status.durations.nuclear) {
+        this.setState({validated: false});
+      }
+    }
 
     // Because we have to alias our thunks I'm leaving this optmistic call
     // on the frontend, so as to prevent any lag between user input
@@ -31,23 +56,76 @@ class Duration extends React.Component{
   }
   render(){
     const { durations } = this.props.status;
+
+    const popover = {
+      durations: (
+        <Popover
+          id="popover-positioned-right popover-trigger-click"
+          title="Durations">
+          Set in minutes the desired durations of your work, break and lunch periods. Cirillo’s Pomodoro Technique suggests 25 minutes for work broken up by 5 minute breaks, but feel free to set whatever length of time you like.
+        </Popover>
+      ),
+      nuclear: (
+        <Popover
+          id="popover-positioned-top popover-trigger-click"
+          title="The Nuclear Option">
+          If you’re feeling hopelessly under the command of your own computer, the Nuclear Option might be for you. When turned on, Bisque will lock your Chrome browser from displaying anything other than your Bisque dashboard, until you’re supposed to resume working. Type “GO NUCLEAR” in the adjacent form to activate the button. (And, yes, you can cheat the system, but that’s not really in keeping with the spirit of the Nuclear Option, now is it?)
+        </Popover>
+      )
+    };
+
+
+    let workDuration = durations.workDuration / minute;
+    let breakDuration = durations.breakDuration / minute;
+    let lunchDuration = durations.lunchDuration / minute;
+    let nuclear = durations.nuclear;
+    const trigger = ['hover', 'focus'];
+
     return (
       <div>
-        <p>
-          Set in minutes the length of your work, break and lunch periods:
-        </p>
         <FormGroup controlId="work-minutes">
-          <ControlLabel className="settings-text">Work Minutes</ControlLabel>
-          <FormControl type="number" value={durations.workDuration / minute} name="work" onChange={this.onChangeMinutes} />
+            <ControlLabel className="settings-text">
+              {`Work Minutes: ${workDuration}`}
+            </ControlLabel>
+            <div id="help" className="icon">
+              <OverlayTrigger trigger={trigger} className="inline" overlay={popover.durations}>
+                <i className="fa fa-question-circle"/>
+              </OverlayTrigger>
+            </div>
+          <FormControl type="number" min="5" max="90" value={workDuration} name="workDuration" onChange={this.onChangeMinutes} />
+          <ControlLabel className="settings-text">
+            {`Break Minutes: ${breakDuration}`}
+          </ControlLabel>
+          <FormControl type="number" min="5" max="90" value={breakDuration} name="breakDuration" onChange={this.onChangeMinutes} />
+          <ControlLabel className="settings-text">
+            {`Lunch Minutes: ${lunchDuration}`}
+          </ControlLabel>
+          <FormControl type="number" min="5" max="90" value={lunchDuration} name="lunchDuration" onChange={this.onChangeMinutes} />
         </FormGroup>
-        <FormGroup controlId="break-minutes">
-          <ControlLabel className="settings-text">Break Minutes</ControlLabel>
-          <FormControl type="number" value={durations.breakDuration / minute} name="break" onChange={this.onChangeMinutes} />
+
+        <FormGroup controlId="nuclear">
+          <ControlLabel className="settings-text">
+            The Nuclear Option
+          </ControlLabel>
+
+          <div>
+            <FormControl type="text" value={this.state.nuclear} name="nuclear-validation" className="inline" onChange={this.nuclearValidation} />
+            <div className="icon">
+              <OverlayTrigger trigger={trigger} placement="top" overlay={popover.nuclear}>
+                <i className="fa fa-question-circle pull-right" />
+              </OverlayTrigger>
+            </div>
+          </div>
         </FormGroup>
-        <FormGroup controlId="lunch-minutes">
-          <ControlLabel className="settings-text">Lunch Minutes</ControlLabel>
-          <FormControl type="number" value={durations.lunchDuration / minute} name="lunch" onChange={this.onChangeMinutes} />
-        </FormGroup>
+        <Button
+            style={{ marginTop: '10px', paddingLeft: '10%', paddingRight: '10%' }}
+            name="nuclear"
+            onClick={this.onChangeMinutes}
+            disabled={!this.state.validated}>
+            { nuclear ?
+              'Turn off the Nuclear Option'
+              : 'I understand, go Nuclear'}
+          </Button>
       </div>
     );
   }
