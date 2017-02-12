@@ -52,7 +52,7 @@ class Timer extends React.Component {
     return (
       <div className="timer-wrapper">
 
-
+      <div></div>
         <div className="timer-message">
           <span>{ message }</span>
         </div>
@@ -103,3 +103,4 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(Timer);
+export {Timer as TestableTimer};
