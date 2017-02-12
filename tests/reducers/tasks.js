@@ -7,11 +7,11 @@ import reducer from '../../src/js/reducers/tasks';
 
 describe('Tasks reducer', () => {
 
-  it('has a null initial state', () => {
+  it('has an initial state of an empty array', () => {
     const action = {type: 'livin la vida reduxa'};
-    const expectedState = null;
+    const expectedState = [];
     expect(reducer(undefined, action))
-      .to.be.equal(null);
+      .to.be.deep.equal(expectedState);
   });
 
   it('receives tasks', () => {
