@@ -18,7 +18,7 @@ describe('<Timer>', () => {
 
 	beforeEach('Create component and spy', () => {
 		testStore = createStore(statusReducer);
-		action = {type: 'give me your tired, your hungry, your global states yearning to be hydrated'};
+		action = {type: 'give me your tired, your poor, your global states yearning to be hydrated'};
 		testStore.dispatch(action);
 		timerSpy = shallow(
 			<Provider store={testStore}>
@@ -130,7 +130,7 @@ describe('<Timer>', () => {
 			.to.equal(true);
 	});
 
-	it('renders a Donut', () => {
+	it('renders a Donut component', () => {
 		const donut = (
       <Donut
       	status={testStore.getState()}
@@ -139,6 +139,27 @@ describe('<Timer>', () => {
       />
     );
 		expect(timerSpy.dive().contains(donut))
+			.to.equal(true);
+	});
+
+	it('renders the appropriate message for whether or not time is up', () => {
+		let message = (<span>minutes passed</span>);
+		expect(timerSpy.dive().contains(message))
+			.to.equal(true);
+
+		const timeRemaining = 1;
+		const setTimeRemainingAction = {
+			type: types.SET_TIME_REMAINING,
+			timeRemaining
+		};
+		testStore.dispatch(setTimeRemainingAction);
+		timerSpy = shallow(
+			<Provider store={testStore}>
+				<TestableTimer status={testStore.getState()} />
+			</Provider>
+		);
+		message = (<span>minutes left</span>);
+		expect(timerSpy.dive().contains(message))
 			.to.equal(true);
 	});
 });
