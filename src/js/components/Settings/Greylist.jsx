@@ -24,9 +24,7 @@ class Greylist extends React.Component {
 
   onKeyPressEnter(e) {
     if (e.key === 'Enter'){
-      e.preventDefault();
-      this.props.tabAddGreylist(this.state.url);
-      this.setState({url: ''});
+      this.addNew(e)
     }
   }
 
