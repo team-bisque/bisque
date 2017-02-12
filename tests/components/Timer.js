@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import { spy } from 'sinon';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import {Tooltip} from 'react-bootstrap';
 
 import {TestableTimer} from '../../src/js/components/Timer';
 import Donut from '../../src/js/components/Timer/Donut';
@@ -56,15 +57,15 @@ describe('<Timer>', () => {
 				<TestableTimer status={testStore.getState()} />
 			</Provider>
 		);
-		const arrayOfPauseButtons = timerSpy
-			.dive().find('.fa-pause');
-		const arrayOfAddFiveMinutesButtons = timerSpy
-			.dive().find('.fa-history');
-		const arrayOfWorkButtons = timerSpy
-			.dive().find('.fa-suitcase');
-		expect(arrayOfPauseButtons).to.have.length(1);
-		expect(arrayOfAddFiveMinutesButtons).to.have.length(1);
-		expect(arrayOfWorkButtons).to.have.length(1);
+		const pauseButtonExists = timerSpy
+			.dive().find('.fa-pause').exists();
+		const addFiveMinutesButtonExists = timerSpy
+			.dive().find('.fa-history').exists();
+		const workButtonExists = timerSpy
+			.dive().find('.fa-suitcase').exists();
+		expect(pauseButtonExists).to.equal(true);
+		expect(addFiveMinutesButtonExists).to.equal(true);
+		expect(workButtonExists).to.equal(true);
 	});
 
 	it('renders the appropriate buttons when timer is going and user is on work', () => {
@@ -75,15 +76,15 @@ describe('<Timer>', () => {
 				<TestableTimer status={testStore.getState()} />
 			</Provider>
 		);
-		const arrayOfPauseButtons = timerSpy
-			.dive().find('.fa-pause');
-		const arrayOfAddFiveMinutesButtons = timerSpy
-			.dive().find('.fa-history');
-		const arrayOfBreakButtons = timerSpy
-			.dive().find('.fa-beer');
-		expect(arrayOfPauseButtons).to.have.length(1);
-		expect(arrayOfAddFiveMinutesButtons).to.have.length(1);
-		expect(arrayOfBreakButtons).to.have.length(1);
+		const pauseButtonExists = timerSpy
+			.dive().find('.fa-pause').exists();
+		const addFiveMinutesButtonExists = timerSpy
+			.dive().find('.fa-history').exists();
+		const breakButtonExists = timerSpy
+			.dive().find('.fa-beer').exists();
+		expect(pauseButtonExists).to.equal(true);
+		expect(addFiveMinutesButtonExists).to.equal(true);
+		expect(breakButtonExists).to.equal(true);
 	});
 
 	it('renders the right message if timer is paused', () => {
