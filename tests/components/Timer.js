@@ -32,11 +32,11 @@ describe('<Timer>', () => {
 		  timeRemaining: 0,
 		  isWorking: false,
 		  isPaused: true,
-		  durations: {
+		  settings: {
 		    workDuration: 25 * minute,
 		    breakDuration: 5 * minute,
 		    lunchDuration: 60 * minute,
-		    nuclear: false
+		    blockGreylist: false
 		  }
 		};
 		expect(timerSpy.props().status).to.be.deep.equal(status);

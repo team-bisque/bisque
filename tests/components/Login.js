@@ -20,7 +20,7 @@ describe('Login component', () => {
 
   beforeEach('set up shallow wrapper and sinon spy', () => {
     authenticateSpy = sinon.spy();
-    LoginWrapper = mount(<TestableLogin tabAuthenticate={authenticateSpy} />);
+    LoginWrapper = mount(<TestableLogin authenticateAlias={authenticateSpy} />);
   });
 
   it('renders the Google icon and sign-on message', () => {

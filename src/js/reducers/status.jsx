@@ -7,7 +7,7 @@ import {
   TOGGLE_PAUSE,
   START_BREAK,
   START_WORK,
-  RECEIVE_DURATIONS
+  RECEIVE_SETTINGS
 } from '../constants';
 
 const minute = 60 * 1000; // In miliseconds
@@ -17,11 +17,11 @@ const initialState = {
   timeRemaining: 0,
   isWorking: false,
   isPaused: true,
-  durations: {
+  settings: {
     workDuration: 25 * minute,
     breakDuration: 5 * minute,
     lunchDuration: 60 * minute,
-    nuclear: false
+    blockGreylist: false
   }
 };
 
@@ -40,13 +40,13 @@ export default (state = initialState, action) => {
     case START_BREAK:
       newState.isWorking = false;
       newState.isPaused = false;
-      newState.timeRemaining = state.durations.breakDuration;
+      newState.timeRemaining = state.settings.breakDuration;
       break;
 
     case START_WORK:
       newState.isWorking = true;
       newState.isPaused = false;
-      newState.timeRemaining = state.durations.workDuration;
+      newState.timeRemaining = state.settings.workDuration;
       break;
 
     case TOGGLE_WORK:
@@ -54,8 +54,8 @@ export default (state = initialState, action) => {
       newState.isWorking = !newState.isWorking;
       // Second, put time on the clock
       newState.timeRemaining = newState.isWorking
-      ? state.durations.workDuration
-      : state.durations.breakDuration;
+      ? state.settings.workDuration
+      : state.settings.breakDuration;
       // Last, unpause
       newState.isPaused = false;
       break;
@@ -64,8 +64,8 @@ export default (state = initialState, action) => {
       newState.isPaused = !newState.isPaused;
       break;
 
-    case RECEIVE_DURATIONS:
-      newState.durations = Object.assign({}, newState.durations, action.durations);
+    case RECEIVE_SETTINGS:
+      newState.settings = Object.assign({}, newState.settings, action.settings);
       break;
 
     default:

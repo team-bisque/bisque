@@ -20,9 +20,9 @@ describe('Auth reducer', () => {
       .to.be.equal(expectedState);
   });
 
-  it('returns a user if given an AUTHENTICATE action', () => {
+  it('returns a user if given an RECEIVE_USER action', () => {
     const action = {
-      type: types.AUTHENTICATE,
+      type: types.RECEIVE_USER,
       user
     }
     const expectedState = user;
