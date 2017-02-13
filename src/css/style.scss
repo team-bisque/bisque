@@ -409,6 +409,14 @@ buttonHolder {
       margin-left: 10px
     }
 
+    .block {
+      text-align: center;
+      .icon {
+        margin: 5px;
+        font-size: 1.2em;
+      }
+    }
+
     ul>li, .addNew {
       margin: 10px;
     }

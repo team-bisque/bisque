@@ -102,7 +102,7 @@ export const setHistory = (time, data) => (dispatch, getState) => {
     if(!data.visits) data.visits = 1;
     if(!data.isGreylist) data.isGreylist = isGreylist(data.url);
     if(history && history[date] && history[date][hour] && history[date][hour].length) {
-      console.log('history[date][hour].length', history[date][hour].length);
+      // console.log('history[date][hour].length', history[date][hour].length);
       index = parseInt(_.max(Object.keys(history[date][hour]))) + 1;
     }
     else index = 0

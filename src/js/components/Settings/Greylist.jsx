@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormControl, Popover, OverlayTrigger } from 'react-bootstrap';
+import { FormControl, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import {
   tabRemoveGreylist,
@@ -12,7 +12,8 @@ class Greylist extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: ''
+      url: '',
+      
     };
   }
 
@@ -38,8 +39,10 @@ class Greylist extends React.Component {
     this.props.tabRemoveGreylist(parseInt(e.target.getAttribute('data-id')));
   }
 
+  
+
   render() {
-    const { greylist } = this.props
+    const { status, greylist } = this.props
 
 
     const popover = (
@@ -51,12 +54,8 @@ class Greylist extends React.Component {
     );
 
     return (
-      <div>
-        <div id="help" className="icon">
-          <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={popover}>
-            <i className="fa fa-question-circle"/>
-          </OverlayTrigger>
-        </div>
+      <div>        
+        
         <div className="addNew">
           <FormControl
             id="addNew-input"
@@ -97,7 +96,7 @@ class Greylist extends React.Component {
   }
 }
 
-const mapState = ({ greylist }) => ({ greylist });
+const mapState = ({ status, greylist }) => ({ status, greylist });
 const mapDispatch = dispatch => ({
   tabAddGreylist: url        => (dispatch(tabAddGreylist(url))),
   tabEditGreylist: (url, id) => (dispatch(tabEditGreylist(url, id))),

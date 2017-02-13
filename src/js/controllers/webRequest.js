@@ -23,8 +23,23 @@ const WebRequest = () => {
     // return User.history.increaseVisits(baseURL);
   }
 
-  function redirectUrl() {
-    return { redirectUrl: 'javascript:' };
+  function redirectUrl(request) {
+    
+    function isGreylist (url) {
+
+      let result = false;
+      store.getState().greylist.forEach(greylist => {
+        console.log(greylist)
+        if(greylist.includes(url.replace('www.',''))) result = true;
+      })
+      return result;
+    }
+    if(isGreylist(request.url)) {
+      console.log('BLOCK!!!');
+      increaseVisitsHandler(request);
+      return { redirectUrl: 'javascript:' };    
+    }
+    return;
   }
 
   return {
@@ -38,8 +53,11 @@ const WebRequest = () => {
         }, ["responseHeaders"]
       );
     },
+    unblock: function(){
+      chrome.webRequest.onCompleted.removeListener(redirectUrl);
+    },
     block: function() {
-      // chrome.webRequest.onCompleted.removeListener(redirectUrl);
+      console.log('BLOCK!!!');
       chrome.webRequest.onBeforeRequest.addListener(
         redirectUrl, {
           urls: ['https://*/*', 'http://*/*']
