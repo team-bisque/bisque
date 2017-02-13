@@ -8,7 +8,7 @@ class Tasks extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      selectedList: [],
+      selectedList: 0,
       title: ''
     }
 
@@ -54,17 +54,41 @@ class Tasks extends React.Component{
     this.props.tabRemoveTask(e.target.dataset.id, this.state.selectedList.id);
   }
 
-  toggleList (e) {
-    // Show the tasks from a selected task list
-    const newSelectedList = this.props.tasks.filter(taskList => taskList.title === e.target.textContent)[0];
+  getListTasks() {
     this.setState({
-      selectedList: newSelectedList
+      selectedList: this.props.tasks.filter()
     })
+  }
+
+  toggleList (e) {
+    const {value} = e.target
+    // Show the tasks from a selected task list
+    console.log(e.target.value);
+    // const newSelectedList = this.props.tasks.filter(taskList => taskList.title === e.target.value)[0];
+    this.setState({
+      selectedList: value
+    });
   }
 
   render(){
     const tasks = this.props.tasks;
     const selectedList = this.state.selectedList;
+
+    // <ButtonGroup>
+    //   {
+    //     tasks && tasks.length ? tasks.map((list, idx) => {
+    //       return (
+    //         <Button
+    //           id={idx}
+    //           key={list.id}
+    //           className="list-title"
+    //           onClick={this.toggleList}
+    //         >
+    //         {list.title}
+    //         </Button>)
+    //     }) : null
+    //   }
+    // </ButtonGroup>
 
     return (
       <div id="task-modal" className="content">
@@ -75,38 +99,21 @@ class Tasks extends React.Component{
           </div>
         </div>
         <div>
-          <p>Task Lists</p>
-          <ButtonGroup>
+          <p>List: </p>
+          <select id="task-lists" value={this.state.selectedList} onChange={this.toggleList}>
             {
               tasks && tasks.length ? tasks.map((list, idx) => {
                 return (
-                  <Button
+                  <option
                     id={idx}
                     key={list.id}
-                    className="list-title"
-                    onClick={this.toggleList}
-                  >
-                  {list.title}
-                  </Button>)
+                    value={idx}>{list.title}</option>
+                )
               }) : null
             }
-          </ButtonGroup>
-          <div className="addNew">
-            <p>Add a New Task</p>
-            <FormControl
-              id="addNew-input"
-              type="text"
-              value={this.state.title}
-              onChange={this.addNewTaskChange}
-              onKeyPress={this.onKeyPressEnter.bind(this)}
-              onSubmit={this.addNewTaskEnter}
-              name="add-new"
-              className="inline"
-                />
-            <div className="icon" onClick={this.addNewTaskEnter}><i className="fa fa-plus pull-right"></i></div>
-          </div>
+          </select>
           <ul className="tasks-list">
-            <p>Task List</p>
+            <p>Tasks:</p>
             {
               selectedList && selectedList.data ? selectedList.data.map((task, index) => {
                 return (
@@ -136,7 +143,22 @@ class Tasks extends React.Component{
                   </li>
                 );
             }) : null}
+            <li key="addNew" className="addNew">
+              <FormControl
+                id="addNew-input"
+                type="text"
+                value={this.state.title}
+                onChange={this.addNewTaskChange}
+                onKeyPress={this.onKeyPressEnter.bind(this)}
+                onSubmit={this.addNewTaskEnter}
+                name="add-new"
+                autoFocus="true"
+                className="inline"
+                  />
+              <div className="icon" onClick={this.addNewTaskEnter}><i className="fa fa-plus pull-right"></i></div>
+            </li>
           </ul>
+
         </div>
       </div>
     );
