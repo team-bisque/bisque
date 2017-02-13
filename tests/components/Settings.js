@@ -30,9 +30,6 @@ describe('Settings component', () => {
   });
 
   it('has a close window button that responds to clicks', () => {
-    const hasCloseButton = SettingsWrapper
-      .find('.fa-times').exists();
-    expect(hasCloseButton).to.be.true;
 
     SettingsWrapper.find('.fa-times').simulate('click');
     expect(setRouteSpy.calledOnce).to.be.true;
