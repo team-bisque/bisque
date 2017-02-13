@@ -5,7 +5,8 @@ import { FormControl, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import {
   tabRemoveGreylist,
   tabEditGreylist,
-  tabAddGreylist
+  tabAddGreylist,
+  setAllLockAlias
 } from '../../action-creators/greylist';
 
 class Greylist extends React.Component {
@@ -34,7 +35,12 @@ class Greylist extends React.Component {
     //validate if it is url    
     if (name === 'add-new') this.setState({url: value});
     if(this.validateUrl(value)){
-      this.props.tabEditGreylist(value, +e.target.getAttribute('data-id'));  
+      this.props.tabEditGreylist(
+        {
+          url: value,
+          isBlocked: e.target.getAttribute('data-blocked')
+        }, +e.target.getAttribute('data-id')
+      );  
     }
   }
 
@@ -47,7 +53,10 @@ class Greylist extends React.Component {
   addNew(e) {
     e.preventDefault();
     if(this.validateUrl(this.state.url)){
-      this.props.tabAddGreylist(this.state.url);
+      this.props.tabAddGreylist({
+        url: this.state.url,
+        isBlocked: false
+      });
       this.setState({url: ''});
     }
     
@@ -57,7 +66,52 @@ class Greylist extends React.Component {
     this.props.tabRemoveGreylist(parseInt(e.target.getAttribute('data-id')));
   }
 
+  lockGreylist(e){
+    let { name } = e.target;
+    // console.log(name, e.target)
+    if (e.target.getAttribute('data-action') === 'bulk') {
+      this.props.setAllLockAlias(true);
+    } else {
+      let index = e.target.getAttribute('data-id');
+      console.log(index, this.props.greylist[index].url)
+      this.props.tabEditGreylist(
+        {
+          url: this.props.greylist[index].url,
+          isBlocked: true
+        }, parseInt(index)
+      );
+    }
+  }
+
+  unlockGreylist(e){
+    let { name } = e.target;
+    
+    if (e.target.getAttribute('data-action') === 'bulk') {
+      this.props.setAllLockAlias(false);
+    } else {
+      let index = e.target.getAttribute('data-id');
+      console.log(index, this.props.greylist[index].url)
+      this.props.tabEditGreylist(
+        {
+          url: this.props.greylist[index].url,
+          isBlocked: false
+        }, parseInt(index)
+      );
+    }
+  }
   
+  keyValidation(e){
+    // let {value} = e.target;
+    // const key = 'GO NUCLEAR';
+    // const substring = key.substring(0, value.length);
+
+    // if (value === substring) this.setState({nuclear: value});
+    if (e.target.value === this.state.key) this.setState({validated: true});
+  }
+
+  // setKey(){
+  //   this.setState({key: "UNLOCK ME"});
+  // }
 
   render() {
     const { status, greylist } = this.props
@@ -72,9 +126,10 @@ class Greylist extends React.Component {
     );
 
     return (
-      <div>        
-        
-        <div className="addNew">
+      <div>
+
+        <fieldset className="addNew">
+          <legend>Add new url</legend>
           <FormControl
             id="addNew-input"
             type="text"
@@ -85,41 +140,76 @@ class Greylist extends React.Component {
             className={this.validateUrl(this.state.url) ? "inline" : "inline warning"}
               />
           <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>          
-        </div>
-        <ul className="greylistURLs">
-          { //greylist should be an object
-            greylist && greylist.length ? greylist.map((url, index) => {
-            return (
-              <li key={index}>
-                <div>
-                  <FormControl
-                    type="text"
-                    value={url}
-                    onChange={this.onChangeURL.bind(this)}
-                    data-id={index}
-                    name="greylist-url"
-                    className={this.validateUrl(url) ? "inline" : "inline warning"}
-                  />
-                  <div className="icon">
-                    <i className="fa fa-times pull-right" data-id={index} onClick={this.remove.bind(this)}></i>
+          
+        </fieldset>
+        <fieldset>
+          <legend>List</legend>
+          <ul className="greylistURLs">
+            
+            { //greylist should be an object
+              greylist && greylist.length ? greylist.map((item, index) => {
+              return (
+                <li key={index}>
+                  <div>
+                    <FormControl
+                      type="text"
+                      value={item.url}
+                      onChange={this.onChangeURL.bind(this)}
+                      data-id={index}
+                      data-blocked={item.isBlocked}
+                      name="greylist-url"
+                      className={this.validateUrl(item.url) ? "inline" : "inline warning"}
+                    />
+                    <div className="icon">
+                      <i className="fa fa-times pull-right" data-id={index} onClick={this.remove.bind(this)}></i>
+                    </div>
+                    { 
+                      item.isBlocked ?
+                      <div className="icon" onClick={this.unlockGreylist.bind(this)}>
+                        <OverlayTrigger placement="bottom" overlay={<Tooltip id="unlock-tooltip">Unlock this url</Tooltip>}>
+                          <i className="fa fa-unlock" data-id={index} ></i>
+                        </OverlayTrigger>
+                      </div> :
+                      <div className="icon" onClick={this.lockGreylist.bind(this)}>
+                        <OverlayTrigger placement="bottom" overlay={<Tooltip id="lock-tooltip">Block this url</Tooltip>}>
+                          <i className="fa fa-lock" data-id={index} ></i>
+                        </OverlayTrigger>
+                      </div>
+                    }
                   </div>
-                </div>
 
-              </li>
-            );
-          }).reverse() : null}
-        </ul>
+                </li>
+              );
+            }).reverse() : null}
+          </ul>
+        </fieldset>
+        <fieldset className="bulk-actions">    
+          
+          <div>
+            <div className="icon" onClick={this.unlockGreylist.bind(this)}>
+              <OverlayTrigger placement="bottom" overlay={<Tooltip id="unlock-tooltip">Unlock all url</Tooltip>}>
+                <i className="fa fa-unlock" data-action="bulk"></i>
+              </OverlayTrigger>
+            </div> 
+            <div className="icon" onClick={this.lockGreylist.bind(this)}>
+              <OverlayTrigger placement="bottom" overlay={<Tooltip id="lock-tooltip">Block all url</Tooltip>}>
+                <i className="fa fa-lock" data-action="bulk"></i>
+              </OverlayTrigger>
+            </div>
+          </div>
+        </fieldset>
       </div>
     );
   }
 }
 
 const mapState = ({ status, greylist }) => ({ status, greylist });
-const mapDispatch = dispatch => ({
-  tabAddGreylist: url        => (dispatch(tabAddGreylist(url))),
-  tabEditGreylist: (url, id) => (dispatch(tabEditGreylist(url, id))),
-  tabRemoveGreylist: id      => (dispatch(tabRemoveGreylist(id)))
-});
+const mapDispatch = {
+  tabAddGreylist,
+  tabEditGreylist,
+  tabRemoveGreylist,
+  setAllLockAlias
+};
 
 export default connect(mapState, mapDispatch)(Greylist);
 

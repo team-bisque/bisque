@@ -8,7 +8,8 @@ import {
   RECEIVE_GREYLIST,
   TAB_ALIAS_ADD_GREYLIST,
   TAB_ALIAS_REMOVE_GREYLIST,
-  TAB_ALIAS_EDIT_GREYLIST
+  TAB_ALIAS_EDIT_GREYLIST,
+  TAB_ALIAS_SET_LOCK
 } from '../constants';
 
 import { firebaseDb } from '../firebase';
@@ -19,22 +20,22 @@ export const receive_greylist = greylist => ({
   type: RECEIVE_GREYLIST, greylist
 })
 
-export const addUrl = url => ({
-  type: ADD_URL, url
+export const addUrl = greylist => ({
+  type: ADD_URL, greylist
 });
 
 export const removeUrl = index => ({
   type: REMOVE_URL, index
 });
 
-export const editUrl = (url, index) => ({
-  type: EDIT_URL, url, index
+export const editUrl = (greylist, index) => ({
+  type: EDIT_URL, greylist, index
 });
 
 // ALIAS ACTIONS
-export const tabAddGreylist = url => ({
+export const tabAddGreylist = greylist => ({
   type: TAB_ALIAS_ADD_GREYLIST,
-  url
+  greylist
 });
 
 export const tabRemoveGreylist = index => ({
@@ -42,13 +43,18 @@ export const tabRemoveGreylist = index => ({
   index
 });
 
-export const tabEditGreylist = (url, index) => ({
+export const tabEditGreylist = (greylist, index) => ({
   type: TAB_ALIAS_EDIT_GREYLIST,
-  url, index
+  greylist, index
 });
 
+export const setAllLockAlias = bool => ({
+  type: TAB_ALIAS_SET_LOCK,
+  bool
+})
+
 export const setGreylist = () => dispatch => {
-  User.greylist.set(store.getState().auth.uid, store.getState().settings);
+  // User.greylist.set(store.getState().auth.uid, store.getState().settings);
 };
 
 export const receiveGreylist = () => (dispatch, getState)=>{
@@ -63,11 +69,11 @@ export const receiveGreylist = () => (dispatch, getState)=>{
 export const addGreylist = payload => (dispatch, getState) => {
   const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);  
   let data = Array.from(getState().greylist);
-      data.push(payload.url);
+      data.push(payload.greylist);
 
   ref.set(data)
       .then(()=>{
-        dispatch(addUrl(payload.url));
+        dispatch(addUrl(payload.greylist));
       })
       .catch(console.error);
 }
@@ -82,16 +88,28 @@ export const removeGreylist = payload => (dispatch, getState) => {
       .catch(console.error);
 }
 
-export const editGreylist = payload => dispatch => {
+export const editGreylist = payload => (dispatch, getState) => {
   const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);    
-  let data = Array.from(store.getState().greylist);
-      data[payload.index] = payload.url;
+  let data = Array.from(getState().greylist);
+      data[payload.index] = payload.greylist;
 
   ref.set(data)
       .then(()=>{
-        dispatch(editUrl(payload.url, payload.index));
+        dispatch(editUrl(payload.greylist, payload.index));
       })
       .catch(console.error);
 }
 
+export const setAllLock = payload => (dispatch, getState) => {
+  let greylists = _.map(getState().greylist, (o) => {
+    o.isBlocked = payload.bool;
+    return o;
+  });
+
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);
+  ref.set(greylists)
+    .then(()=>{
+      dispatch(receiveGreylist());
+    });        
+}
 

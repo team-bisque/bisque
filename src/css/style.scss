@@ -86,7 +86,7 @@ body {
 
 .form-control.inline {
   display: inline-block;
-  width: 90%;
+  width: 80%;
 }
 
 // Grid structure
@@ -418,15 +418,26 @@ buttonHolder {
     }
 
     ul>li, .addNew {
-      margin: 10px;
+      // margin: 10px;
+      margin-bottom: 10px;
     }
     .greylistURLs{
-      height: 250px;
+      height: 230px;
       overflow-y: scroll;
     }
   }
   form label{
     color: white;
+  }
+  .bulk-actions {
+    margin-top: 20px;
+    >div{
+      text-align: center;
+    }
+    .icon {
+      font-size: 1.1em !important;
+      margin: 0 20px !important;
+    }
   }
 }
 
@@ -470,7 +481,13 @@ ul {
 label {
   color: #FFFFFF !important;
 }
-
+legend {
+  font-size: 1em;
+  margin: 0;
+  border: 0;
+  color: white;
+  font-weight: 500;
+}
 
 input {
     color: #FFFFFF !important;
