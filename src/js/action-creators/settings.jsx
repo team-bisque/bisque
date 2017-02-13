@@ -12,7 +12,7 @@ import {
 } from '../constants';
 
 import { firebaseDb } from '../firebase';
-const settingsRef = firebaseDb.ref('users');
+
 
 const receive_duration = durations => ({
   type: RECEIVE_DURATIONS, durations
@@ -38,8 +38,8 @@ export const tabSaveSettings = () => ({
   type: TAB_ALIAS_SAVE_SETTINGS
 });
 
-export const receiveDuration = () => (dispatch, getState) => {
-  const ref = settingsRef.child(getState().auth.uid);
+export const receiveSettings = () => (dispatch, getState) => {
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/settings`);
   ref.once('value', (snapshot) => {
     console.log('receiveSettings: snapshop', snapshot.val())
     dispatch(receive_duration(snapshot.val()));

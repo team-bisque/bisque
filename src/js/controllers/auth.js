@@ -1,15 +1,14 @@
 'use strict';
 import { receiveUser }  from '../action-creators/auth';
 import { receiveHistory } from '../action-creators/history';
-import { receiveDuration } from '../action-creators/status';
+import { receiveSettings } from '../action-creators/status';
+import { receiveGreylist } from '../action-creators/greylist';
 import { fetchTasks } from '../action-creators/tasks';
 import store         		 from '../store';
 
 import { setRoute } from '../action-creators/route';
 
 const { firebaseAuth, firebaseDb, GoogleAuthProvider } = require('../firebase');
-// const firebase = require('./firebase');
-const User = require('./user');
 
 const Auth = {
 
@@ -19,7 +18,8 @@ const Auth = {
 				const userId = user.uid;
 				store.dispatch(receiveUser(user));
 				store.dispatch(receiveHistory());
-				store.dispatch(receiveDuration());
+				store.dispatch(receiveSettings());
+				store.dispatch(receiveGreylist());
 				store.dispatch(fetchTasks());
 				store.dispatch(setRoute(null));
 				

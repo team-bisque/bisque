@@ -9,7 +9,7 @@ import {
 
 import { firebaseDb } from '../firebase';
 const moment = require('moment');
-const historyRef = firebaseDb.ref('user_history');
+
 
 export const tabReceiveHistory = () => ({
 	type: TAB_ALIAS_RECEIVE_HISTORY
@@ -22,7 +22,7 @@ const setSiteVisits = visits => ({ type: SET_VISITS, visits });
 
 export const receiveHistory = () => (dispatch, getState) => {
 	// Action-creators/history receiveHistory
-  const ref = historyRef.child(getState().auth.uid);
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/history`);
   ref.once('value', (snapshot) => {
   	// console.log('receiveHistory: snapshop', snapshot.val())
     dispatch(receive_history(snapshot.val()));
@@ -51,7 +51,8 @@ export const increaseVisits = (time, url) => (dispatch, getState) => {
 
   if(index >= 0){
     // console.log('exist!!!!', index);
-    const refPath = `${getState().auth.uid}/${date}/${hour}/${index}/visits`,
+    const historyRef = firebaseDb.ref(`users/${getState().auth.uid}/history`),
+          refPath = `${date}/${hour}/${index}/visits`,
           ref = historyRef.child(refPath);
 
     let visits = history[date][hour][index].visits + 1;
@@ -92,8 +93,8 @@ export const setHistory = (time, data) => (dispatch, getState) => {
   if(index >= 0){
     let prevData = history[date][hour][index];
     // get average value
-    if(data.cpm && prevData.cpm) data.cpm =  _.mean([data.cpm, prevData.cpm])
-    if(data.cpm && prevData.wpm) data.wpm =  _.mean([data.cpm, prevData.wpm])
+    if(data.cpm && prevData.cpm) data.cpm =  _.mean([data.cpm, prevData.cpm]);
+    if(data.cpm && prevData.wpm) data.wpm =  _.mean([data.cpm, prevData.wpm]);
       
     if(!data.visits) data.visits = prevData.visits;
     if(!data.isGreylist) data.isGreylist = prevData.visits;
@@ -101,13 +102,13 @@ export const setHistory = (time, data) => (dispatch, getState) => {
     if(!data.visits) data.visits = 1;
     if(!data.isGreylist) data.isGreylist = isGreylist(data.url);
     if(history && history[date] && history[date][hour] && history[date][hour].length) {
-      console.log('history[date][hour].length', history[date][hour].length)
+      console.log('history[date][hour].length', history[date][hour].length);
       index = parseInt(_.max(Object.keys(history[date][hour]))) + 1;
     }
     else index = 0
   }
-  
-    const refPath = `${getState().auth.uid}/${date}/${hour}/${index}`,
+    const historyRef = firebaseDb.ref(`users/${getState().auth.uid}/history`),
+          refPath = `${date}/${hour}/${index}`,
           ref = historyRef.child(refPath);
 
     

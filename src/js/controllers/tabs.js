@@ -2,7 +2,7 @@
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 // const firebase = require('./firebase');
-const User = require('./user');
+// const User = require('./user');
 const _ = require('lodash');
 const moment = require('moment');
 

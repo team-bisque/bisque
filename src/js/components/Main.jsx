@@ -26,7 +26,7 @@ let backgrounds = [
 ];
 
 const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
-const BackgroundCheck = require('../controllers/backgroundCheck');
+// const BackgroundCheck = require('../controllers/backgroundCheck');
 const classNames = require('classnames');
 
 class Main extends React.Component{
@@ -49,23 +49,8 @@ class Main extends React.Component{
   componentWillMount() {
     this.setBackground(backgrounds[random]);
   }
-
-// <<<<<<< HEAD
-//   componentWillReceiveProps(nextProps) {
-//     if(this.props.route !== nextProps.route) this.setState({modal: nextProps.route})
-//   }
-// =======
-// >>>>>>> master
   componentDidMount() {
-    // BackgroundCheck.init({
-    //   targets: '.bg-check',
-    //   images: '.fullsizeBg'
-    // });
-    // var elements = document.getElementsByClassName('bg-check');
-    // Array.prototype.forEach.call(elements, (el) => {
-    //     // Do stuff here
-    //     BackgroundCheck.refresh(el);
-    // });
+    
   }
 
   handleMouseMove(e) {
@@ -131,7 +116,7 @@ class Main extends React.Component{
                 !this.props.route ?
                 <User {...this.props} /> : null
               }
-              <div id="tasks" className="icon top-left bg-check">
+              <div id="tasks" className="icon top-left">
                 <OverlayTrigger placement="bottom" overlay={tooltip.tasks}>
                   <i className="fa fa-calendar-check-o" onClick={(e)=>{this.props.setRoute('tasks')}}></i>
                 </OverlayTrigger>
@@ -139,13 +124,13 @@ class Main extends React.Component{
 
               <Weather weather={weather} />
 
-              <div id="settings" className="icon bottom-left bg-check">
+              <div id="settings" className="icon bottom-left">
                 <OverlayTrigger placement="top" overlay={tooltip.settings}>
                   <i className="fa fa-cog" onClick={(e)=>{this.props.setRoute('settings')}}></i>
                 </OverlayTrigger>
               </div>
 
-              <div id="chart" className="icon bottom-right bg-check">
+              <div id="chart" className="icon bottom-right">
                 <OverlayTrigger placement="top" overlay={tooltip.graph}>
                   <i className="fa fa-line-chart" onClick={(e)=>{this.props.setRoute('chart')}}></i>
                 </OverlayTrigger>

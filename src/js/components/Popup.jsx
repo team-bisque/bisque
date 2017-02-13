@@ -9,7 +9,7 @@ import Timer from './Timer';
 let backgrounds = 'http://imgur.com/CA9gCNx'
 
 const random = Math.floor(Math.random() * (backgrounds.length - 1)) + 1;
-const BackgroundCheck = require('../controllers/backgroundCheck');
+
 const classNames = require('classnames');
 
 class Popup extends React.Component {

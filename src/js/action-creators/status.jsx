@@ -8,14 +8,14 @@ import {
   TOGGLE_WORK,
   TOGGLE_PAUSE,
   TOGGLE_LUNCH,
-  RECEIVE_DURATIONS,
+  RECEIVE_SETTINGS,
   SET_START_TIME,
-  TAB_ALIAS_SAVE_SETTINGS,
-  SET_DURATION_ALIAS
+  // TAB_ALIAS_SAVE_SETTINGS,
+  SET_SETTINGS_ALIAS
 } from '../constants';
 
 import { firebaseDb } from '../firebase';
-const settingsRef = firebaseDb.ref('users');
+// const settingsRef = firebaseDb.ref('users');
 
 export const setTimeRemaining = timeRemaining => ({
   type: SET_TIME_REMAINING, timeRemaining
@@ -39,32 +39,32 @@ export const setStartTime = startTime => ({
   type: SET_START_TIME, startTime
 });
 
-export const receive_duration = durations => ({
-  type: RECEIVE_DURATIONS, durations
+export const receive_settings = settings => ({
+  type: RECEIVE_SETTINGS, settings
 });
 
-export const receiveDuration = () => (dispatch, getState) => {
+export const receiveSettings = () => (dispatch, getState) => {
   // Action-creators/status receiveDuration
-  const ref = settingsRef.child(getState().auth.uid);
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/settings`);
   ref.once('value', (snapshot) => {
     console.log('receiveDuration: snapshop', snapshot.val())
-    dispatch(receive_duration(snapshot.val()));
+    dispatch(receive_settings(snapshot.val()));
   });
 }
 
-export const setDurationAlias = durations => ({
-  type: SET_DURATION_ALIAS, durations
+export const setSettingsAlias = settings => ({
+  type: SET_SETTINGS_ALIAS, settings
 });
 
-export const setDuration = payload => (dispatch, getState) => {
+export const setSettings = payload => (dispatch, getState) => {
   // Action-creators/status setDuration  
-  const ref = settingsRef.child(getState().auth.uid);  
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/settings`);;  
   console.log('setDuration: snapshop',payload)
   ref.on('value', snapshot => {    
-    ref.set(payload.durations)
+    ref.set(payload.settings)
       .then(()=>{
         ref.off();
-        dispatch(receive_duration(payload.durations));        
+        dispatch(receive_settings(payload.settings));        
       })      
       .catch(console.error);
   });     

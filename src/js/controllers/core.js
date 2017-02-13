@@ -12,8 +12,6 @@ const 	Tabs 			= require('./tabs'),
 class Core {
 	constructor() {
 		this.tabs = new Tabs();
-		// this.webRequest = new WebRequest();
-		this.auth = Auth;
 		this.notifications = new Notifications();
 		this.idle = new Idle();
 	}
@@ -28,7 +26,7 @@ class Core {
 
 		this.tabs._init(); // <-- begins keylogger
 		this.idle._init(); // <-- detects whether user is idle
-		this.auth.onAuthStateChanged(); // <-- firebase authentication listener
+		Auth.onAuthStateChanged(); // <-- firebase authentication listener
 		this.notifications.welcome(); // <-- sends welcome notification
 		this.watchMinute();
 
