@@ -36,7 +36,7 @@ export default class Graph extends React.Component {
   }
 
   render() {
-    const {width, height, history} = this.state;
+    const {width, height} = this.state;
     return (
       <div id="graph-modal" className="content">
         <div className="modal-bar">
@@ -45,7 +45,7 @@ export default class Graph extends React.Component {
             <i className="fa fa-times" onClick={this.onClickClose.bind(this)}></i>
           </div>
         </div>
-        <Chart data={history} width={width} height={height} label={'Words Per Minute'}/>
+        <Chart data={this.props.history} width={width} height={height} label={'Words Per Minute'}/>
       </div>
     );
   }

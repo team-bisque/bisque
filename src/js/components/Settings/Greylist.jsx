@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormControl, Popover, OverlayTrigger } from 'react-bootstrap';
+import { FormControl, Popover, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import {
   tabRemoveGreylist,
@@ -16,10 +16,26 @@ class Greylist extends React.Component {
     };
   }
 
+  validateUrl(str){
+    var pattern = new RegExp('^(https?:\\/\\/)?'+//protocol
+        '((([a-z\\d]([a-z\\d]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // or ip address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query String 
+        '(\\#[a-z\\d_]*)?$','i' //fragment locatoer     
+        );
+
+    if(!pattern.test(str)) return false;
+    else return true;
+  }
+
   onChangeURL(e) {
     let {name, value} = e.target;
+    //validate if it is url    
     if (name === 'add-new') this.setState({url: value});
-    else this.props.tabEditGreylist(value, +e.target.getAttribute('data-id'));
+    if(this.validateUrl(value)){
+      this.props.tabEditGreylist(value, +e.target.getAttribute('data-id'));  
+    }
   }
 
   onKeyPressEnter(e) {
@@ -30,16 +46,21 @@ class Greylist extends React.Component {
 
   addNew(e) {
     e.preventDefault();
-    this.props.tabAddGreylist(this.state.url);
-    this.setState({url: ''});
+    if(this.validateUrl(this.state.url)){
+      this.props.tabAddGreylist(this.state.url);
+      this.setState({url: ''});
+    }
+    
   }
 
   remove(e) {
     this.props.tabRemoveGreylist(parseInt(e.target.getAttribute('data-id')));
   }
 
+  
+
   render() {
-    const { greylist } = this.props
+    const { status, greylist } = this.props
 
 
     const popover = (
@@ -51,12 +72,8 @@ class Greylist extends React.Component {
     );
 
     return (
-      <div>
-        <div id="help" className="icon">
-          <OverlayTrigger trigger={['hover', 'focus']} placement="right" overlay={popover}>
-            <i className="fa fa-question-circle"/>
-          </OverlayTrigger>
-        </div>
+      <div>        
+        
         <div className="addNew">
           <FormControl
             id="addNew-input"
@@ -65,9 +82,9 @@ class Greylist extends React.Component {
             onChange={this.onChangeURL.bind(this)}
             onKeyPress={this.onKeyPressEnter.bind(this)}
             name="add-new"
-            className="inline"
+            className={this.validateUrl(this.state.url) ? "inline" : "inline warning"}
               />
-          <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>
+          <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>          
         </div>
         <ul className="greylistURLs">
           { //greylist should be an object
@@ -81,7 +98,7 @@ class Greylist extends React.Component {
                     onChange={this.onChangeURL.bind(this)}
                     data-id={index}
                     name="greylist-url"
-                    className="inline"
+                    className={this.validateUrl(url) ? "inline" : "inline warning"}
                   />
                   <div className="icon">
                     <i className="fa fa-times pull-right" data-id={index} onClick={this.remove.bind(this)}></i>
@@ -97,7 +114,7 @@ class Greylist extends React.Component {
   }
 }
 
-const mapState = ({ greylist }) => ({ greylist });
+const mapState = ({ status, greylist }) => ({ status, greylist });
 const mapDispatch = dispatch => ({
   tabAddGreylist: url        => (dispatch(tabAddGreylist(url))),
   tabEditGreylist: (url, id) => (dispatch(tabEditGreylist(url, id))),

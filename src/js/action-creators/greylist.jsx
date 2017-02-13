@@ -11,6 +11,14 @@ import {
   TAB_ALIAS_EDIT_GREYLIST
 } from '../constants';
 
+import { firebaseDb } from '../firebase';
+
+
+// ACTIONS
+export const receive_greylist = greylist => ({
+  type: RECEIVE_GREYLIST, greylist
+})
+
 export const addUrl = url => ({
   type: ADD_URL, url
 });
@@ -23,6 +31,7 @@ export const editUrl = (url, index) => ({
   type: EDIT_URL, url, index
 });
 
+// ALIAS ACTIONS
 export const tabAddGreylist = url => ({
   type: TAB_ALIAS_ADD_GREYLIST,
   url
@@ -38,45 +47,51 @@ export const tabEditGreylist = (url, index) => ({
   url, index
 });
 
-
-export const receiveGreylist = greylist => ({
-  type: RECEIVE_GREYLIST, greylist
-})
-
 export const setGreylist = () => dispatch => {
   User.greylist.set(store.getState().auth.uid, store.getState().settings);
 };
 
-// User function balance with action-creator
-export const addGreylist = payload => dispatch => {
-  const User = require('../controllers/user');
-  const userId = store.getState().auth.uid;
+export const receiveGreylist = () => (dispatch, getState)=>{
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);
+  ref.once('value', (snapshot) => {
+    // console.log('receiveGreylist: snapshop', snapshot.val())
+    dispatch(receive_greylist(snapshot.val()));
+  });
+};
 
-  let data = Array.from(store.getState().greylist);
+// User function balance with action-creator
+export const addGreylist = payload => (dispatch, getState) => {
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);  
+  let data = Array.from(getState().greylist);
       data.push(payload.url);
-  User.greylist.set(userId, data)
-    .then(() => User.settings.getById(userId));
+
+  ref.set(data)
+      .then(()=>{
+        dispatch(addUrl(payload.url));
+      })
+      .catch(console.error);
 }
 
-export const removeGreylist = payload => dispatch => {
-  const User = require('../controllers/user');
-  const userId = store.getState().auth.uid;
-
-  let data = store.getState().greylist.filter((e, i) => i !== payload.index);
-  User.greylist.set(userId, data)
-    .then(() => User.settings.getById(userId));
+export const removeGreylist = payload => (dispatch, getState) => {
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);  
+  let data = getState().greylist.filter((e, i) => i !== payload.index);
+  ref.set(data)
+      .then(()=>{
+        dispatch(removeUrl(payload.index));
+      })
+      .catch(console.error);
 }
 
 export const editGreylist = payload => dispatch => {
-  const User = require('../controllers/user');
-  const userId = store.getState().auth.uid;
-
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);    
   let data = Array.from(store.getState().greylist);
       data[payload.index] = payload.url;
 
-      console.log(data)
-  User.greylist.set(userId, data)
-    .then(() => User.settings.getById(userId));
+  ref.set(data)
+      .then(()=>{
+        dispatch(editUrl(payload.url, payload.index));
+      })
+      .catch(console.error);
 }
 
 

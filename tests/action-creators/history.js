@@ -11,7 +11,7 @@ describe('History action creators', () => {
       type: types.RECEIVE_HISTORY,
       history
     };
-    expect(historyActionCreators.receiveHistory(history))
+    expect(historyActionCreators.receive_history(history))
       .to.be.deep.equal(expectedAction);
   });
 });
