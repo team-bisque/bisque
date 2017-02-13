@@ -6,12 +6,12 @@ import * as greylistActions from '../../src/js/action-creators/greylist';
 describe('Greylist action creators', () => {
 
   it('return an addUrl action', () => {
-    const url = 'bisque.com';
+    const greylist = 'bisque.com';
     const expectedAction = {
       type: types.ADD_URL,
-      url
+      greylist
     };
-    expect(greylistActions.addUrl(url))
+    expect(greylistActions.addUrl(greylist))
       .to.be.deep.equal(expectedAction);
   });
 
@@ -26,24 +26,24 @@ describe('Greylist action creators', () => {
   });
 
   it('return an editUrl action', () => {
-    const url = 'zombo.com';
+    const greylist = 'zombo.com';
     const index = 7;
     const expectedAction = {
       type: types.EDIT_URL,
-      url,
+      greylist,
       index
     };
-    expect(greylistActions.editUrl(url, index))
+    expect(greylistActions.editUrl(greylist, index))
       .to.be.deep.equal(expectedAction);
   });
 
   it('return a tabAddGreylist action', () => {
-    const url = 'vox.com/news';
+    const greylist = 'vox.com/news';
     const expectedAction = {
       type: types.TAB_ALIAS_ADD_GREYLIST,
-      url
+      greylist
     };
-    expect(greylistActions.tabAddGreylist(url))
+    expect(greylistActions.tabAddGreylist(greylist))
       .to.be.deep.equal(expectedAction);
   });
 
@@ -58,14 +58,14 @@ describe('Greylist action creators', () => {
   });
 
   it('return a tabEditGreylist action', () => {
-    const url = 'whitehouse.gov';
+    const greylist = 'whitehouse.gov';
     const index = 1600;
     const expectedAction = {
       type: types.TAB_ALIAS_EDIT_GREYLIST,
-      url,
+      greylist,
       index
     };
-    expect(greylistActions.tabEditGreylist(url, index))
+    expect(greylistActions.tabEditGreylist(greylist, index))
       .to.be.deep.equal(expectedAction);
   });
 

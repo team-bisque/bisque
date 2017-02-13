@@ -17,5 +17,5 @@ global.document = doc;
 global.window = doc.defaultView;
 
 describe('Duration component', () => {
-  it('')
+  xit('')
 });

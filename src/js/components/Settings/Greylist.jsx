@@ -66,9 +66,6 @@ class Greylist extends React.Component {
     this.props.tabRemoveGreylist(parseInt(e.target.getAttribute('data-id')));
   }
 
-<<<<<<< HEAD
-
-=======
   lockGreylist(e){
     let { name } = e.target;
     // console.log(name, e.target)
@@ -115,7 +112,6 @@ class Greylist extends React.Component {
   // setKey(){
   //   this.setState({key: "UNLOCK ME"});
   // }
->>>>>>> master
 
   render() {
     const { status, greylist } = this.props
