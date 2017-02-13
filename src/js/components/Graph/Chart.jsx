@@ -30,14 +30,12 @@ export class Chart extends Component {
   setData () {
     const graphData = this.mapData(this.props.data);
 
-    console.log('Chart Set Date', graphData)
     this.setState({data: _.flatten(graphData)})
   }
 
   mapData (data) {
     return _.map(Object.keys(data), (day)=>{
       let datemilsec = new Date(day.replace('-', ' ')).getTime();
-      console.log(datemilsec)
       return _.map(Object.keys(data[day]), (hour) => {
         let hourmilsec = hour * 1000 * 3600;
 
