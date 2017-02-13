@@ -2,7 +2,6 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import sinon from 'sinon';
-import {Tab} from 'react-bootstrap';
 
 import Settings from '../../src/js/components/Settings';
 import Duration from '../../src/js/components/Settings/Duration';
@@ -35,5 +34,10 @@ describe('Settings component', () => {
     const hasCloseButton = SettingsWrapper
       .find('.fa-times').exists();
     expect(hasCloseButton).to.be.true;
+
+    const setRouteSpy = sinon.spy();
+    SettingsWrapper = shallow(<Settings setRoute={setRouteSpy} />);
+    SettingsWrapper.find('.fa-times').simulate('click');
+    expect(setRouteSpy.calledOnce).to.be.true;
   });
 });
