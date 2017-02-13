@@ -3,7 +3,7 @@ const firebaseConfig = require('./src/js/apiKeys').firebaseConfig;
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const axios = require('axios');
 
-const userId = '4qXFsbJ1RzTl3LXaHh03ZvE7NR73';
+const userId = '';
 
 let promises = [];
 let date = '02-05-2017';
