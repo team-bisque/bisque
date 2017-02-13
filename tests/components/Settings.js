@@ -4,8 +4,6 @@ import {shallow} from 'enzyme';
 import sinon from 'sinon';
 
 import Settings from '../../src/js/components/Settings';
-import Duration from '../../src/js/components/Settings/Duration';
-import Greylist from '../../src/js/components/Settings/Greylist';
 
 describe('Settings component', () => {
 
@@ -32,9 +30,6 @@ describe('Settings component', () => {
   });
 
   it('has a close window button that responds to clicks', () => {
-    const hasCloseButton = SettingsWrapper
-      .find('.fa-times').exists();
-    expect(hasCloseButton).to.be.true;
 
     SettingsWrapper.find('.fa-times').simulate('click');
     expect(setRouteSpy.calledOnce).to.be.true;
