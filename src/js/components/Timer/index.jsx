@@ -33,7 +33,7 @@ class Timer extends React.Component {
 
     let message;
     if (status && status.isPaused) message = 'Timer is paused';
-    if (status && !status.isPaused && status.isWorking) message = "You're on work";
+    if (status && !status.isPaused && status.isWorking) message = "You're at work";
     if (status && !status.isPaused && !status.isWorking) message = "You're on break";
 
 

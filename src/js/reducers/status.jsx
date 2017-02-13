@@ -21,7 +21,7 @@ const initialState = {
     workDuration: 25 * minute,
     breakDuration: 5 * minute,
     lunchDuration: 60 * minute,
-    blockGreylist: false
+    nuclear: false
   }
 };
 
