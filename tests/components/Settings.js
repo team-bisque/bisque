@@ -9,10 +9,11 @@ import Greylist from '../../src/js/components/Settings/Greylist';
 
 describe('Settings component', () => {
 
-  let SettingsWrapper;
+  let SettingsWrapper, setRouteSpy;
 
   beforeEach('set up shallow wrapper', () => {
-    SettingsWrapper = shallow(<Settings />);
+    setRouteSpy = sinon.spy();
+    SettingsWrapper = shallow(<Settings setRoute={setRouteSpy} />);
   })
 
   it('wraps everything in a root div', () => {
@@ -35,8 +36,6 @@ describe('Settings component', () => {
       .find('.fa-times').exists();
     expect(hasCloseButton).to.be.true;
 
-    const setRouteSpy = sinon.spy();
-    SettingsWrapper = shallow(<Settings setRoute={setRouteSpy} />);
     SettingsWrapper.find('.fa-times').simulate('click');
     expect(setRouteSpy.calledOnce).to.be.true;
   });
