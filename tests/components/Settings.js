@@ -4,8 +4,6 @@ import {shallow} from 'enzyme';
 import sinon from 'sinon';
 
 import Settings from '../../src/js/components/Settings';
-import Duration from '../../src/js/components/Settings/Duration';
-import Greylist from '../../src/js/components/Settings/Greylist';
 
 describe('Settings component', () => {
 
