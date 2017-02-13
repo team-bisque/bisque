@@ -6,6 +6,7 @@ export const ADD_URL = 'ADD_URL';
 export const REMOVE_URL = 'REMOVE_URL';
 export const EDIT_URL = 'EDIT_URL';
 export const RECEIVE_GREYLIST = 'RECEIVE_GREYLIST';
+export const TAB_ALIAS_SET_LOCK = 'TAB_ALIAS_SET_LOCK';
 
 // history
 export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
