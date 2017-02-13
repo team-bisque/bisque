@@ -16,7 +16,7 @@ describe('Status Reducer ', () => {
         workDuration: 25 * minute,
         breakDuration: 5 * minute,
         lunchDuration: 60 * minute,
-        blockGreylist: false
+        nuclear: false
       }
     };
     expect(reducer(undefined, {}))
