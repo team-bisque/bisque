@@ -12,11 +12,11 @@ describe('Status Reducer ', () => {
       timeRemaining: 0,
       isWorking: false,
       isPaused: true,
-      durations: {
+      settings: {
         workDuration: 25 * minute,
         breakDuration: 5 * minute,
         lunchDuration: 60 * minute,
-        nuclear: false
+        blockGreylist: false
       }
     };
     expect(reducer(undefined, {}))
@@ -56,7 +56,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 0,
       isWorking: true,
       isPaused: true,
-      durations: {
+      settings: {
         breakDuration: 15
       }
     }
@@ -65,7 +65,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 15,
       isWorking: false,
       isPaused: false,
-      durations: {
+      settings: {
         breakDuration: 15
       }
     }
@@ -78,7 +78,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 0,
       isWorking: false,
       isPaused: true,
-      durations: {
+      settings: {
         workDuration: 20
       }
     };
@@ -87,7 +87,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 20,
       isWorking: true,
       isPaused: false,
-      durations: {
+      settings: {
         workDuration: 20
       }
     };
@@ -100,7 +100,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 15,
       isWorking: false,
       isPaused: true,
-      durations: {
+      settings: {
         workDuration: 20
       }
     };
@@ -109,7 +109,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 20,
       isWorking: true,
       isPaused: false,
-      durations: {
+      settings: {
         workDuration: 20
       }
     };
@@ -122,7 +122,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 25,
       isWorking: true,
       isPaused: true,
-      durations: {
+      settings: {
         breakDuration: 10
       }
     };
@@ -131,7 +131,7 @@ describe('Status Reducer ', () => {
       timeRemaining: 10,
       isWorking: false,
       isPaused: false,
-      durations: {
+      settings: {
         breakDuration: 10
       }
     };
@@ -167,21 +167,21 @@ describe('Status Reducer ', () => {
 
   it('receives durations', () => {
     const initialState = {
-      durations: {
+      settings: {
         breakDuration: 10,
         workDuration: 15,
         lunchDuration: 30
       }
     };
-    const durations = {
+    const settings = {
       breakDuration: 15,
       workDuration: 20,
       lunchDuration: 35
     };
-    const expectedState = {durations};
+    const expectedState = {settings};
     const action = {
-      type: types.RECEIVE_DURATIONS,
-      durations
+      type: types.RECEIVE_SETTINGS,
+      settings
     };
     expect(reducer(initialState, action))
       .to.be.deep.equal(expectedState);

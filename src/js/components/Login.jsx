@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {tabAuthenticate} from '../action-creators/auth';
+import {authenticateAlias} from '../action-creators/auth';
 import {connect} from 'react-redux';
 
 export class Login extends Component {
   authenticate() {
-    this.props.tabAuthenticate();
+    this.props.authenticateAlias();
   }
 
   render () {
@@ -18,7 +18,7 @@ export class Login extends Component {
 }
 
 const mapState = null;
-const mapDispatch = {tabAuthenticate};
+const mapDispatch = {authenticateAlias};
 
 export default connect(mapState, mapDispatch)(Login);
 export {Login as TestableLogin};

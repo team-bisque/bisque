@@ -24,6 +24,7 @@ module.exports = {
     path: path.join(__dirname, "build"),
     filename: "[name].bundle.js"
   },
+
   module: {
     loaders: [
       { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "babel" },
@@ -32,7 +33,7 @@ module.exports = {
         test: /\.scss$/,
         exclude: /(node_modules|bower_components)/,
         loaders: ['style', 'css', 'sass']
-      },
+      },      
       { test: /\.css$/, loaders: ['style', 'css'] },
     ]
   },

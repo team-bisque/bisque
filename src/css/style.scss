@@ -1,6 +1,9 @@
 @import './weather-icons.css';
 @import './animations.scss';
 
+
+
+
 $text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.31);
 $dark: #232323;
 $light: #FFFFFF;
@@ -406,6 +409,14 @@ buttonHolder {
       margin-left: 10px
     }
 
+    .block {
+      text-align: center;
+      .icon {
+        margin: 5px;
+        font-size: 1.2em;
+      }
+    }
+
     ul>li, .addNew {
       margin: 10px;
     }
@@ -477,6 +488,82 @@ input {
     }
 }
 
+input[type="range"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    border-radius: 10px !important;
+    height: 3px !important;
+    width: 100% !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+}
+// input[type="range"]::-webkit-slider-thumb {
+//     -webkit-appearance: none !important;
+//     -moz-appearance: none !important;
+//     width: 0 !important;
+//     height: 0 !important;
+// }
+
+.progressbar{
+  .rangeslider{
+    box-sizing: border-box;
+    position: relative;
+
+    @for $i from 0 through 100 {
+      &[data-value='#{$i}'] .value {
+        left: percentage($i/100)
+      }
+    }
+  }  
+  .value { 
+    display: none;
+    position: absolute;    
+    width: 10%; 
+    height: 30px; 
+    text-align: center; 
+    border-radius: 10px;         
+    margin-left: -2.5%;
+    top: -37px;
+    background: white;
+    color: black;
+    line-height: 30px;
+    &:after {       
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-top: 10px solid #ffffff;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      margin-top: -5px;
+    }
+  }
+  input[type="range"]::-webkit-slider-thumb {
+      width: 30px !important;
+      height: 30px !important;
+      border: 2px solid blue !important;
+      border-radius: 50% !important;
+      background: #fff !important;
+      box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.6) !important;
+    }
+
+  &:hover {
+    input[type="range"]::-webkit-slider-thumb {
+      width: 30px !important;
+      height: 20px !important;
+      border: 1px solid blue !important;
+      border-radius: 50% !important;
+      background: #fff !important;
+      box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.6) !important;
+    }
+    .value {
+      display: block;
+    }
+  }
+}  
+
 .content {
   width: 100%;
   height: 100%;
@@ -486,3 +573,5 @@ input {
 .modal-title{
   color: rgba(255, 255, 255, 0.64);
 }
+
+

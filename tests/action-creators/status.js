@@ -56,12 +56,12 @@ describe('status actions', () => {
   });
 
   it('should create an action to receive durations', () => {
-    const durations = 3;
+    const settings = 3;
     const expectedAction = {
-      type: types.RECEIVE_DURATIONS,
-      durations
+      type: types.RECEIVE_SETTINGS,
+      settings
     };
-    expect(statusActions.receiveDurations(durations))
+    expect(statusActions.receive_settings(settings))
       .to.be.deep.equal(expectedAction);
   });
 
@@ -76,8 +76,9 @@ describe('status actions', () => {
   });
 
   it('should create an action to save settings', () => {
-    const expectedAction = {type: types.TAB_ALIAS_SAVE_SETTINGS};
-    expect(statusActions.tabSaveSettings())
+    const settings = 3;
+    const expectedAction = {type: types.TAB_ALIAS_SET_SETTINGS, settings};
+    expect(statusActions.setSettingsAlias(settings))
       .to.be.deep.equal(expectedAction);
   });
 });

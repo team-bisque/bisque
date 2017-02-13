@@ -1,69 +1,84 @@
 'use strict';
 import { setTimeRemaining, togglePause } from '../action-creators/status';
 import { fetchWeather } from '../action-creators/weather';
-
-
+import { receiveUser } from '../action-creators/auth';
+import { receiveHistory } from '../action-creators/history';
+import { receiveSettings } from '../action-creators/status';
+import { receiveGreylist } from '../action-creators/greylist';
+import { fetchTasks } from '../action-creators/tasks';
+import { setRoute } from '../action-creators/route';
 import store from '../store';
-import firebase from './firebase';
 
-const 	Tabs 			= require('./tabs'),
-		WebRequest 		= require('./webRequest'),
-		Notifications 	= require('./notifications'),
-		Idle 			= require('./idle'),
-		Auth 			= require('./auth');
+const Tabs = require('./tabs'),
+		  WebRequest = require('./webRequest'),
+		  Notifications = require('./notifications'),
+		  Idle = require('./idle');
+
+const { firebaseAuth } = require('../firebase');
 
 class Core {
-	constructor() {
-		this.tabs = new Tabs();
-		this.webRequest = new WebRequest();
-		this.auth = Auth;
-		this.notifications = new Notifications();
-		this.idle = new Idle();
-	}
+  constructor() {
+    this.tabs = new Tabs();
+    this.notifications = new Notifications();
+    this.idle = new Idle();
+  }
 
-	_init(){
-		const { dispatch, getState } = store;
+  _init() {
+    store.dispatch(fetchWeather()); // Initial weather check
+    firebaseAuth.onAuthStateChanged(user => {
+      if (user) {
+        store.dispatch(receiveUser(user));
+        store.dispatch(receiveHistory());
+        store.dispatch(receiveSettings());
+        store.dispatch(receiveGreylist());
+        store.dispatch(fetchTasks());
+        store.dispatch(setRoute(null));        
+        this.tabs._init(); // <-- begins keylogger
+        this.idle._init(); // <-- detects whether user is idle
+      } else {
+        store.dispatch(receiveUser(null))
+        store.dispatch(setRoute('signin'))
+      }
+    });
 
-		dispatch(fetchWeather()); // Initial weather check
-		setInterval(() => { // Update weather every 20 minutes
-			dispatch(fetchWeather());
-		}, 1200000);
+    // Auth.onAuthStateChanged()// <-- firebase authentication listener
+    this.notifications.welcome(); // <-- sends welcome notification
+    this.watchMinute();
 
-		this.tabs._init(); // <-- begins keylogger
-		this.idle._init(); // <-- detects whether user is idle
-		this.auth.onAuthStateChanged(); // <-- firebase authentication listener
-		this.notifications.welcome(); // <-- sends welcome notification
-		this.watchMinute();
-	}
 
-	watchMinute(){
-		const { dispatch, getState } = store;
-		const minute = 60 * 1000;
+    WebRequest.visitCounter();
+  }
 
-		setInterval(() => {
-			if (!getState().status.isPaused) {
-				// Deduct 1 minute from the clock and update the store
-				const newTime = getState().status.timeRemaining - minute;
-				dispatch(setTimeRemaining(newTime));
+  watchMinute() {
+    const { dispatch, getState } = store;
+    const minute = 60 * 1000;
 
-				// If applicable, fire a chrome notification
-				if (newTime === 5 * minute) {
-					this.notifications.warning();
-				}
-				else if (newTime === 0) {
-					this.notifications.statusChange();
-					const status = getState().status;
-				}
-				else if (newTime === -10 * minute) {
-					this.notifications.whereAreYou();
-					dispatch(togglePause());
-				}
-			} else {
+    setInterval(() => { // Update weather every 20 minutes
+      dispatch(fetchWeather());
+    }, 20 * minute);
+
+    setInterval(() => {
+      if (!getState().status.isPaused) {
+        // Deduct 1 minute from the clock and update the store
+        const newTime = getState().status.timeRemaining - minute;
+        dispatch(setTimeRemaining(newTime));
+
+        // If applicable, fire a chrome notification
+        if (newTime === 5 * minute) {
+          this.notifications.warning();
+        } else if (newTime === 0) {
+          this.notifications.statusChange();
+          const status = getState().status;
+        } else if (newTime === -10 * minute) {
+          this.notifications.whereAreYou();
+          dispatch(togglePause());
+        }
+      } else {
         // When paused, interval keeps running -- but does nothing
-				console.log('We are paused');
-			}
-		}, 3000); // Interval runs at 20x speed for dev purposes
-	}
+        console.log('We are paused');
+      }
+    }, 3000); // Interval runs at 20x speed for dev purposes
+  }
 }
 
 module.exports = Core;
