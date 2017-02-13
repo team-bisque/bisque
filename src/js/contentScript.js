@@ -25,7 +25,6 @@ const keyStrokeCounter = () => {
 
 
 	function save() {
-		console.log('contentScript.js save', data)
 		if (!status.shouldSave) return;
     data.url = document.URL.split('/')[2];
     if (data.cpm > 5 && data.wpm > 5) port.postMessage(data);
@@ -36,7 +35,6 @@ const keyStrokeCounter = () => {
     status.duration = now - time;    
     let durationMinutes = new Date(status.duration).getMinutes();
     if (now - status.lastLoggedTime < (1000 * 60)) {
-      // let durationMinutes = new Date(this.duration).getMinutes()
       data.cpm = data.characters / (durationMinutes === 0 ? 1 : durationMinutes);
       data.wpm = data.words.length / (durationMinutes === 0 ? 1 : durationMinutes);
     }
@@ -60,7 +58,7 @@ const keyStrokeCounter = () => {
 	    if (e.target && !needPrivacy(e.target) && charCode) {
 
 
-	      // Increse number of backspace and
+	      // Increase number of backspace and
 	      // Decrese number of characters
 	      // when backspace is pressed
 	      if (charCode === 8) {
@@ -83,7 +81,7 @@ const keyStrokeCounter = () => {
 						lastspace = 0;
 		      }
 	      }
-	      // Increse lastspace index number
+	      // Increase lastspace index number
 	      // when space is pressed
 	      // need treat whitespace as character.
 	      else if (charCode === 32) {
@@ -132,7 +130,3 @@ const keyStrokeCounter = () => {
 }
 const counter = keyStrokeCounter();
 counter();
-// if (typeof counter === "undefined") {
-//   const counter = new keyStrokeCounter();
-//   counter.init();
-// }
