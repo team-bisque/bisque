@@ -16,15 +16,25 @@ global.window = doc.defaultView;
 
 describe('Greylist component', () => {
 
-  let GreylistWrapper, testStore, action;
+  let GreylistWrapper, testStore, action,
+      testTabAddGreylist, testTabEditGreylist,
+      testTabRemoveGreylist;
 
-  beforeEach('set up wrapper', () => {
+  beforeEach('Set up testStore, spies, and wrapper.', () => {
+    testTabAddGreylist = sinon.spy();
+    testTabEditGreylist = sinon.spy();
+    testTabRemoveGreylist = sinon.spy();
     testStore = createStore(greylistReducer);
     action = {type: "Someone is occupewing my pie. Please sew me to another sheet."}
     testStore.dispatch(action);
     GreylistWrapper = mount(
       <Provider store={testStore}>
-        <TestableGreylist />
+        <TestableGreylist
+          tabAddGreylist={testTabAddGreylist}
+          tabEditGreylist={testTabEditGreylist}
+          tabRemoveGreylist={testTabRemoveGreylist}
+          greylist={testGreylist}
+        />
       </Provider>
     );
   });
