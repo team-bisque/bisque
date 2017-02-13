@@ -140,3 +140,5 @@ const mapDispatch = dispatch => ({
 });
 
 export default connect(mapState, mapDispatch)(Duration);
+
+export {Duration as TestableDuration};

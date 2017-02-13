@@ -105,3 +105,5 @@ const mapDispatch = dispatch => ({
 });
 
 export default connect(mapState, mapDispatch)(Greylist);
+
+export {Greylist as TestableGreylist};
