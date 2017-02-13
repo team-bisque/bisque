@@ -15,9 +15,9 @@ export const tabReceiveHistory = () => ({
 	type: TAB_ALIAS_RECEIVE_HISTORY
 });
 
-const receive_history = history => ({ type: RECEIVE_HISTORY, history });
+export const receive_history = history => ({ type: RECEIVE_HISTORY, history });
 
-const setSiteVisits = visits => ({ type: SET_VISITS, visits });
+export const setSiteVisits = visits => ({ type: SET_VISITS, visits });
 
 
 export const receiveHistory = () => (dispatch, getState) => {

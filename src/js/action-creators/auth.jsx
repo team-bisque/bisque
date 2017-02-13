@@ -1,13 +1,13 @@
 'use strict';
 import {
   RECEIVE_USER,
-  TAB_ALIAS_LOGIN
+  TAB_ALIAS_AUTH
 } from '../constants';
 
 const auth = require('../controllers/auth');
 
-export const tabAuthenticate = () => ({
-  type: TAB_ALIAS_LOGIN
+export const authenticateAlias = () => ({
+  type: TAB_ALIAS_AUTH
 });
 
 export const authenticate = () => dispatch => {

@@ -1,6 +1,6 @@
 // auth
 export const RECEIVE_USER = 'RECEIVE_USER';
-
+export const TAB_ALIAS_AUTH = 'TAB_ALIAS_AUTH';
 // greylist
 export const ADD_URL = 'ADD_URL';
 export const REMOVE_URL = 'REMOVE_URL';
@@ -28,9 +28,9 @@ export const ADD_FIVE_MINUTES = 'ADD_FIVE_MINUTES';
 // status.settings
 export const RECEIVE_SETTINGS = 'RECEIVE_SETTINGS';
 export const SET_SETTINGS = 'SET_SETTINGS';
-export const SET_START_TIME = 'SET_START_TIME';
+export const TAB_ALIAS_SET_SETTINGS = 'TAB_ALIAS_SET_SETTINGS';
 
-export const SET_SETTINGS_ALIAS = 'SET_SETTINGS_ALIAS';
+export const SET_START_TIME = 'SET_START_TIME';
 
 // tasks
 export const RECEIVE_TASK = 'RECEIVE_TASK';
@@ -42,8 +42,6 @@ export const COMPLETE_TASK = 'COMPLETE_TASK';
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER';
 
 // aliases
-export const TAB_ALIAS_AUTH = 'TAB_ALIAS_AUTH';
-// export const TAB_ALIAS_SAVE_SETTINGS = 'TAB_ALIAS_SAVE_SETTINGS';
 export const TAB_ALIAS_ADD_GREYLIST = 'TAB_ALIAS_ADD_GREYLIST';
 export const TAB_ALIAS_REMOVE_GREYLIST = 'TAB_ALIAS_REMOVE_GREYLIST';
 export const TAB_ALIAS_EDIT_GREYLIST = 'TAB_ALIAS_EDIT_GREYLIST';

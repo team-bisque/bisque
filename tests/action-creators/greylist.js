@@ -69,7 +69,7 @@ describe('Greylist action creators', () => {
       .to.be.deep.equal(expectedAction);
   });
 
-  it('return a receiveGreylist action', () => {
+  it('return a receive_greylist action', () => {
     const greylist = [
       'github.com',
       'hackernews.com',
@@ -79,7 +79,7 @@ describe('Greylist action creators', () => {
       type: types.RECEIVE_GREYLIST,
       greylist
     };
-    expect(greylistActions.receiveGreylist(greylist))
+    expect(greylistActions.receive_greylist(greylist))
       .to.be.deep.equal(expectedAction);
   });
 });

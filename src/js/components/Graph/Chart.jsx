@@ -28,9 +28,10 @@ export class Chart extends Component {
   }
 
   setData () {
-    const {data} = this.props;
-    const graphData = this.mapData(data);
-    this.setState({data: graphData[0]})
+    const graphData = this.mapData(this.props.data);
+
+    console.log('Chart Set Date', graphData)
+    this.setState({data: _.flatten(graphData)})
   }
 
   mapData (data) {
@@ -39,10 +40,16 @@ export class Chart extends Component {
       console.log(datemilsec)
       return _.map(Object.keys(data[day]), (hour) => {
         let hourmilsec = hour * 1000 * 3600;
+
+        console.log('mapData', data[day][hour], {
+          date: new Date(datemilsec+hourmilsec),
+          avgCPM: _.meanBy(data[day][hour], 'cpm') || 0,
+          totalCPM: _.sumBy(data[day][hour], 'cpm') || 0
+        })
         return {
           date: new Date(datemilsec+hourmilsec),
-          avgCPM: _.meanBy(data[day][hour], 'cpm'),
-          totalCPM: _.sumBy(data[day][hour], 'cpm')
+          avgCPM: _.meanBy(data[day][hour], 'cpm') || 0,
+          totalCPM: _.sumBy(data[day][hour], 'cpm') || 0
         }
       })
     });

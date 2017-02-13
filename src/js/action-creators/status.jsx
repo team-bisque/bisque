@@ -9,9 +9,8 @@ import {
   TOGGLE_PAUSE,
   TOGGLE_LUNCH,
   RECEIVE_SETTINGS,
-  SET_START_TIME,
-  // TAB_ALIAS_SAVE_SETTINGS,
-  SET_SETTINGS_ALIAS
+  SET_START_TIME,  
+  TAB_ALIAS_SET_SETTINGS
 } from '../constants';
 
 import { firebaseDb } from '../firebase';
@@ -53,7 +52,7 @@ export const receiveSettings = () => (dispatch, getState) => {
 }
 
 export const setSettingsAlias = settings => ({
-  type: SET_SETTINGS_ALIAS, settings
+  type: TAB_ALIAS_SET_SETTINGS, settings
 });
 
 export const setSettings = payload => (dispatch, getState) => {

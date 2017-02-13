@@ -196,3 +196,5 @@ const mapState = ({ status }) => ({ status });
 const mapDispatch = {setSettingsAlias};
 
 export default connect(mapState, mapDispatch)(Duration);
+
+export {Duration as TestableDuration};
