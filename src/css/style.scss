@@ -470,6 +470,8 @@ ul {
 label {
   color: #FFFFFF !important;
 }
+
+
 input {
     color: #FFFFFF !important;
     -webkit-appearance: none !important;
@@ -485,6 +487,9 @@ input {
     }
     &:hover{
       border-color: rgba(255, 255, 255, 0.8) !important;
+    }
+    &.inline.warning:focus {
+      border-bottom: 2px solid rgb(255, 119, 119) !important;
     }
 }
 
