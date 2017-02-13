@@ -21,8 +21,8 @@ class Greylist extends React.Component {
         '((([a-z\\d]([a-z\\d]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))' + // or ip address
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query String 
-        '(\\#[a-z\\d_]*)?$','i' //fragment locatoer     
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query String
+        '(\\#[a-z\\d_]*)?$','i' //fragment locatoer
         );
 
     if(!pattern.test(str)) return false;
@@ -31,10 +31,10 @@ class Greylist extends React.Component {
 
   onChangeURL(e) {
     let {name, value} = e.target;
-    //validate if it is url    
+    //validate if it is url
     if (name === 'add-new') this.setState({url: value});
     if(this.validateUrl(value)){
-      this.props.tabEditGreylist(value, +e.target.getAttribute('data-id'));  
+      this.props.tabEditGreylist(value, +e.target.getAttribute('data-id'));
     }
   }
 
@@ -50,14 +50,14 @@ class Greylist extends React.Component {
       this.props.tabAddGreylist(this.state.url);
       this.setState({url: ''});
     }
-    
+
   }
 
   remove(e) {
     this.props.tabRemoveGreylist(parseInt(e.target.getAttribute('data-id')));
   }
 
-  
+
 
   render() {
     const { status, greylist } = this.props
@@ -72,8 +72,8 @@ class Greylist extends React.Component {
     );
 
     return (
-      <div>        
-        
+      <div>
+
         <div className="addNew">
           <FormControl
             id="addNew-input"
@@ -84,7 +84,7 @@ class Greylist extends React.Component {
             name="add-new"
             className={this.validateUrl(this.state.url) ? "inline" : "inline warning"}
               />
-          <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>          
+          <div className="icon" onClick={this.addNew.bind(this)}><i className="fa fa-plus pull-right"></i></div>
         </div>
         <ul className="greylistURLs">
           { //greylist should be an object
