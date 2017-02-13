@@ -26,6 +26,9 @@ coverage
 # DS.Store
 .DS_Store
 
+# Seed file (fake data) for DB
+seed.js
+
 # build folder
 build
 
