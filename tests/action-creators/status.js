@@ -38,7 +38,7 @@ describe('status actions', () => {
     const expectedAction = {
       type: types.TOGGLE_WORK
     };
-    expect(statusActions.toggleWork()).to.be.deep.equal(expectedAction);
+    expect(statusActions.toggle_work()).to.be.deep.equal(expectedAction);
   })
 
   it('should create an action to toggle pause', () => {

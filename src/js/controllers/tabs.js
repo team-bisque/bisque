@@ -1,15 +1,40 @@
 'use strict';
-const ChromePromise = require('chrome-promise');
-const chromep = new ChromePromise();
-
 import { setHistory } from '../action-creators/history';
 import store from '../store';
 
 
 const Tabs = () => {
+  // const ChromePromise = require('chrome-promise');
+  // const chromep = new ChromePromise();
   let lockedTab = null;
 
   // Tab functions
+  function query(options){
+    return new Promise((resolve, reject) => {
+      let result = [];
+      chrome.tabs.query(options, (tabs) => {
+        if(tabs && tabs.length){
+          resolve(tabs)
+        } else {
+          reject(Error("no tab query result"));
+        }
+      });  
+    });
+  }
+
+  function create(option = {}){
+    return new Promise((resolve, reject) => {
+      let result = [];
+      chrome.tabs.create(options, (tab) => {
+        if(tab){
+          resolve(tab)
+        } else {
+          reject(Error("coudln't create new tab"));
+        }
+      });  
+    });
+  }
+
   function setLockedTab(tab = null) {
     if(tab){
       lockedTab = tab;
@@ -25,7 +50,7 @@ const Tabs = () => {
   }
 
   function lockTab(){    
-    return chromep.tabs.query({ active: true, currentWindow: true })
+    return query({ active: true, currentWindow: true })
       .then(res => res[0])
       .then(tab => {
         if(tab.url === "chrome://newtab/"){
@@ -37,7 +62,7 @@ const Tabs = () => {
   }
 
   function createAndLockTab() {
-    return chromep.tabs.create({})
+    return create()
       .then(() => chromep.tabs.query({ active: true, currentWindow: true }))
       .then(res => res[0])
       .then(tab => setLockedTab(tab));
@@ -69,13 +94,13 @@ const Tabs = () => {
   }  
 
   function forceActivateLockedTab(activeInfo) {
-    if (activeInfo.tabId) return chromep.tabs.update(lockedTab.id, { active: true });
+    if (activeInfo.tabId) return chrome.tabs.update(lockedTab.id, { active: true });
   }
 
 
   function forceRemoveNewTab(tab) {
     // if locked Tab exists remove newly created tab
-    if (lockedTab && lockedTab.id) return chromep.tabs.remove(tab.id);
+    if (lockedTab && lockedTab.id) return chrome.tabs.remove(tab.id);
   }
 
   function forceCreateLockTab(tabId, removeInfo) {
