@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Chart from './Chart';
-import { findDOMNode } from 'react-dom';
 
 export default class Graph extends React.Component {
   constructor(props) {
@@ -11,24 +10,6 @@ export default class Graph extends React.Component {
       width: 800,
       height: 400
     };
-    this.updateDimensions = this.updateDimensions.bind(this);
-  }
-
-  componentDidMount() {
-    this.updateDimensions(); // Initial resize
-    window.addEventListener('resize', this.updateDimensions);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDimensions);
-  }
-
-  updateDimensions() {
-    const elem = findDOMNode(this);
-    this.setState({
-      width: elem.offsetWidth,
-      height: elem.offsetHeight
-    });
   }
 
   onClickClose(e){
