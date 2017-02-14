@@ -99,13 +99,14 @@ export class Chart extends Component {
     let lineEquation = line().x(d => xCoords(d.date)).y(d => yCoords(d.avgWPM));
     let xAxisEquation = axisBottom(xCoords);
     let yAxisEquation = axisLeft(yCoords);
+    
+    let viewBox = [0, 0, width, height].join(' ');
 
     return (
       <div>
-        <p style={{"text-align": "center", "font-weight": "bold"}}>{label}</p>
-        <svg width={width} height={height}>
+        <p className="graph-label" style={{"text-align": "center", "font-weight": "bold"}}>{label}</p>
+        <svg viewBox={viewBox}>
           <g transform={`translate(${margin.left},${margin.top})`}>
-            {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
             <path className="line" d={lineEquation(data)} />
             <Dots data={data} x={xCoords} y={yCoords} showTooltip={this.showTooltip} hideTooltip={this.hideTooltip} />
             <Axis height={height - heightDiff} axis={yAxisEquation} axisType="y" />
