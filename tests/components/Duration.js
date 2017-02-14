@@ -2,12 +2,13 @@
 
 import React from 'react';
 import {expect} from 'chai';
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import {spy} from 'sinon';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {TestableDuration} from '../../src/js/components/Settings/Greylist';
+import {TestableDuration} from '../../src/js/components/Settings/Duration';
+import statusReducer from '../../src/js/reducers/status';
 
 // this is boilerplate jsdom, allows you to use mount
 // instead of shallow, so you can test a live version
@@ -17,5 +18,34 @@ global.document = doc;
 global.window = doc.defaultView;
 
 describe('Duration component', () => {
-  xit('')
+
+  let DurationWrapper, testStore, action,
+      testSetSettingsAlias;
+
+  beforeEach('Set up spies, testStore, and wrapper.', () => {
+    testSetSettingsAlias = spy();
+    testStore = createStore(statusReducer);
+    action = {type: "JS4L"};
+    const nukeAction = {type: 'RECEIVE_SETTINGS', settings: {nuclear: true}};
+    testStore.dispatch(action);
+    testStore.dispatch(nukeAction);
+    DurationWrapper = mount(
+      <Provider store={testStore}>
+        <TestableDuration
+          setSettingsAlias={testSetSettingsAlias}
+          status={testStore.getState()}
+        />
+      </Provider>
+    );
+  });
+
+  xit('toggles the nuclear setting', () => {
+    DurationWrapper.find('.icon').at(0).simulate('click');
+    expect(DurationWrapper.state().nuclear).to.equal(false);
+  });
+
+  xit('sets changes to the durations through form inputs and saves settings', () => {
+
+    expect(testSetSettingsAlias.calledOnce).to.be.true;
+  });
 });

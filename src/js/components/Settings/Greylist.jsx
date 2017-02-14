@@ -52,14 +52,14 @@ class Greylist extends React.Component {
   }
 
   addNew(e) {
-    e.preventDefault();
-    if(this.validateUrl(this.state.url)){
+    // e.preventDefault();
+    // if(this.validateUrl(this.state.url)){
       this.props.tabAddGreylist({
         url: this.state.url,
         isBlocked: false
       });
       this.setState({url: ''});
-    }
+    // }
 
   }
 
