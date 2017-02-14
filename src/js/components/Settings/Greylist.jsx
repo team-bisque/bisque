@@ -17,6 +17,7 @@ class Greylist extends React.Component {
     };
   }
 
+  // consider place this in util
   validateUrl(str){
     var pattern = new RegExp('^(https?:\\/\\/)?'+//protocol
         '((([a-z\\d]([a-z\\d]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -67,8 +68,7 @@ class Greylist extends React.Component {
   }
 
   lockGreylist(e){
-    let { name } = e.target;
-    // console.log(name, e.target)
+    let { name } = e.target;    
     if (e.target.getAttribute('data-action') === 'bulk') {
       this.props.setAllLockAlias(true);
     } else {

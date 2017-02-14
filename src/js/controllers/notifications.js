@@ -31,6 +31,13 @@ class Notifications {
 		return chromep.notifications.create(noteId, options);
 	}
 
+	greylistAttempt(url){
+		this.create('greylistAttempt', {
+			title: "Hey there.",
+			message: `You are not suppose to visit \n${url} during work.`	
+		})
+	}
+
 	login(){
 		this.create('login', {
 			title: 'Welcome to Bisque!',

@@ -27,7 +27,10 @@ const keyStrokeCounter = () => {
 	function save() {
 		if (!status.shouldSave) return;
     data.url = document.URL.split('/')[2];
-    if (data.cpm > 5 && data.wpm > 5) port.postMessage(data);
+    if (data.cpm > 5 && data.wpm > 5) {
+    	port.postMessage(data);
+    	status.shouldSave = false;
+    }
 	}
 
 	function log(input) {		
