@@ -100,7 +100,7 @@ class Tasks extends React.Component{
         </div>
         <div>
           <p>List: </p>
-          <select id="task-lists" value={this.state.selectedList} onChange={this.toggleList}>
+          <select id="task-lists" class="inline" value={this.state.selectedList} onChange={this.toggleList}>
             {
               tasks && tasks.length ? tasks.map((list, idx) => {
                 return (
