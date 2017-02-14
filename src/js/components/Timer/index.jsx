@@ -7,7 +7,7 @@ import Donut from './Donut';
 import {
   addFiveMinutes,
   togglePause,
-  toggleWorkAlias
+  toggleWork
 } from '../../action-creators/status';
 
 class Timer extends React.Component {
@@ -20,7 +20,7 @@ class Timer extends React.Component {
   }
 
   onClickToggleWork(e){
-    this.props.toggleWorkAlias();
+    this.props.toggleWork();
   }
 
   onClickAddFive(e){
@@ -93,7 +93,7 @@ class Timer extends React.Component {
 
 const mapState = ({ status }) => ({ status });
 const mapDispatch = {
-  addFiveMinutes, togglePause, toggleWorkAlias
+  addFiveMinutes, togglePause, toggleWork
 };
 
 export default connect(mapState, mapDispatch)(Timer);

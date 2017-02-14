@@ -2,7 +2,6 @@
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
-
 import { setHistory } from '../action-creators/history';
 import store from '../store';
 
@@ -11,16 +10,17 @@ const Tabs = () => {
   let lockedTab = null;
 
   // Tab functions
-  function setLockedTab(tab) {
+  function setLockedTab(tab = null) {
     if(tab){
       lockedTab = tab;
       chrome.tabs.onActivated.addListener(forceActivateLockedTab);
       chrome.tabs.onCreated.addListener(forceRemoveNewTab);
       chrome.tabs.onRemoved.addListener(forceCreateLockTab);      
-    } else {
+    } else {      
       chrome.tabs.onActivated.removeListener(forceActivateLockedTab);
       chrome.tabs.onCreated.removeListener(forceRemoveNewTab);
       chrome.tabs.onRemoved.removeListener(forceCreateLockTab);
+      lockedTab = null;
     }    
   }
 
@@ -35,7 +35,6 @@ const Tabs = () => {
         }
       });
   }
-
 
   function createAndLockTab() {
     return chromep.tabs.create({})
@@ -98,7 +97,10 @@ const Tabs = () => {
         }
       })
     },
-    lockTab: lockTab
+    lockTab: lockTab,
+    unlockTab: () => {
+      setLockedTab();
+    }
   }
 }
 

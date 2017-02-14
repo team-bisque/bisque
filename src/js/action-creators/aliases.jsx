@@ -1,5 +1,5 @@
 import { authenticate } from './auth';
-import { setSettings, toggleWork } from './status';
+import { setSettings } from './status';
 import { addGreylist, editGreylist, removeGreylist, setAllLock } from './greylist';
 import { createNewTask, deleteTask, finishTask } from './tasks';
 
@@ -12,8 +12,7 @@ import {
   TAB_ALIAS_SET_SETTINGS,
   TAB_ALIAS_ADD_TASK,
   TAB_ALIAS_REMOVE_TASK,
-  TAB_ALIAS_COMPLETE_TASK,
-  TOGGLE_WORK_ALIAS
+  TAB_ALIAS_COMPLETE_TASK
 
 } from '../constants';
 
@@ -23,7 +22,6 @@ export default {
   [TAB_ALIAS_EDIT_GREYLIST] : editGreylist,
   [TAB_ALIAS_REMOVE_GREYLIST] : removeGreylist,
   [TAB_ALIAS_SET_LOCK] : setAllLock,
-  [TOGGLE_WORK_ALIAS] : toggleWork,
   [TAB_ALIAS_SET_SETTINGS] : setSettings,
   [TAB_ALIAS_ADD_TASK] : createNewTask,
   [TAB_ALIAS_REMOVE_TASK] : deleteTask,
