@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js",
-    "test": "mocha tests/**/*.js --compilers js:babel-register"
+    "test": "mocha tests/**/*.js --compilers js:babel-register",
+    "seed": "node seed.js"
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,7 @@
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.7",
     "react-chrome-redux": "^1.2.0",
-    "react-dom": "^15.3.2",    
+    "react-dom": "^15.3.2",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^1.0.0",

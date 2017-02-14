@@ -37,5 +37,6 @@ for (let k = 5; k < 14; k++) {
 }
 
 axios.all(promises)
-     .then(results => results) 
+     .then(() => console.log('Finished uploading seed data'))
+     .then(() => process.exit())
      .catch(err => console.error(err));
