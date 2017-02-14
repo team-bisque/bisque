@@ -73,7 +73,6 @@ export const setHistory = (time, data) => (dispatch, getState) => {
   function isGreylist (url) {
     let result = false;
     getState().greylist.forEach(greylist => {
-      console.log(greylist)
       if(greylist.url.includes(url.replace('www.',''))) result = true;
     })
     return result;

@@ -10,8 +10,7 @@ import {
   TOGGLE_LUNCH,
   RECEIVE_SETTINGS,
   SET_START_TIME,  
-  TAB_ALIAS_SET_SETTINGS,
-  TOGGLE_WORK_ALIAS
+  TAB_ALIAS_SET_SETTINGS
 } from '../constants';
 
 import { firebaseDb } from '../firebase';
