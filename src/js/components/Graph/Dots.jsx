@@ -14,9 +14,9 @@ export default function Dot (props){
               className="dot"
               r="1.5"
               cx={x(d.date)}
-              cy={y(d.totalCPM)}
+              cy={y(d.avgWPM)}
               data-key={moment(d.date).format('MMMM Do YYYY')}
-              data-value={Math.floor(d.totalCPM)}
+              data-value={Math.floor(d.avgWPM)}
               onMouseOver={showTooltip}
               onMouseOut={hideTooltip}
             />
