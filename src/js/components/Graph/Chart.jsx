@@ -34,13 +34,18 @@ export class Chart extends Component {
   }
 
   mapData (data) {
-    return _.map(Object.keys(data), (day)=>{
+    const filteredData = {};
+    for (let day in data) {
+      filteredData[day] = _.map(data[day], hour => _.filter(hour, tab => tab.wpm && tab.wpm > 0)).filter(day1 => day1.length > 0);
+    }
+
+    return _.map(Object.keys(filteredData), (day) => {
       let datemilsec = new Date(day.replace('-', ' ')).getTime();
-      return _.map(Object.keys(data[day]), (hour) => {
+      return _.map(Object.keys(filteredData[day]), (hour) => {
         let hourmilsec = hour * 1000 * 3600;
         return {
           date: new Date(datemilsec+hourmilsec),
-          avgWPM: _.meanBy(data[day][hour], 'wpm') || 0
+          avgWPM: _.meanBy(filteredData[day][hour], 'wpm') || 0
         }
       })
     });
