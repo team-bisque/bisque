@@ -25,12 +25,21 @@ export const authenticate = () => dispatch => {
       firebaseAuth.signInWithCredential(credential)
       .then(user => {	      	
       	let defaultSettings = {
-      		workDuration: 300000,
-      		breakDuration: 300000,
-      		lunchDuration: 300000,
+          settings: {
+            workDuration: 300000,
+            breakDuration: 300000,
+            lunchDuration: 300000,  
+            nuclear: false,
+          },      		
       		greylist: {
-      			0: 'facebook.com',
-      			1: 'youtube.com'
+      			0: {
+              url: 'facebook.com',
+              isBlocked: false
+            },
+      			1: {
+              url: 'buzzfeed.com',
+              isBlocked: true
+            }
       		}
       	}
       	firebaseDb.ref('users/' + user.uid).set(defaultSettings)

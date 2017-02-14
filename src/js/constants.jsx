@@ -6,6 +6,7 @@ export const ADD_URL = 'ADD_URL';
 export const REMOVE_URL = 'REMOVE_URL';
 export const EDIT_URL = 'EDIT_URL';
 export const RECEIVE_GREYLIST = 'RECEIVE_GREYLIST';
+export const TAB_ALIAS_SET_LOCK = 'TAB_ALIAS_SET_LOCK';
 
 // history
 export const RECEIVE_HISTORY = 'RECEIVE_HISTORY';
@@ -16,6 +17,7 @@ export const INCREASE_VISIT = 'INCREASE_VISIT';
 export const SET_ROUTE = 'SET_ROUTE';
 
 // status
+export const TOGGLE_WORK_ALIAS = 'TOGGLE_WORK_ALIAS';
 export const TOGGLE_WORK = 'TOGGLE_WORK';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const TOGGLE_LUNCH = 'TOGGLE_LUNCH';
