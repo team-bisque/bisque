@@ -1,93 +1,100 @@
 'use strict';
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
-// const firebase = require('./firebase');
-// const User = require('./user');
-const _ = require('lodash');
-const moment = require('moment');
 
-import { setHistory } from '../action-creators/history'
+import { setHistory } from '../action-creators/history';
 import store from '../store';
 
-class Tabs {
+const Tabs = () => {
+  let lockedTab = null;
 
-//<<<<<<< HEAD
-  // https://developer.chrome.com/extensions/tabs
-  constructor() {
-    // this.greylist = [];
-    // this.sitesVisited = [];
-    // this.url = '';    
-    this.keyloggerSetup = this.keyloggerSetup.bind(this);
-    this.setFirebasePath = this.setFirebasePath.bind(this);
-    this.findTime = this.findTime.bind(this);
-    this.onMessage = this.onMessage.bind(this);
+  // Tab functions
+  function setLockedTab(tab) {
+    if(tab){
+      lockedTab = tab;
+      chrome.tabs.onActivated.addListener(forceActivateLockedTab);
+      chrome.tabs.onCreated.addListener(forceRemoveNewTab);
+      chrome.tabs.onRemoved.addListener(forceCreateLockTab);      
+    } else {
+      chrome.tabs.onActivated.removeListener(forceActivateLockedTab);
+      chrome.tabs.onCreated.removeListener(forceRemoveNewTab);
+      chrome.tabs.onRemoved.removeListener(forceCreateLockTab);
+    }    
   }
 
-  _init() {
-    // Listens for tab updates and ensures keylogger runs on each tab
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      // console.log('chrome.tabs.onUpdated', tabId, changeInfo)
-      if (changeInfo.status && changeInfo.status === "complete") {
-        // console.log("EventListenr is added")
-        this.keyloggerSetup(tabId, changeInfo, tab);
-      }
-    })
-
+  function lockTab(){    
+    return chromep.tabs.query({ active: true, currentWindow: true })
+      .then(res => res[0])
+      .then(tab => {
+        if(tab.url === "chrome://newtab/"){
+          setLockedTab(tab);
+        } else {
+          return createAndLockTab();
+        }
+      });
   }
 
-  // KEYLOGGER METHODS
-  // See keyLogger.js for content script side of process.
-  onMessage(port) {
+  function createAndLockTab() {
+    return chromep.tabs.create({})
+      .then(() => chromep.tabs.query({ active: true, currentWindow: true }))
+      .then(res => res[0])
+      .then(tab => setLockedTab(tab));
+  }
+
+  function onMessage(port) {
     port.onMessage.addListener(msg => {
       store.dispatch(setHistory(new Date(), msg))
-      // User.history.set(msg, new Date())
-      //   .then(() => User.history.getById(store.getState().auth.uid))
-      //   .catch(console.error)
     });
   }
-  keyloggerSetup(tabId, changeInfo, tab) {
+
+  function keyloggerSetup(tabId, changeInfo, tab) {
     // Set up listener in background for the port that the keyLogger script will set up on the tab
     // This listener receives keystrokes from the tab        
-    chrome.runtime.onConnect.removeListener(this.onMessage);
-    chrome.runtime.onConnect.addListener(this.onMessage);
-
-    // Inject keylogger/content script into tab
-    // This sets up the keylogger
+    chrome.runtime.onConnect.removeListener(onMessage);
+    chrome.runtime.onConnect.addListener(onMessage);
+    
     if (tab.url.indexOf('chrome://') === -1 && changeInfo.status === 'complete') {
       chrome.tabs.executeScript(tabId, {
-        // code: "document.body.style.backgroundColor='red'",
         file: "contentScript.js",
         runAt: 'document_idle'
       }, (res) => {
-        // console.log('keyloggerSetup RES', res)
         if (chrome.runtime.lastError) {
           console.log(chrome.runtime.lastError.message);
         }
       })
     }
+  }  
+
+  function forceActivateLockedTab(activeInfo) {
+    if (activeInfo.tabId) return chromep.tabs.update(lockedTab.id, { active: true });
   }
 
-  findTime(time) {
-    // msg argument is optional; for use with keylogger only 
-    return time ? new Date(time) : new Date();
+  function forceRemoveNewTab(tab) {
+    // if locked Tab exists remove newly created tab
+    if (lockedTab && lockedTab.id) return chromep.tabs.remove(tab.id);
   }
 
-  setFirebasePath(timeObject) {
-    const userId = store.getState().auth.uid;
-    const date = timeObject.getMonth() + 1 + '-' + timeObject.getDate() + '-' + timeObject.getFullYear();
-    const hour = timeObject.getHours().toString();
+  function forceCreateLockTab(tabId, removeInfo) {
+    let { getState } = store;
+    let isWorking = getState().status.isWorking;
 
-    const dbPath = ('user_history/' + userId + '/' + date + '/' + hour).toString();
+    if (lockedTab && lockedTab.id && tabId === lockedTab.id) {
+      setLockedTab(null);
+      if (!removeInfo.isWindowClosing && !isWorking) createAndLockTab();
+    }
 
-    // console.log('setFirebasePath', dbPath)
-    return dbPath;
   }
 
-  createAndLock() {
-    return chromep.tabs.create({})
-      .then(() => chromep.tabs.query({ active: true }))
-      .then(res => res[0])
+  return {
+    _init: () => {
+      chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+        if (changeInfo.status && changeInfo.status === "complete") {
+          keyloggerSetup(tabId, changeInfo, tab);
+        }
+      })
+    },
+    lockTab: lockTab
   }
 }
 
-module.exports = Tabs;
+module.exports = Tabs();

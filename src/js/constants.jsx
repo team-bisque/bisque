@@ -17,6 +17,7 @@ export const INCREASE_VISIT = 'INCREASE_VISIT';
 export const SET_ROUTE = 'SET_ROUTE';
 
 // status
+export const TOGGLE_WORK_ALIAS = 'TOGGLE_WORK_ALIAS';
 export const TOGGLE_WORK = 'TOGGLE_WORK';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const TOGGLE_LUNCH = 'TOGGLE_LUNCH';

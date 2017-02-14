@@ -11,6 +11,9 @@
 import { increaseVisits } from '../action-creators/history';
 import store from '../store';
 
+var Notifications = require('./notifications');
+var notification = new Notifications();
+
 const WebRequest = () => {
 
 
@@ -19,27 +22,29 @@ const WebRequest = () => {
     console.log('increaseVisits',request, store)
     // if (request.url.indexOf('chrome-extension://') > -1) return;
     let baseURL = request.url.split('/')[2];
-    store.dispatch(increaseVisits(new Date(), baseURL))
+    store.dispatch(increaseVisits(new Date(), baseURL));
     // return User.history.increaseVisits(baseURL);
   }
 
-  function redirectUrl(request) {
-    
-    function isGreylist (url) {
+  // consider placing it in util
+  function isGreylist (url) {
 
-      let result = false;
-      store.getState().greylist.forEach(greylist => {
-        console.log(greylist)
-        if(greylist.includes(url.replace('www.',''))) result = true;
-      })
-      return result;
-    }
-    if(isGreylist(request.url)) {
-      console.log('BLOCK!!!');
-      increaseVisitsHandler(request);
-      return { redirectUrl: 'javascript:' };    
-    }
-    return;
+    let result = false;
+    store.getState().greylist.forEach(greylist => {
+      // console.log(greylist)
+      console.log(url.replace('www.','').includes(greylist.url));
+      if(greylist.isBlocked && url.replace('www.','').includes(greylist.url)) result = true;
+    })
+    return result;
+  }
+
+  function redirectUrl(request) {
+    return { redirectUrl: 'javascript:' };
+  }
+  function redirectBisque(request) {    
+    // increaseVisitsHandler(request);
+    notification.greylistAttempt(request.url); 
+    return { redirectUrl: 'chrome://newtab/' };
   }
 
   return {
@@ -52,12 +57,18 @@ const WebRequest = () => {
           types: ["main_frame"]
         }, ["responseHeaders"]
       );
+    },    
+    blockGreylist: function(){
+      console.log('BLOCK GREYLIST!!!');
+      chrome.webRequest.onBeforeRequest.addListener(
+        redirectBisque, {
+          urls: ['*://www.buzzfeed.com/*']
+        }, ['blocking']
+      );
     },
-    unblock: function(){
-      chrome.webRequest.onCompleted.removeListener(redirectUrl);
-    },
-    block: function() {
-      console.log('BLOCK!!!');
+    blockAll: function() {
+      console.log('BLOCK ALL!!!');
+      // chrome.webRequest.onCompleted.removeListener(redirectUrl);
       chrome.webRequest.onBeforeRequest.addListener(
         redirectUrl, {
           urls: ['https://*/*', 'http://*/*']

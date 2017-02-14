@@ -44,12 +44,12 @@ class Duration extends React.Component{
   }
 
   setSettings(){
-    const { workDuration, breakDuration, lunchDuration, blockGreylist } = this.props.status.settings;
+    const { workDuration, breakDuration, lunchDuration, nuclear } = this.props.status.settings;
     this.setState({
       workDuration: workDuration,
       breakDuration: breakDuration,
       lunchDuration: lunchDuration,
-      blockGreylist: blockGreylist
+      nuclear: nuclear
     });
   }
 
@@ -83,14 +83,14 @@ class Duration extends React.Component{
   toggleNuclear(e){
     if (this.state.nuclear) {
       this.setState({nuclear: false, key: ''});
-    }
-    else {
+    } else {
       this.setState({
         nuclear: true,
         validated: false,
         key: ''
       });
     }
+    this.saveSettings();
     // WebRequest.unblock();
   }
 
@@ -153,7 +153,7 @@ class Duration extends React.Component{
         <div className="block">
           {!nuclear ?
             <div>
-              <div>Browser is NOT locked during work breaks</div>
+              <div>Browser is NOT locked during breaks</div>
               { !validated ?
                 <div className="icon">
                   <OverlayTrigger placement="right" overlay={
@@ -175,7 +175,7 @@ class Duration extends React.Component{
               <FormControl type="text" className={validated ? 'hide' : 'inline' } value={this.state.key} onChange={this.keyValidation} />
             </div> :
             <div>
-              <div>The browser is locked during work breaks</div>
+              <div>The browser is locked during breaks</div>
               <div className="icon" onClick={this.toggleNuclear}>
                 <OverlayTrigger placement="bottom" overlay={<Tooltip id="unlock-tooltip">Turn off the Nuclear Option</Tooltip>}>
                   <i className="fa fa-unlock-alt"></i>

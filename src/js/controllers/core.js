@@ -18,7 +18,7 @@ const { firebaseAuth } = require('../firebase');
 
 class Core {
   constructor() {
-    this.tabs = new Tabs();
+    // this.tabs = new Tabs();
     this.notifications = new Notifications();
     this.idle = new Idle();
   }
@@ -33,7 +33,7 @@ class Core {
         store.dispatch(receiveGreylist());
         store.dispatch(fetchTasks());
         store.dispatch(setRoute(null));        
-        this.tabs._init(); // <-- begins keylogger
+        Tabs._init(); // <-- begins keylogger
         this.idle._init(); // <-- detects whether user is idle
       } else {
         store.dispatch(receiveUser(null))
@@ -47,6 +47,7 @@ class Core {
 
 
     WebRequest.visitCounter();
+    WebRequest.blockGreylist();
   }
 
   watchMinute() {
