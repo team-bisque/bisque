@@ -42,7 +42,7 @@ const keyStrokeCounter = () => {
       data.wpm = data.words.length / (durationMinutes === 0 ? 1 : durationMinutes);
     }
     status.shouldSave = true;
-    status.lastLoggedTime = now;  
+    status.lastLoggedTime = now;
 	}
 
 	function needPrivacy(domElement) {
@@ -116,9 +116,7 @@ const keyStrokeCounter = () => {
 		}
 	}
 
-	return function(){
-		// console.log('contentScript.js counter', status, data)
-
+	return function() {
 		status.active = true;
     port = chrome.runtime.connect(); // make port connection to background.js    
     document.removeEventListener("keydown", event.onKeypress); // prevent multiple event
