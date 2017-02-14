@@ -36,7 +36,7 @@ describe('<Timer>', () => {
 		    workDuration: 25 * minute,
 		    breakDuration: 5 * minute,
 		    lunchDuration: 60 * minute,
-		    blockGreylist: false
+		    nuclear: false
 		  }
 		};
 		expect(timerSpy.props().status).to.be.deep.equal(status);
@@ -96,7 +96,7 @@ describe('<Timer>', () => {
 			.to.equal(true);
 	});
 
-	it('renders the right message if timer is playing and user is on work', () => {
+	it('renders the right message if timer is playing and user is at work', () => {
 		const onWorkAction = {type: types.START_WORK};
 		testStore.dispatch(onWorkAction);
 		timerSpy = shallow(
@@ -106,7 +106,7 @@ describe('<Timer>', () => {
 		);
 		const message = (
 			<div className="timer-message">
-        <span>You're on work</span>
+        <span>You're at work</span>
       </div>
 		)
 		expect(timerSpy.dive().contains(message))

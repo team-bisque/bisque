@@ -62,7 +62,6 @@ export const receiveSettings = () => (dispatch, getState) => {
   // Action-creators/status receiveDuration
   const ref = firebaseDb.ref(`users/${getState().auth.uid}/settings`);
   ref.once('value', (snapshot) => {
-    console.log('receiveDuration: snapshop', snapshot.val())
     dispatch(receive_settings(snapshot.val()));
   });
 }
@@ -74,7 +73,6 @@ export const setSettingsAlias = settings => ({
 export const setSettings = payload => (dispatch, getState) => {
   // Action-creators/status setDuration  
   const ref = firebaseDb.ref(`users/${getState().auth.uid}/settings`);;  
-  console.log('setDuration: snapshop',payload)
   ref.on('value', snapshot => {    
     ref.set(payload.settings)
       .then(()=>{
@@ -85,12 +83,3 @@ export const setSettings = payload => (dispatch, getState) => {
   });     
 }
 
-// export const setSettings = () => (dispatch, getState) => {
-//   const User = require('../controllers/user');
-//   const userId = getState().auth.uid;
-//   let settings = Object.assign({}, getState().status.durations);
-//       settings.greylist = getState().greylist;
-
-//   User.settings.set(userId, settings)
-//     .then(() => User.settings.getById(userId));
-// };

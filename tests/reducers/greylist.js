@@ -15,22 +15,22 @@ describe('Greylist reducer', () => {
   });
 
   it('adds a url to the greylist', () => {
-    const greylist = [
+    const greylistArray = [
       'themegas.com',
       'fullstackacademy.com'
     ];
-    const url = 'redux.js.org';
+    const greylist = 'redux.js.org';
     const action = {
       type: types.ADD_URL,
-      url
+      greylist
     };
-    const expectedGreylist = [...greylist, url];
-    expect(reducer(greylist, action))
+    const expectedGreylist = [...greylistArray, greylist];
+    expect(reducer(greylistArray, action))
       .to.be.deep.equal(expectedGreylist);
   });
 
   it('removes a url from the greylist', () => {
-    const greylist = [
+    const greylistArray = [
       'linkedin.com',
       'vine.com'
     ];
@@ -40,26 +40,26 @@ describe('Greylist reducer', () => {
       index
     };
     const expectedGreylist = ['linkedin.com'];
-    expect(reducer(greylist, action))
+    expect(reducer(greylistArray, action))
       .to.be.deep.equal(expectedGreylist);
   });
 
   it('edits a url', () => {
-    const greylist = [
+    const greylistArray = [
       'whitehouse.com',
       'amazon.com'
     ];
     const index = 0;
-    const url = 'whitehouse.gov';
+    const greylist = 'whitehouse.gov';
     const action = {
       type: types.EDIT_URL,
-      index, url
+      index, greylist
     };
     const expectedGreylist = [
       'whitehouse.gov',
       'amazon.com'
     ];
-    expect(reducer(greylist, action))
+    expect(reducer(greylistArray, action))
       .to.be.deep.equal(expectedGreylist);
   });
 

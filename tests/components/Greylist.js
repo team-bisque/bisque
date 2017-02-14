@@ -58,20 +58,34 @@ describe('Greylist component', () => {
   });
 
   it('responds to form input changes', () => {
+    const url = 'facebook.com';
     const input = GreylistWrapper.find('.inline').at(0);
-    input.simulate('change', {target: {
-        value: 'changed value',
-        getAttribute: string => string
-    }});
-    input.simulate('keypress', {key: 'Enter'});
-    expect(testTabEditGreylist.calledOnce).to.be.true;
-    expect(testTabAddGreylist.calledOnce).to.be.true;
+    return Promise.resolve()
+      .then(() => GreylistWrapper.setState({url}))
+      .then(() => {
+      input.simulate('keypress', {key: 'Enter'});
+      input.simulate('change', {target: {
+          value: url,
+          getAttribute: string => string
+      }});
+      expect(testTabEditGreylist.calledOnce).to.be.true;
+      expect(testTabAddGreylist.calledOnce).to.be.true;
+    })
+      .catch(error => console.error(error));
   });
 
   it('responds to form button clicks', () => {
-    GreylistWrapper.find('.fa-plus').simulate('click');
-    GreylistWrapper.find('.fa-times').at(0).simulate('click');
-    expect(testTabAddGreylist.calledOnce).to.be.true;
-    expect(testTabRemoveGreylist.calledOnce).to.be.true;
+    const url = 'waffle.io';
+    return Promise.resolve()
+      .then(() => GreylistWrapper.setState({url}))
+      .then(() => {
+        GreylistWrapper.find('.fa-plus')
+          .simulate('click');
+        GreylistWrapper.find('.fa-times').at(0)
+          .simulate('click');
+        expect(testTabAddGreylist.calledOnce).to.be.true;
+        expect(testTabRemoveGreylist.calledOnce).to.be.true;
+      })
+      .catch(error => console.error(error));
   });
 });

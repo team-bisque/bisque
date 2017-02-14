@@ -2,8 +2,10 @@
 const ChromePromise = require('chrome-promise');
 const chromep = new ChromePromise();
 
+
 import { setHistory } from '../action-creators/history';
 import store from '../store';
+
 
 const Tabs = () => {
   let lockedTab = null;
@@ -34,6 +36,7 @@ const Tabs = () => {
       });
   }
 
+
   function createAndLockTab() {
     return chromep.tabs.create({})
       .then(() => chromep.tabs.query({ active: true, currentWindow: true }))
@@ -48,6 +51,7 @@ const Tabs = () => {
   }
 
   function keyloggerSetup(tabId, changeInfo, tab) {
+
     // Set up listener in background for the port that the keyLogger script will set up on the tab
     // This listener receives keystrokes from the tab        
     chrome.runtime.onConnect.removeListener(onMessage);
@@ -68,6 +72,7 @@ const Tabs = () => {
   function forceActivateLockedTab(activeInfo) {
     if (activeInfo.tabId) return chromep.tabs.update(lockedTab.id, { active: true });
   }
+
 
   function forceRemoveNewTab(tab) {
     // if locked Tab exists remove newly created tab
