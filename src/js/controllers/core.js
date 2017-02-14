@@ -18,7 +18,7 @@ const { firebaseAuth } = require('../firebase');
 
 class Core {
   constructor() {
-    this.tabs = new Tabs();
+    // this.tabs = new Tabs();
     this.notifications = new Notifications();
     this.idle = new Idle();
   }
@@ -33,7 +33,7 @@ class Core {
         store.dispatch(receiveGreylist());
         store.dispatch(fetchTasks());
         store.dispatch(setRoute(null));        
-        this.tabs._init(); // <-- begins keylogger
+        Tabs._init(); // <-- begins keylogger
         this.idle._init(); // <-- detects whether user is idle
       } else {
         store.dispatch(receiveUser(null))
@@ -47,6 +47,7 @@ class Core {
 
 
     WebRequest.visitCounter();
+    WebRequest.blockGreylist();
   }
 
   watchMinute() {
@@ -58,7 +59,9 @@ class Core {
     }, 20 * minute);
 
     setInterval(() => {
-      if (!getState().status.isPaused) {
+      let status = getState().status;
+
+      if (!status.isPaused) {
         // Deduct 1 minute from the clock and update the store
         const newTime = getState().status.timeRemaining - minute;
         dispatch(setTimeRemaining(newTime));
@@ -68,11 +71,13 @@ class Core {
           this.notifications.warning();
         } else if (newTime === 0) {
           this.notifications.statusChange();
-          const status = getState().status;
+          
         } else if (newTime === -10 * minute) {
           this.notifications.whereAreYou();
           dispatch(togglePause());
         }
+
+        
       } else {
         // When paused, interval keeps running -- but does nothing
         console.log('We are paused');

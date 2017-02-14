@@ -27,7 +27,10 @@ const keyStrokeCounter = () => {
 	function save() {
 		if (!status.shouldSave) return;
     data.url = document.URL.split('/')[2];
-    if (data.cpm > 5 && data.wpm > 5) port.postMessage(data);
+    if (data.cpm > 5 && data.wpm > 5) {
+    	port.postMessage(data);
+    	status.shouldSave = false;
+    }
 	}
 
 	function log(input) {		
@@ -39,7 +42,7 @@ const keyStrokeCounter = () => {
       data.wpm = data.words.length / (durationMinutes === 0 ? 1 : durationMinutes);
     }
     status.shouldSave = true;
-    status.lastLoggedTime = now;  
+    status.lastLoggedTime = now;
 	}
 
 	function needPrivacy(domElement) {
@@ -113,9 +116,7 @@ const keyStrokeCounter = () => {
 		}
 	}
 
-	return function(){
-		// console.log('contentScript.js counter', status, data)
-
+	return function() {
 		status.active = true;
     port = chrome.runtime.connect(); // make port connection to background.js    
     document.removeEventListener("keydown", event.onKeypress); // prevent multiple event

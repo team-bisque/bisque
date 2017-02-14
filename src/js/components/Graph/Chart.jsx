@@ -34,20 +34,18 @@ export class Chart extends Component {
   }
 
   mapData (data) {
-    return _.map(Object.keys(data), (day)=>{
-      let datemilsec = new Date(day.replace('-', ' ')).getTime();
-      return _.map(Object.keys(data[day]), (hour) => {
-        let hourmilsec = hour * 1000 * 3600;
+    const filteredData = {};
+    for (let day in data) {
+      filteredData[day] = _.map(data[day], hour => _.filter(hour, tab => tab.wpm && tab.wpm > 0)).filter(day1 => day1.length > 0);
+    }
 
-        console.log('mapData', data[day][hour], {
-          date: new Date(datemilsec+hourmilsec),
-          avgCPM: _.meanBy(data[day][hour], 'cpm') || 0,
-          totalCPM: _.sumBy(data[day][hour], 'cpm') || 0
-        })
+    return _.map(Object.keys(filteredData), (day) => {
+      let datemilsec = new Date(day.replace('-', ' ')).getTime();
+      return _.map(Object.keys(filteredData[day]), (hour) => {
+        let hourmilsec = hour * 1000 * 3600;
         return {
           date: new Date(datemilsec+hourmilsec),
-          avgCPM: _.meanBy(data[day][hour], 'cpm') || 0,
-          totalCPM: _.sumBy(data[day][hour], 'cpm') || 0
+          avgWPM: _.meanBy(filteredData[day][hour], 'wpm') || 0
         }
       })
     });
@@ -85,7 +83,7 @@ export class Chart extends Component {
   }
 
   render() {
-    const {height, width, margin} = this.props;
+    const {height, width, margin, label} = this.props;
     const {data} = this.state;
 
     let widthDiff = margin.left + margin.right;
@@ -96,27 +94,30 @@ export class Chart extends Component {
             .domain(extent(data, d => d.date))
             .rangeRound([0, (width - widthDiff)]);
     let yCoords = scaleLinear()
-            .domain(extent(data, d => d.totalCPM))
+            .domain(extent(data, d => d.avgWPM))
             .range([(height - heightDiff), 0]);
-    let lineEquation = line().x(d => xCoords(d.date)).y(d => yCoords(d.totalCPM));
+    let lineEquation = line().x(d => xCoords(d.date)).y(d => yCoords(d.avgWPM));
     let xAxisEquation = axisBottom(xCoords);
     let yAxisEquation = axisLeft(yCoords);
 
     return (
-      <svg width={width} height={height}>
-        <g transform={`translate(${margin.left},${margin.top})`}>
-          {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
-          <path className="line" d={lineEquation(data)} />
-          <Dots data={data} x={xCoords} y={yCoords} showTooltip={this.showTooltip} hideTooltip={this.hideTooltip} />
-          <Axis height={height - heightDiff} axis={yAxisEquation} axisType="y" />
-          <Axis height={height - heightDiff} axis={xAxisEquation} axisType="x" />
-          <Tooltip tooltip={this.state.tooltip} />
-        </g>
-      </svg>
+      <div>
+        <p style={{"text-align": "center", "font-weight": "bold"}}>{label}</p>
+        <svg width={width} height={height}>
+          <g transform={`translate(${margin.left},${margin.top})`}>
+            {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
+            <path className="line" d={lineEquation(data)} />
+            <Dots data={data} x={xCoords} y={yCoords} showTooltip={this.showTooltip} hideTooltip={this.hideTooltip} />
+            <Axis height={height - heightDiff} axis={yAxisEquation} axisType="y" />
+            <Axis height={height - heightDiff} axis={xAxisEquation} axisType="x" />
+            <Tooltip tooltip={this.state.tooltip} />
+          </g>
+        </svg>
+      </div>
     );
   }
 }
-const margin = {top: 20, right: 20, bottom: 30, left: 50};
+const margin = {top: 20, right: 20, bottom: 70, left: 50};
 
 const mapState = (state, {data, width, height, label}) => ({
   margin,
