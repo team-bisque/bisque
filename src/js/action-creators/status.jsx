@@ -39,7 +39,6 @@ export const toggleLunch = () => ({type: TOGGLE_LUNCH});
 export const toggleWorkAlias = () => ({type: TOGGLE_WORK_ALIAS});
 
 export const toggleWork = () => (dispatch, getState) => {
-  console.log(getState().status.isWorking, getState().status.settings.nuclear)
   if(getState().status.isWorking && getState().status.settings.nuclear) {
 
     // if current tab has url, we will create and lock new tab, because user was not on our dashboard.    
