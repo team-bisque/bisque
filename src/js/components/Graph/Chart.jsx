@@ -83,7 +83,7 @@ export class Chart extends Component {
   }
 
   render() {
-    const {height, width, margin} = this.props;
+    const {height, width, margin, label} = this.props;
     const {data} = this.state;
 
     let widthDiff = margin.left + margin.right;
@@ -101,20 +101,23 @@ export class Chart extends Component {
     let yAxisEquation = axisLeft(yCoords);
 
     return (
-      <svg width={width} height={height}>
-        <g transform={`translate(${margin.left},${margin.top})`}>
-          {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
-          <path className="line" d={lineEquation(data)} />
-          <Dots data={data} x={xCoords} y={yCoords} showTooltip={this.showTooltip} hideTooltip={this.hideTooltip} />
-          <Axis height={height - heightDiff} axis={yAxisEquation} axisType="y" />
-          <Axis height={height - heightDiff} axis={xAxisEquation} axisType="x" />
-          <Tooltip tooltip={this.state.tooltip} />
-        </g>
-      </svg>
+      <div>
+        <p style={{"text-align": "center", "font-weight": "bold"}}>{label}</p>
+        <svg width={width} height={height}>
+          <g transform={`translate(${margin.left},${margin.top})`}>
+            {/* <Grid height={height - heightDiff} grid={yGrid} gridType="y" /> */}
+            <path className="line" d={lineEquation(data)} />
+            <Dots data={data} x={xCoords} y={yCoords} showTooltip={this.showTooltip} hideTooltip={this.hideTooltip} />
+            <Axis height={height - heightDiff} axis={yAxisEquation} axisType="y" />
+            <Axis height={height - heightDiff} axis={xAxisEquation} axisType="x" />
+            <Tooltip tooltip={this.state.tooltip} />
+          </g>
+        </svg>
+      </div>
     );
   }
 }
-const margin = {top: 20, right: 20, bottom: 30, left: 50};
+const margin = {top: 20, right: 20, bottom: 70, left: 50};
 
 const mapState = (state, {data, width, height, label}) => ({
   margin,
