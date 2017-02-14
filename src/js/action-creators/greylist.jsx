@@ -60,14 +60,13 @@ export const setGreylist = () => dispatch => {
 export const receiveGreylist = () => (dispatch, getState)=>{
   const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);
   ref.once('value', (snapshot) => {
-    // console.log('receiveGreylist: snapshop', snapshot.val())
     dispatch(receive_greylist(snapshot.val()));
   });
 };
 
-// User function balance with action-creator
+
 export const addGreylist = payload => (dispatch, getState) => {
-  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);  
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);
   let data = Array.from(getState().greylist);
       data.push(payload.greylist);
 
@@ -79,7 +78,7 @@ export const addGreylist = payload => (dispatch, getState) => {
 }
 
 export const removeGreylist = payload => (dispatch, getState) => {
-  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);  
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);
   let data = getState().greylist.filter((e, i) => i !== payload.index);
   ref.set(data)
       .then(()=>{
@@ -89,7 +88,7 @@ export const removeGreylist = payload => (dispatch, getState) => {
 }
 
 export const editGreylist = payload => (dispatch, getState) => {
-  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);    
+  const ref = firebaseDb.ref(`users/${getState().auth.uid}/greylist`);
   let data = Array.from(getState().greylist);
       data[payload.index] = payload.greylist;
 
@@ -110,6 +109,6 @@ export const setAllLock = payload => (dispatch, getState) => {
   ref.set(greylists)
     .then(()=>{
       dispatch(receiveGreylist());
-    });        
+    });
 }
 

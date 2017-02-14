@@ -53,39 +53,54 @@ describe('Greylist component', () => {
   });
 
   it('renders the full greylist given to it', () => {
-    const arrayOfUrls = GreylistWrapper.find('li');
-    expect(arrayOfUrls).to.have.length(4);
+    const listOfGreylistUrls = GreylistWrapper.find('li');
+    expect(listOfGreylistUrls).to.have.length(4);
   });
 
-  it('responds to form input changes', () => {
-    const url = 'facebook.com';
-    const input = GreylistWrapper.find('.inline').at(0);
+  it('changes a url on change in form', () => {
+    const url = 'github.com';
     return Promise.resolve()
       .then(() => GreylistWrapper.setState({url}))
       .then(() => {
-      input.simulate('keypress', {key: 'Enter'});
-      input.simulate('change', {target: {
+      GreylistWrapper.find('.inline').at(0)
+        .simulate('change', {target: {
           value: url,
           getAttribute: string => string
-      }});
+      }})
       expect(testTabEditGreylist.calledOnce).to.be.true;
-      expect(testTabAddGreylist.calledOnce).to.be.true;
     })
       .catch(error => console.error(error));
   });
 
-  it('responds to form button clicks', () => {
+  it('adds a url if enter is pressed in the add new form', () => {
     const url = 'waffle.io';
     return Promise.resolve()
       .then(() => GreylistWrapper.setState({url}))
       .then(() => {
-        GreylistWrapper.find('.fa-plus')
-          .simulate('click');
-        GreylistWrapper.find('.fa-times').at(0)
-          .simulate('click');
+        expect(GreylistWrapper.state().url).to.equal('waffle.io');
+        const dom = GreylistWrapper.update().find('#addNew-input').simulate('keypress', {key: 'Enter'});
         expect(testTabAddGreylist.calledOnce).to.be.true;
-        expect(testTabRemoveGreylist.calledOnce).to.be.true;
       })
+      .catch(error => console.error(error));
+  });
+
+  it('has an Add Url button that responds to clicks', () => {
+    const url = 'waffle.io';
+    return Promise.resolve()
+      .then(() => GreylistWrapper.setState({url}))
+      .then((newStateGreylist) => newStateGreylist.find('.icon').at(0).simulate('click'))
+      .then(() => expect(GreylistWrapper.update().state().url).to.equal('waffle.io'))
+      .then(() => expect(testTabAddGreylist.calledOnce).to.be.true)
+      .catch(error => console.error(error));
+  });
+
+
+  it('has a Remove Url button that responds to clicks', () => {
+    const url = 'grooveshark.com';
+    return Promise.resolve()
+      .then(() => GreylistWrapper.setState({url}))
+      .then((newStateGreylist) => newStateGreylist.find('.fa-times').at(0).simulate('click'))
+      .then(() => expect(testTabRemoveGreylist.calledOnce).to.be.true)
       .catch(error => console.error(error));
   });
 });
