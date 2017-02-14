@@ -71,24 +71,8 @@ class Tasks extends React.Component{
   }
 
   render(){
-    const tasks = this.props.tasks;
+    const {tasks} = this.props;
     const selectedList = this.state.selectedList;
-
-    // <ButtonGroup>
-    //   {
-    //     tasks && tasks.length ? tasks.map((list, idx) => {
-    //       return (
-    //         <Button
-    //           id={idx}
-    //           key={list.id}
-    //           className="list-title"
-    //           onClick={this.toggleList}
-    //         >
-    //         {list.title}
-    //         </Button>)
-    //     }) : null
-    //   }
-    // </ButtonGroup>
 
     return (
       <div id="task-modal" className="content">
@@ -99,8 +83,7 @@ class Tasks extends React.Component{
           </div>
         </div>
         <div>
-          <p>List: </p>
-          <select id="task-lists" class="inline" value={this.state.selectedList} onChange={this.toggleList}>
+          <select id="task-lists" value={this.state.selectedList} onChange={this.toggleList}>
             {
               tasks && tasks.length ? tasks.map((list, idx) => {
                 return (
@@ -113,9 +96,8 @@ class Tasks extends React.Component{
             }
           </select>
           <ul className="tasks-list">
-            <p>Tasks:</p>
             {
-              selectedList && selectedList.data ? selectedList.data.map((task, index) => {
+              tasks && tasks[selectedList].data.map((task, index) => {
                 return (
                   <li key={task.id}>
                     <div>
@@ -142,7 +124,8 @@ class Tasks extends React.Component{
                     </div>
                   </li>
                 );
-            }) : null}
+              })
+            }
             <li key="addNew" className="addNew">
               <FormControl
                 id="addNew-input"
