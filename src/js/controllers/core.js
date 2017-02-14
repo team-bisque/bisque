@@ -66,9 +66,6 @@ class Core {
         const newTime = getState().status.timeRemaining - minute;
         dispatch(setTimeRemaining(newTime));
 
-        if(!status.isWorking && status.settings.nuclear) Tabs.lockTab();
-        if(status.isWorking) Tabs.unlockTab();
-
         // If applicable, fire a chrome notification
         if (newTime === 5 * minute) {
           this.notifications.warning();
