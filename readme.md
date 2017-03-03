@@ -13,7 +13,7 @@ A Chrome extension that helps writers get things done by managing their time, me
 
 Our presentation on the project can be seen here:
 
-[![Alt text](https://img.youtube.com/vi/lxDZ-RvXnjg/0.jpg)](https://www.youtube.com/watch?v=lxDZ-RvXnjg){:target="_blank"}
+[![Alt text](https://img.youtube.com/vi/lxDZ-RvXnjg/0.jpg)](https://www.youtube.com/watch?v=lxDZ-RvXnjg)
 
 # Instructions
 
