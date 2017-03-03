@@ -11,6 +11,10 @@ A Chrome extension that helps writers get things done by managing their time, me
 - Chrome notifications let you know when it's time for a stretch or time to focus in
 - ...and even more features coming soon!
 
+Our presentation on the project can be seen here:
+
+[![Alt text](https://img.youtube.com/vi/lxDZ-RvXnjg/0.jpg)](https://www.youtube.com/watch?v=lxDZ-RvXnjg)
+
 # Instructions
 
 ```
